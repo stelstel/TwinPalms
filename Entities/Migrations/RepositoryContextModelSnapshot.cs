@@ -21,18 +21,10 @@ namespace Entities.Migrations
 
             modelBuilder.Entity("Entities.Models.Company", b =>
                 {
-                    b.Property<Guid>("Id")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier")
-                        .HasColumnName("CompanyId");
-
-                    b.Property<string>("Address")
-                        .IsRequired()
-                        .HasMaxLength(60)
-                        .HasColumnType("nvarchar(60)");
-
-                    b.Property<string>("Country")
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -46,32 +38,39 @@ namespace Entities.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("c9d4c053-49b6-410c-bc78-2d54a9991870"),
-                            Address = "583 Wall Dr. Gwynn Oak, MD 21207",
-                            Country = "USA",
-                            Name = "IT_Solutions Ltd"
+                            Id = 1,
+                            Name = "TPS"
                         },
                         new
                         {
-                            Id = new Guid("3d490a70-94ce-4d15-9494-5248280c2ce3"),
-                            Address = "312 Forest Avenue, BF 923",
-                            Country = "USA",
-                            Name = "Admin_Solutions Ltd"
+                            Id = 2,
+                            Name = "TPMS"
+                        },
+                        new
+                        {
+                            Id = 3,
+                            Name = "TPMA"
+                        },
+                        new
+                        {
+                            Id = 4,
+                            Name = "PPT"
                         });
                 });
 
             modelBuilder.Entity("Entities.Models.Employee", b =>
                 {
-                    b.Property<Guid>("Id")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier")
-                        .HasColumnName("EmployeeId");
+                        .HasColumnType("int")
+                        .HasColumnName("EmployeeId")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<int>("Age")
                         .HasColumnType("int");
 
-                    b.Property<Guid>("CompanyId")
-                        .HasColumnType("uniqueidentifier");
+                    b.Property<int>("CompanyId")
+                        .HasColumnType("int");
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -92,27 +91,19 @@ namespace Entities.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("80abbca8-664d-4b20-b5de-024705497d4a"),
+                            Id = 1,
                             Age = 26,
-                            CompanyId = new Guid("c9d4c053-49b6-410c-bc78-2d54a9991870"),
+                            CompanyId = 1,
                             Name = "Sam Raiden",
                             Position = "Software developer"
                         },
                         new
                         {
-                            Id = new Guid("86dba8c0-d178-41e7-938c-ed49778fb52a"),
+                            Id = 2,
                             Age = 30,
-                            CompanyId = new Guid("c9d4c053-49b6-410c-bc78-2d54a9991870"),
+                            CompanyId = 2,
                             Name = "Jana McLeaf",
                             Position = "Software developer"
-                        },
-                        new
-                        {
-                            Id = new Guid("021ca3c1-0deb-4afd-ae94-2159a8479811"),
-                            Age = 35,
-                            CompanyId = new Guid("3d490a70-94ce-4d15-9494-5248280c2ce3"),
-                            Name = "Kane Miller",
-                            Position = "Administrator"
                         });
                 });
 
@@ -216,15 +207,15 @@ namespace Entities.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "47a8ed9a-1ffe-4652-b0f2-5c412bbd5db3",
-                            ConcurrencyStamp = "bce1c032-009b-4151-b466-e75cb29372bd",
+                            Id = "2099e52e-ece0-49b1-9d72-61a084bd523a",
+                            ConcurrencyStamp = "de928e21-8fcb-48eb-ba9d-819615fec8f3",
                             Name = "Manager",
                             NormalizedName = "MANAGER"
                         },
                         new
                         {
-                            Id = "e513ef03-2bb6-4985-81e3-4d82366c7ca6",
-                            ConcurrencyStamp = "e5602376-6578-45fd-819f-2603b61aa203",
+                            Id = "94a2d226-c25c-40e4-8e61-d6573960f207",
+                            ConcurrencyStamp = "d22c6494-ba13-4dbc-bf3c-545e8008d545",
                             Name = "Administrator",
                             NormalizedName = "ADMINISTRATOR"
                         });
@@ -337,7 +328,7 @@ namespace Entities.Migrations
             modelBuilder.Entity("Entities.Models.Employee", b =>
                 {
                     b.HasOne("Entities.Models.Company", "Company")
-                        .WithMany("Employees")
+                        .WithMany()
                         .HasForeignKey("CompanyId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -394,11 +385,6 @@ namespace Entities.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-                });
-
-            modelBuilder.Entity("Entities.Models.Company", b =>
-                {
-                    b.Navigation("Employees");
                 });
 #pragma warning restore 612, 618
         }

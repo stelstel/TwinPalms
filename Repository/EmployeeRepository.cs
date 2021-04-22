@@ -18,7 +18,7 @@ namespace Repository
 
         }
 
-        public void CreateEmployeeForCompany(Guid companyId, Employee employee)
+        public void CreateEmployeeForCompany(int companyId, Employee employee)
         {
             employee.CompanyId = companyId;
             Create(employee);
@@ -29,12 +29,12 @@ namespace Repository
             Delete(employee);
         }
                 
-        public async Task<Employee> GetEmployeeAsync(Guid companyId, Guid id, bool trackChanges) =>
+        public async Task<Employee> GetEmployeeAsync(int companyId, int id, bool trackChanges) =>
            await FindByCondition(e => e.CompanyId.Equals(companyId) && e.Id.Equals(id), trackChanges)
             .SingleOrDefaultAsync();
 
         
-        public async Task<IEnumerable<Employee>> GetEmployeesAsync(Guid companyId, bool trackChanges) =>
+        public async Task<IEnumerable<Employee>> GetEmployeesAsync(int companyId, bool trackChanges) =>
             await FindByCondition(e => e.CompanyId.Equals(companyId), trackChanges)
             .OrderBy(e => e.Name).ToListAsync();
     }

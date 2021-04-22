@@ -22,7 +22,7 @@ namespace TwinPalmsKPI.ActionFilters
 
         {
             var trackChanges = context.HttpContext.Request.Method.Equals("Put");
-            var id = (Guid)context.ActionArguments["id"];
+            var id = (int)context.ActionArguments["id"];
             var company = await _repository.Company.GetCompanyAsync(id, trackChanges);
             if (company == null)
             {

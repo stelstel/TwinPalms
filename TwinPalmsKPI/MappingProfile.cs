@@ -8,9 +8,8 @@ namespace TwinPalmsKPI
     {
         public MappingProfile()
         {
-            CreateMap<Company, CompanyDto>()
-                .ForMember(c => c.FullAddress,
-                opt => opt.MapFrom(x => string.Join(' ', x.Address, x.Country)));
+            CreateMap<Company, CompanyDto>();
+                
             CreateMap<Employee, EmployeeDto>();
 
             CreateMap<CompanyForCreationDto, Company>();

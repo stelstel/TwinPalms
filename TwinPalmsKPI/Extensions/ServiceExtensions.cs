@@ -63,6 +63,7 @@ namespace TwinPalmsKPI.Extensions
                 builder.Services); 
             builder.AddEntityFrameworkStores<RepositoryContext>().AddDefaultTokenProviders();
         }
+
         public static void ConfigureJWT(this IServiceCollection services, IConfiguration configuration)
         {
             var jwtSettings = configuration.GetSection("JwtSettings");
@@ -84,19 +85,21 @@ namespace TwinPalmsKPI.Extensions
                 };
             });
         }
+
         public static void ConfigureSwagger(this IServiceCollection services) =>
             services.AddSwaggerGen(s =>
             {
                 s.SwaggerDoc("v1", new OpenApiInfo 
                 { Title = "TwinPalmsKPI API", 
                   Version = "v1",
-                  Description = "TwinPalmsKPI API by Jang Chang",
-                  Contact = new OpenApiContact
-                  {
-                      Name = "Jang Chang",
-                      Email = "happyjang24@gmail.com",
-                      Url = new Uri("http://github.com/happyjang")
-                  }
+                  Description = "TwinPalmsKPI API",
+                  // TODO change contact information
+                  //Contact = new OpenApiContact
+                  //{
+                  //    Name = "Jang Chang",
+                  //    Email = "happyjang24@gmail.com",
+                  //    Url = new Uri("http://github.com/happyjang")
+                  //}
                 });
 
                 var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
