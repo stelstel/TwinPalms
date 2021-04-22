@@ -216,15 +216,15 @@ namespace Entities.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "fc69da8c-0fad-44a2-9073-88c4f6eeb8c5",
-                            ConcurrencyStamp = "8d3191a9-b8d1-4689-b0e5-8effa694bd1d",
+                            Id = "263c1ed0-a708-4956-bdf3-db7cc6f61435",
+                            ConcurrencyStamp = "29f8ed2c-b5fb-4478-bfac-b983c7d2e498",
                             Name = "Manager",
                             NormalizedName = "MANAGER"
                         },
                         new
                         {
-                            Id = "13b221e8-a20e-462e-a47d-573ab1963136",
-                            ConcurrencyStamp = "f82b4930-d24e-42ce-9881-5c00a320cf19",
+                            Id = "6358cf55-c2f0-4e9b-8223-641161ec0d90",
+                            ConcurrencyStamp = "a2baeaa7-8c1b-4918-a839-b5831390a600",
                             Name = "Administrator",
                             NormalizedName = "ADMINISTRATOR"
                         });
