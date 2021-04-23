@@ -45,6 +45,7 @@ namespace TwinPalmsKPI
             services.ConfigureJWT(Configuration);
             services.AddScoped<ValidationFilterAttribute>(); 
             services.AddScoped<ValidateCompanyExistsAttribute>();
+            services.AddScoped<ValidateOutletExistsAttribute>();
             services.AddScoped<ValidateEmployeeForCompanyAttribute>();
             services.AddScoped<IAuthenticationManager, AuthenticationManager>(); // TODO: Is this correct?
 

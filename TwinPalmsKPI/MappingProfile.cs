@@ -21,6 +21,13 @@ namespace TwinPalmsKPI
             CreateMap<CompanyForUpdateDto, Company>();
             
             CreateMap<UserForRegistrationDto, User>();
+
+            CreateMap<Outlet, OutletDto>();
+
+            CreateMap<OutletForCreationDto, Outlet>();
+
+            CreateMap<OutletForUpdateDto, Outlet>();
+
         }
     }
 }

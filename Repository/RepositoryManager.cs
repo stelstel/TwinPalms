@@ -10,6 +10,8 @@ namespace Repository
         private RepositoryContext _repositoryContext;
         private ICompanyRepository _companyRepository;
         private IEmployeeRepository _employeeRepository;
+        private IOutletRepository _outletRepository;
+
         public RepositoryManager(RepositoryContext repositoryContext)
         {
             _repositoryContext = repositoryContext;
@@ -23,6 +25,17 @@ namespace Repository
                     _companyRepository = new CompanyRepository(_repositoryContext);
 
                 return _companyRepository;
+            }
+        }
+
+        public IOutletRepository Outlet
+        {
+            get
+            {
+                if (_outletRepository == null)
+                    _outletRepository = new OutletRepository(_repositoryContext);
+
+                return _outletRepository;
             }
         }
 
