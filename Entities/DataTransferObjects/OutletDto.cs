@@ -1,15 +1,21 @@
-﻿using Entities.Models;
-using System;
+﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
 namespace Entities.DataTransferObjects
 {
-    public abstract class OutletForManipulationDto
+    class OutletDto
     {
-        [Required(ErrorMessage = "Outlet name is a required field.")]
-        [MaxLength(60, ErrorMessage = "Maximum length for the Name is 60 characters.")]
+        // TODO
+        //public Outlet()
+        //{
+        //    FbReports = new HashSet<FbReport>();
+        //    OutletUsers = new HashSet<OutletUser>();
+        //}
+
+        public int Id { get; set; }
         public string Name { get; set; }
 
         // TODO
@@ -18,6 +24,5 @@ namespace Entities.DataTransferObjects
         //public virtual Company Company { get; set; }
         //public virtual ICollection<FbReport> FbReports { get; set; }
         //public virtual ICollection<OutletUser> OutletUsers { get; set; }
-
     }
 }
