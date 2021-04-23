@@ -91,6 +91,7 @@ namespace TwinPalmsKPI.Controllers
         public async Task<IActionResult> UpdateCompany(int id, [FromBody] CompanyForUpdateDto company)
         {
             var companyEntity = HttpContext.Items["company"] as Company;
+            _repository.Company.UpdateCompany(companyEntity);
             _mapper.Map(company, companyEntity);
             await _repository.SaveAsync();
             return NoContent();

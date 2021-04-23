@@ -12,5 +12,6 @@ namespace Contracts
         Task<Company> GetCompanyAsync(int id, bool trackChanges);
         void CreateCompany(Company company);
         void DeleteCompany(Company company);
+        void UpdateCompany(Company company);
     }
 }
