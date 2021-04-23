@@ -25,6 +25,7 @@ namespace Entities
             modelBuilder.ApplyConfiguration(new RoleConfiguration());
 
             modelBuilder.ApplyConfiguration(new GuestSourceOfBusinessConfiguration());
+            modelBuilder.ApplyConfiguration(new FbReportGuestSourceOfBusinessConfiguration());
 
 
         }
