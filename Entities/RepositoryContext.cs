@@ -32,5 +32,27 @@ namespace Entities
         public DbSet<Company> Companies { get; set; }
         public DbSet<Employee> Employees { get; set; }
         public virtual DbSet<GuestSourceOfBusiness> GuestSourceOfBusinesses { get; set; }
+
+        
+        public virtual DbSet<CruiseCompany> CruiseCompanies { get; set; }
+        public virtual DbSet<CruiseShip> CruiseShips { get; set; }
+        public virtual DbSet<FbReport> FbReports { get; set; }
+        public virtual DbSet<Hotel> Hotels { get; set; }
+        public virtual DbSet<HotelUser> HotelUsers { get; set; }
+        public virtual DbSet<LocalEvent> LocalEvents { get; set; }
+        public virtual DbSet<OtherReport> OtherReports { get; set; }
+        public virtual DbSet<Outlet> Outlets { get; set; }
+        public virtual DbSet<OutletUser> OutletUsers { get; set; }
+        public virtual DbSet<Role> Roles { get; set; }
+        public virtual DbSet<RoomType> RoomTypes { get; set; }
+        public virtual DbSet<RoomsReport> RoomsReports { get; set; }
+        public virtual DbSet<User> Users { get; set; }
+        public virtual DbSet<UserRole> UserRoles { get; set; }
+        public virtual DbSet<Weather> Weathers { get; set; }
+        public virtual DbSet<WeatherFbReport> WeatherFbReports { get; set; }
+        public virtual DbSet<WeatherOtherReport> WeatherOtherReports { get; set; }
+        public virtual DbSet<WeatherRoomsReport> WeatherRoomsReports { get; set; }
+        public virtual DbSet<FbReportGuestSourceOfBusiness> FbReportGuestSourceOfBusinesses { get; set; }
+        public object FbReportGuestSourceOfBusiness { get; internal set; }
     }
 }
