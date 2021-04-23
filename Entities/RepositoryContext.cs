@@ -23,8 +23,10 @@ namespace Entities
             modelBuilder.ApplyConfiguration(new CompanyConfiguration());
             modelBuilder.ApplyConfiguration(new EmployeeConfiguration());
             modelBuilder.ApplyConfiguration(new RoleConfiguration());
+            modelBuilder.ApplyConfiguration(new OutletConfiguration());
 
-            modelBuilder.ApplyConfiguration(new GuestSourceOfBusinessConfiguration());
+            // TODO
+            //modelBuilder.ApplyConfiguration(new GuestSourceOfBusinessConfiguration());
 
 
         }
@@ -32,8 +34,6 @@ namespace Entities
         public DbSet<Company> Companies { get; set; }
         public DbSet<Employee> Employees { get; set; }
         public virtual DbSet<GuestSourceOfBusiness> GuestSourceOfBusinesses { get; set; }
-
-        
         public virtual DbSet<CruiseCompany> CruiseCompanies { get; set; }
         public virtual DbSet<CruiseShip> CruiseShips { get; set; }
         public virtual DbSet<FbReport> FbReports { get; set; }
@@ -52,7 +52,9 @@ namespace Entities
         public virtual DbSet<WeatherFbReport> WeatherFbReports { get; set; }
         public virtual DbSet<WeatherOtherReport> WeatherOtherReports { get; set; }
         public virtual DbSet<WeatherRoomsReport> WeatherRoomsReports { get; set; }
-        public virtual DbSet<FbReportGuestSourceOfBusiness> FbReportGuestSourceOfBusinesses { get; set; }
-        public object FbReportGuestSourceOfBusiness { get; internal set; }
+        
+        // TODO
+        //public virtual DbSet<FbReportGuestSourceOfBusiness> FbReportGuestSourceOfBusinesses { get; set; }
+        //public object FbReportGuestSourceOfBusiness { get; internal set; }
     }
 }

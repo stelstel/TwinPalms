@@ -14,68 +14,81 @@ namespace Entities.Configuration
             (
                 new Outlet
                 {
-                    Name = "Catch Beach Club",
-                    CompanyId = 1
+                    Id = 1,
+                    Name = "Catch Beach Club"//,
+                    //CompanyId = 1
                 },
                 new Outlet
                 {
-                    Name = "Catch Junior",
-                    CompanyId = 1,
+                    Id = 2,
+                    Name = "Catch Junior"//,
+                    //CompanyId = 1,
                 },
                 new Outlet
                 {
-                    Name = "Catch Junior",
-                    CompanyId = 1,
+                    Id = 3,
+                    Name = "Catch Junior"//,
+                    //CompanyId = 1,
                 },
                 new Outlet
                 {
-                    Name = "Wagyu Steakhouse",
-                    CompanyId = 1,
+                    Id = 4,
+                    Name = "Wagyu Steakhouse"//,
+                    //CompanyId = 1,
                 },
                 new Outlet
                 {
-                    Name = "Palm Seaside",
-                    CompanyId = 1,
+                    Id = 5,
+                    Name = "Palm Seaside"//,
+                    //CompanyId = 1,
                 },
                 new Outlet
                 {
-                    Name = "Oriental Spoon",
-                    CompanyId = 1,
+                    Id = 6,
+                    Name = "Oriental Spoon"//,
+                    //CompanyId = 1,
                 },
                 new Outlet
                 {
-                    Name = "HQ Beach Lounge",
-                    CompanyId = 1,
+                    Id = 7,
+                    Name = "HQ Beach Lounge"//,
+                    //CompanyId = 1,
                 },
                 new Outlet
                 {
-                    Name = "Shimmer",
-                    CompanyId = 2,
+                    Id = 8,
+                    Name = "Shimmer"//,
+                    //CompanyId = 2,
                 },
                 new Outlet
                 {
-                    Name = "Bake Laguna",
-                    CompanyId = 2,
+                    Id = 9,
+                    Name = "Bake Laguna"//,
+                    //CompanyId = 2,
                 },
                 new Outlet
                 {
-                    Name = "Bake BIS",
-                    CompanyId = 2,
+                    Id = 10,
+                    Name = "Bake BIS"//,
+                    //CompanyId = 2,
                 },
                 new Outlet
                 {
-                    Name = "Bake Turtle Village",
-                    CompanyId = 2,
+                    Id = 11,
+                    Name = "Bake Turtle Village"//,
+                    //CompanyId = 2,
                 },
                 new Outlet
                 {
-                    Name = "Bake Pytong",
-                    CompanyId = 1,
+                    Id = 12,
+                    Name = "Bake Pytong"//,
+                    //CompanyId = 1,
                 },
                 new Outlet
                 {
-                    Name = "Love Noodles",
-                    CompanyId = 2,
+                    Id = 13,
+                    Name = "Love Noodles"//,
+                    //CompanyId = 2,
                 }
             );
         }

@@ -35,6 +35,8 @@ namespace Entities.Models
         public virtual User User { get; set; }
         public virtual LocalEvent LocalEvent { get; set; }
         public virtual ICollection<WeatherFbReport> WeatherFbReports { get; set; }
-        public virtual ICollection<FbReportGuestSourceOfBusiness> FbReportGuestSourceOfBusinesses { get; set; }
+        
+        // TODO
+        //public virtual ICollection<FbReportGuestSourceOfBusiness> FbReportGuestSourceOfBusinesses { get; set; }
     }
 }

@@ -10,35 +10,33 @@ using System.Threading.Tasks;
 
 namespace Repository
 {
-    public class CompanyRepository : RepositoryBase<Company>, ICompanyRepository
+    public class OutletRepository : RepositoryBase<Outlet>, IOutletRepository
     {
-        public CompanyRepository(RepositoryContext repositoryContext)
-            : base(repositoryContext)
+        public OutletRepository(RepositoryContext repositoryContext) : base(repositoryContext)
         {
 
         }
 
-        public void CreateCompany(Company company) => Create(company);
+        public void CreateOutlet(Outlet outlet) => Create(outlet);
 
-        public void DeleteCompany(Company company)
+        public void DeleteOutlet(Outlet outlet)
         {
-            Delete(company);
+            Delete(outlet);
         }
 
-        public void UpdateCompany(Company company)
+        public void UpdateOutlet(Outlet outlet)
         {
-            Update(company);
+            Update(outlet);
         }
 
-        public async Task<IEnumerable<Company>> GetAllCompaniesAsync(bool trackChanges) =>
+        public async Task<IEnumerable<Outlet>> GetAllOutletsAsync(bool trackChanges) =>
             await FindAll(trackChanges)
-            .OrderBy(c => c.Name)
+            .OrderBy(o => o.Name)
             .ToListAsync();
 
-        public async Task<Company> GetCompanyAsync(int id, bool trackChanges) =>
-            await FindByCondition(c => c.Id.Equals(id), trackChanges)
+        public async Task<Outlet> GetOutletAsync(int id, bool trackChanges) =>
+            await FindByCondition(o => o.Id.Equals(id), trackChanges)
             .SingleOrDefaultAsync();
-
     }
 }
 

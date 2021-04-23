@@ -45,7 +45,7 @@ namespace TwinPalmsKPI.Controllers
         [HttpGet("{id}", Name = "OutletById")]
         public async Task<IActionResult> GetOutlet(int outletId, int id)
         {
-            var outlet = await _repository.Company.GetOutletAsync(id, trackChanges: false);
+            var outlet = await _repository.Outlet.GetOutletAsync(id, trackChanges: false);
             if (outlet == null)
             {
                 _logger.LogInfo($"Outlets with id {id} doesn't exist in the database.");

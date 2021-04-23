@@ -54,5 +54,30 @@
             Updates employee by ID
             </summary>
         </member>
+        <member name="M:TwinPalmsKPI.Controllers.OutletsController.GetOutlets">
+            <summary>
+            Gets a list of all Outlets
+            </summary>
+        </member>
+        <member name="M:TwinPalmsKPI.Controllers.OutletsController.GetOutlet(System.Int32,System.Int32)">
+            <summary>
+            Gets a single Outlet by ID
+            </summary>
+        </member>
+        <member name="M:TwinPalmsKPI.Controllers.OutletsController.CreateOutlet(Entities.DataTransferObjects.OutletForCreationDto)">
+            <summary>
+            Creates a new Outlet
+            </summary>
+        </member>
+        <member name="M:TwinPalmsKPI.Controllers.OutletsController.DeleteOutlet(System.Int32)">
+            <summary>
+            Deletes a Outlet by ID
+            </summary>
+        </member>
+        <member name="M:TwinPalmsKPI.Controllers.OutletsController.UpdateOutlet(System.Int32,Entities.DataTransferObjects.OutletForUpdateDto)">
+            <summary>
+            Updates a Outlet by ID
+            </summary>
+        </member>
     </members>
 </doc>
