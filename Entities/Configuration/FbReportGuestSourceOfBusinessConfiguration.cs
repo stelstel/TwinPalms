@@ -8,9 +8,8 @@ namespace Entities.Configuration
     class FbReportGuestSourceOfBusinessConfiguration : IEntityTypeConfiguration<FbReportGuestSourceOfBusiness>
     {
         public void Configure(EntityTypeBuilder<FbReportGuestSourceOfBusiness> builder)
-        {
-            
-                builder.HasKey(e => new { e.FbReportId, e.GuestSourceOfBusinessId });
+        {               
+            builder.HasKey(e => new { e.FbReportId, e.GuestSourceOfBusinessId });
 
             builder.ToTable("FbReportGuestSourceOfBusiness");
 
@@ -19,15 +18,14 @@ namespace Entities.Configuration
             builder.HasIndex(e => e.GuestSourceOfBusinessId, "IX_FbReportGuestSourceOfBusiness_SourceOfBusinessId");
 
             builder.HasOne(d => d.FbReport)
-                    .WithMany(p => p.FbReportGuestSourceOfBusinesses)
-                    .HasForeignKey(d => d.FbReportId)
-                    .HasConstraintName("FK_FbReports_FbReportGuestSourceOfBusiness");
+                .WithMany(p => p.FbReportGuestSourceOfBusinesses)
+                .HasForeignKey(d => d.FbReportId)
+                .HasConstraintName("FK_FbReports_FbReportGuestSourceOfBusiness");
 
             builder.HasOne(d => d.GuestSourceOfBusiness)
-                    .WithMany(p => p.FbReportGuestSourceOfBusinesses)
-                    .HasForeignKey(d => d.GuestSourceOfBusinessId)
-                    .HasConstraintName("FK_FbReport_FbReportGuestSourceOfBusiness");
-           
+                .WithMany(p => p.FbReportGuestSourceOfBusinesses)
+                .HasForeignKey(d => d.GuestSourceOfBusinessId)
+                .HasConstraintName("FK_FbReport_FbReportGuestSourceOfBusiness");          
         }
     }
 }
