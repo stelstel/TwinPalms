@@ -33,7 +33,7 @@ namespace TwinPalmsKPI.Controllers
             _authManager = authManager;
         }
 
-        [HttpPost] 
+        [HttpPost]  
         [ServiceFilter(typeof(ValidationFilterAttribute))]
         public async Task<IActionResult> RegisterUser([FromBody] UserForRegistrationDto userForRegistration)
         {
@@ -59,7 +59,11 @@ namespace TwinPalmsKPI.Controllers
                 _logger.LogWarning($"{nameof(Authenticate)}: Authentication failed. Wrong user name or password."); 
                 return Unauthorized();
             }
-            return Ok(new { Token = await _authManager.CreateToken() });
+            return Ok(new {
+                
+                Outlets = new List<dynamic>() { new { Id = 3, Name = "asdf" } },
+                Hotels = new List<dynamic>() { new { Id = 3, Name = "asdf" } },
+                Token = await _authManager.CreateToken() });
         }
     }
 }
