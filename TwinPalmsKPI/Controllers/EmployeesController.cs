@@ -28,7 +28,7 @@ namespace TwinPalmsKPI.Controllers
         /// Gets all employees for selected company
         /// </summary>
         [HttpGet]
-        public async Task<IActionResult> GetEmployeesForCompany(Guid companyId)
+        public async Task<IActionResult> GetEmployeesForCompany(int companyId)
         {
             var employeesFromDb = await _repository.Employee.GetEmployeesAsync(companyId, trackChanges: false);
             var employeeDto = _mapper.Map<IEnumerable<EmployeeDto>>(employeesFromDb);
@@ -38,7 +38,7 @@ namespace TwinPalmsKPI.Controllers
         /// Gets employee by ID
         /// </summary>
         [HttpGet("{id}", Name = "GetEmployeeForCompany")]
-        public async Task<IActionResult> GetEmployeeForCompany(Guid companyId, Guid id)
+        public async Task<IActionResult> GetEmployeeForCompany(int companyId, int id)
         {
             var company = await _repository.Company.GetCompanyAsync(companyId, trackChanges: false);
             if (company == null)
@@ -61,7 +61,7 @@ namespace TwinPalmsKPI.Controllers
         /// </summary>
         [HttpPost]
         [ServiceFilter(typeof(ValidationFilterAttribute))]
-        public async Task<IActionResult> CreateEmployeeForCompany(Guid companyId, [FromBody] EmployeeForCreationDto employee)
+        public async Task<IActionResult> CreateEmployeeForCompany(int companyId, [FromBody] EmployeeForCreationDto employee)
         {
             var company = await _repository.Company.GetCompanyAsync(companyId, trackChanges: false);
             if (company == null)

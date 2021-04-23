@@ -22,7 +22,7 @@ namespace TwinPalmsKPI.ActionFilters
         public async Task OnActionExecutionAsync(ActionExecutingContext context, ActionExecutionDelegate next)
         {
             var trackChanges = context.HttpContext.Request.Method.Equals("PUT");
-            var companyId = (Guid)context.ActionArguments["companyid"];
+            var companyId = (int)context.ActionArguments["companyid"];
             var company = await _repository.Company.GetCompanyAsync(companyId, false);
 
             if (company == null)
@@ -32,7 +32,7 @@ namespace TwinPalmsKPI.ActionFilters
                 return;
             }
 
-                var id = (Guid)context.ActionArguments["id"];
+                var id = (int)context.ActionArguments["id"];
             var employee = await _repository.Employee.GetEmployeeAsync(companyId, id, trackChanges);
 
              if (employee == null)

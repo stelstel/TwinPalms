@@ -43,10 +43,10 @@ namespace TwinPalmsKPI
             services.AddAuthentication(); 
             services.ConfigureIdentity();
             services.ConfigureJWT(Configuration);
-            services.AddScoped<ValidationFilterAttribute>();
+            services.AddScoped<ValidationFilterAttribute>(); 
             services.AddScoped<ValidateCompanyExistsAttribute>();
             services.AddScoped<ValidateEmployeeForCompanyAttribute>();
-            services.AddScoped<IAuthenticationManager, AuthenticationManager>();
+            services.AddScoped<IAuthenticationManager, AuthenticationManager>(); // TODO: Is this correct?
 
             services.Configure<ApiBehaviorOptions>(options =>
             {

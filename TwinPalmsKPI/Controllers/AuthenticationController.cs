@@ -21,17 +21,18 @@ namespace TwinPalmsKPI.Controllers
         private readonly IMapper _mapper; 
         private readonly UserManager<User> _userManager;
         private readonly IAuthenticationManager _authManager; 
+
         public AuthenticationController(
             ILoggerManager logger, 
             IMapper mapper, 
             UserManager<User> userManager, 
             IAuthenticationManager authManager)
-        {
-            _logger = logger; 
-            _mapper = mapper; 
-            _userManager = userManager; 
-            _authManager = authManager;
-        }
+            {
+                _logger = logger; 
+                _mapper = mapper; 
+                _userManager = userManager; 
+                _authManager = authManager;
+            }
 
         [HttpPost]  
         [ServiceFilter(typeof(ValidationFilterAttribute))]

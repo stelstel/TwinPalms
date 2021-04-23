@@ -6,9 +6,14 @@ namespace Entities.DataTransferObjects
 {
     public class CompanyDto
     {
-        public Guid Id { get; set; }
+        public int Id { get; set; }
         public string Name { get; set; }
-        public string FullAddress { get; set; }
+
+        /* TODO
+        public virtual ICollection<CruiseCompany> CruiseCompanies { get; set; }
+        public virtual ICollection<Hotel> Hotels { get; set; }
+        public virtual ICollection<Outlet> Outlets { get; set; }
+        */
 
     }
 }

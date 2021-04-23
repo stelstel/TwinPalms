@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace Entities.Migrations
 {
-    public partial class CreatingIdentityTables : Migration
+    public partial class Init45 : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -46,6 +46,19 @@ namespace Entities.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_AspNetUsers", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Companies",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Name = table.Column<string>(type: "nvarchar(60)", maxLength: 60, nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Companies", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -154,6 +167,58 @@ namespace Entities.Migrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
+            migrationBuilder.CreateTable(
+                name: "Employees",
+                columns: table => new
+                {
+                    EmployeeId = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Name = table.Column<string>(type: "nvarchar(30)", maxLength: 30, nullable: false),
+                    Age = table.Column<int>(type: "int", nullable: false),
+                    Position = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: false),
+                    CompanyId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Employees", x => x.EmployeeId);
+                    table.ForeignKey(
+                        name: "FK_Employees_Companies_CompanyId",
+                        column: x => x.CompanyId,
+                        principalTable: "Companies",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.InsertData(
+                table: "AspNetRoles",
+                columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
+                values: new object[,]
+                {
+                    { "2099e52e-ece0-49b1-9d72-61a084bd523a", "de928e21-8fcb-48eb-ba9d-819615fec8f3", "Manager", "MANAGER" },
+                    { "94a2d226-c25c-40e4-8e61-d6573960f207", "d22c6494-ba13-4dbc-bf3c-545e8008d545", "Administrator", "ADMINISTRATOR" }
+                });
+
+            migrationBuilder.InsertData(
+                table: "Companies",
+                columns: new[] { "Id", "Name" },
+                values: new object[,]
+                {
+                    { 1, "TPS" },
+                    { 2, "TPMS" },
+                    { 3, "TPMA" },
+                    { 4, "PPT" }
+                });
+
+            migrationBuilder.InsertData(
+                table: "Employees",
+                columns: new[] { "EmployeeId", "Age", "CompanyId", "Name", "Position" },
+                values: new object[] { 1, 26, 1, "Sam Raiden", "Software developer" });
+
+            migrationBuilder.InsertData(
+                table: "Employees",
+                columns: new[] { "EmployeeId", "Age", "CompanyId", "Name", "Position" },
+                values: new object[] { 2, 30, 2, "Jana McLeaf", "Software developer" });
+
             migrationBuilder.CreateIndex(
                 name: "IX_AspNetRoleClaims_RoleId",
                 table: "AspNetRoleClaims",
@@ -192,6 +257,11 @@ namespace Entities.Migrations
                 column: "NormalizedUserName",
                 unique: true,
                 filter: "[NormalizedUserName] IS NOT NULL");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Employees_CompanyId",
+                table: "Employees",
+                column: "CompanyId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
@@ -212,10 +282,16 @@ namespace Entities.Migrations
                 name: "AspNetUserTokens");
 
             migrationBuilder.DropTable(
+                name: "Employees");
+
+            migrationBuilder.DropTable(
                 name: "AspNetRoles");
 
             migrationBuilder.DropTable(
                 name: "AspNetUsers");
+
+            migrationBuilder.DropTable(
+                name: "Companies");
         }
     }
 }
