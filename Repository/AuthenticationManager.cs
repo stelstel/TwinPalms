@@ -26,12 +26,13 @@ namespace TwinPalmsKPI
         }
         public async Task<bool> ValidateUser(UserForAuthenticationDto userForAuth)
         {
-            _user = await _userManager.FindByNameAsync(userForAuth.UserName); return (_user != null && await _userManager.CheckPasswordAsync(_user,
-userForAuth.Password));
+            _user = await _userManager.FindByNameAsync(userForAuth.UserName); 
+            return (_user != null && await _userManager.CheckPasswordAsync(_user, userForAuth.Password));
         }
         public async Task<string> CreateToken()
         {
-            var signingCredentials = GetSigningCredentials(); var claims = await GetClaims(); 
+            var signingCredentials = GetSigningCredentials(); 
+            var claims = await GetClaims(); 
             var tokenOptions = GenerateTokenOptions(signingCredentials, claims);
             return new JwtSecurityTokenHandler().WriteToken(tokenOptions);
         }
@@ -43,7 +44,11 @@ userForAuth.Password));
         }
         private async Task<List<Claim>> GetClaims()
         {
-            var claims = new List<Claim> { new Claim(ClaimTypes.Name, _user.UserName) };
+            var claims = new List<Claim> 
+            { 
+                new Claim(ClaimTypes.Name, _user.UserName),
+                new Claim(ClaimTypes.NameIdentifier, _user.Id)
+            };
             var roles = await _userManager.GetRolesAsync(_user); 
             foreach (var role in roles)
             {
