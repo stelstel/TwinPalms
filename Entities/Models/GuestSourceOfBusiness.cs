@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
+
 #nullable disable
 
 namespace Entities.Models
@@ -14,8 +15,8 @@ namespace Entities.Models
 
         public int Id { get; set; }
         public string SourceOfBusiness { get; set; }
-        
-        // TODO: Navigation property
-       // public virtual ICollection<FbReportGuestSourceOfBusiness> FbReportGuestSourceOfBusinesses { get; set; }
+
+        // Navigation property
+        public virtual ICollection<FbReportGuestSourceOfBusiness> FbReportGuestSourceOfBusinesses { get; set; }
     }
 }
