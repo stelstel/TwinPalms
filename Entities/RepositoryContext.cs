@@ -26,6 +26,7 @@ namespace Entities
 
             modelBuilder.ApplyConfiguration(new GuestSourceOfBusinessConfiguration());
             modelBuilder.ApplyConfiguration(new FbReportGuestSourceOfBusinessConfiguration());
+            modelBuilder.ApplyConfiguration(new HotelUserConfiguration());
 
 
         }
