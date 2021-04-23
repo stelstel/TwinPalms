@@ -116,6 +116,21 @@ namespace Entities.Migrations
                         });
                 });
 
+            modelBuilder.Entity("Entities.Models.GuestSourceOfBusiness", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("SourceOfBusiness")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("GuestSourceOfBusinesses");
+                });
+
             modelBuilder.Entity("Entities.Models.User", b =>
                 {
                     b.Property<string>("Id")
@@ -216,15 +231,15 @@ namespace Entities.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "263c1ed0-a708-4956-bdf3-db7cc6f61435",
-                            ConcurrencyStamp = "29f8ed2c-b5fb-4478-bfac-b983c7d2e498",
+                            Id = "a9e0a094-3e38-47a6-ab7d-0f66a267ec92",
+                            ConcurrencyStamp = "852bb59b-8828-497c-96b5-ed5e027cc65e",
                             Name = "Manager",
                             NormalizedName = "MANAGER"
                         },
                         new
                         {
-                            Id = "6358cf55-c2f0-4e9b-8223-641161ec0d90",
-                            ConcurrencyStamp = "a2baeaa7-8c1b-4918-a839-b5831390a600",
+                            Id = "d39138dd-dc2c-4fbb-a9d4-9382d844ae48",
+                            ConcurrencyStamp = "3f4132ed-cf49-4fd0-9482-3b85dae6f294",
                             Name = "Administrator",
                             NormalizedName = "ADMINISTRATOR"
                         });
