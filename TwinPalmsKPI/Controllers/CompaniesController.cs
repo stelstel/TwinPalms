@@ -94,7 +94,8 @@ namespace TwinPalmsKPI.Controllers
             _repository.Company.UpdateCompany(companyEntity);
             _mapper.Map(company, companyEntity);
             await _repository.SaveAsync();
-            return NoContent();
+            var companyToReturn = _mapper.Map<CompanyDto>(companyEntity);
+            return CreatedAtRoute("CompanyById", new { id = companyToReturn.Id }, companyToReturn);
         }
     }
 }
