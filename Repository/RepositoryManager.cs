@@ -12,6 +12,8 @@ namespace Repository
         private IEmployeeRepository _employeeRepository;
         private IOutletRepository _outletRepository;
         private IHotelRepository _hotelRepository;
+        private ICruiseShipRepository _cruiseShipRepository;
+        private ICruiseCompanyRepository _cruiseCompanyRepository;
 
         public RepositoryManager(RepositoryContext repositoryContext)
         {
@@ -26,6 +28,27 @@ namespace Repository
                     _companyRepository = new CompanyRepository(_repositoryContext);
 
                 return _companyRepository;
+            }
+        }
+
+        public ICruiseCompanyRepository CruiseCompany
+        {
+            get
+            {
+                if (_cruiseCompanyRepository == null)
+                    _cruiseCompanyRepository = new CruiseCompanyRepository(_repositoryContext);
+
+                return _cruiseCompanyRepository;
+            }
+        }
+        public ICruiseShipRepository CruiseShip
+        {
+            get
+            {
+                if (_cruiseShipRepository == null)
+                    _cruiseShipRepository = new CruiseShipRepository(_repositoryContext);
+
+                return _cruiseShipRepository;
             }
         }
 

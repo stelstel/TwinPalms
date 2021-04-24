@@ -24,6 +24,8 @@ namespace Entities
             modelBuilder.ApplyConfiguration(new EmployeeConfiguration());
             modelBuilder.ApplyConfiguration(new RoleConfiguration());
             modelBuilder.ApplyConfiguration(new OutletConfiguration());
+            modelBuilder.ApplyConfiguration(new CruiseCompanyConfiguration());
+            modelBuilder.ApplyConfiguration(new CruiseShipConfiguration());
             modelBuilder.ApplyConfiguration(new HotelConfiguration());
 
             modelBuilder.ApplyConfiguration(new GuestSourceOfBusinessConfiguration());

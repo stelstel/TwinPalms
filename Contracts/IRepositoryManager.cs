@@ -11,6 +11,8 @@ namespace Contracts
         IEmployeeRepository Employee { get; }
         IOutletRepository Outlet { get; }
         IHotelRepository Hotel { get; }
+        ICruiseCompanyRepository CruiseCompany { get; }
+        ICruiseShipRepository CruiseShip { get; }
 
         Task SaveAsync();
     }

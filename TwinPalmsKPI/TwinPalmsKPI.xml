@@ -29,6 +29,56 @@
             Updates a company by ID
             </summary>
         </member>
+        <member name="M:TwinPalmsKPI.Controllers.CruiseCompaniesController.GetCruiseCompanies">
+            <summary>
+            Gets a list of all companies
+            </summary>
+        </member>
+        <member name="M:TwinPalmsKPI.Controllers.CruiseCompaniesController.GetCruiseCompany(System.Int32,System.Int32)">
+            <summary>
+            Gets a single cruiseCompany by ID
+            </summary>
+        </member>
+        <member name="M:TwinPalmsKPI.Controllers.CruiseCompaniesController.CreateCruiseCompany(Entities.DataTransferObjects.CruiseCompanyForCreationDto)">
+            <summary>
+            Creates a new cruiseCompany
+            </summary>
+        </member>
+        <member name="M:TwinPalmsKPI.Controllers.CruiseCompaniesController.DeleteCruiseCompany(System.Int32)">
+            <summary>
+            Deletes a cruiseCompany by ID
+            </summary>
+        </member>
+        <member name="M:TwinPalmsKPI.Controllers.CruiseCompaniesController.UpdateCruiseCompany(System.Int32,Entities.DataTransferObjects.CruiseCompanyForUpdateDto)">
+            <summary>
+            Updates a cruiseCompany by ID
+            </summary>
+        </member>
+        <member name="M:TwinPalmsKPI.Controllers.CruiseShipsController.GetCruiseShips">
+            <summary>
+            Gets a list of all companies
+            </summary>
+        </member>
+        <member name="M:TwinPalmsKPI.Controllers.CruiseShipsController.GetCruiseShip(System.Int32,System.Int32)">
+            <summary>
+            Gets a single cruiseShip by ID
+            </summary>
+        </member>
+        <member name="M:TwinPalmsKPI.Controllers.CruiseShipsController.CreateCruiseShip(Entities.DataTransferObjects.CruiseShipForCreationDto)">
+            <summary>
+            Creates a new cruiseShip
+            </summary>
+        </member>
+        <member name="M:TwinPalmsKPI.Controllers.CruiseShipsController.DeleteCruiseShip(System.Int32)">
+            <summary>
+            Deletes a cruiseShip by ID
+            </summary>
+        </member>
+        <member name="M:TwinPalmsKPI.Controllers.CruiseShipsController.UpdateCruiseShip(System.Int32,Entities.DataTransferObjects.CruiseShipForUpdateDto)">
+            <summary>
+            Updates a cruiseShip by ID
+            </summary>
+        </member>
         <member name="M:TwinPalmsKPI.Controllers.EmployeesController.GetEmployeesForCompany(System.Int32)">
             <summary>
             Gets all employees for selected company
@@ -64,7 +114,7 @@
             Gets a single Hotel by ID
             </summary>
         </member>
-        <member name="M:TwinPalmsKPI.Controllers.HotelsController.CreateHotel(Entities.DataTransferObjects.HotelForCreationDto)">
+        <member name="M:TwinPalmsKPI.Controllers.HotelsController.CreateHotel(Entities.DataTransferObjects.CruiseCompanyForCreationDto)">
             <summary>
             Creates a new Hotel
             </summary>
@@ -74,7 +124,7 @@
             Deletes a Hotel by ID
             </summary>
         </member>
-        <member name="M:TwinPalmsKPI.Controllers.HotelsController.UpdateHotel(System.Int32,Entities.DataTransferObjects.HotelForUpdateDto)">
+        <member name="M:TwinPalmsKPI.Controllers.HotelsController.UpdateHotel(System.Int32,Entities.DataTransferObjects.CruiseCompanyForUpdateDto)">
             <summary>
             Updates a Hotel by ID
             </summary>
