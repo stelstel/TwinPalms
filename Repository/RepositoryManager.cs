@@ -11,6 +11,7 @@ namespace Repository
         private ICompanyRepository _companyRepository;
         private IEmployeeRepository _employeeRepository;
         private IOutletRepository _outletRepository;
+        private IHotelRepository _hotelRepository;
 
         public RepositoryManager(RepositoryContext repositoryContext)
         {
@@ -36,6 +37,16 @@ namespace Repository
                     _outletRepository = new OutletRepository(_repositoryContext);
 
                 return _outletRepository;
+            }
+        }
+        public IHotelRepository Hotel
+        {
+            get
+            {
+                if (_hotelRepository == null)
+                    _hotelRepository = new HotelRepository(_repositoryContext);
+
+                return _hotelRepository;
             }
         }
 
