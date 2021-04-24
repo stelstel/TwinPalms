@@ -46,6 +46,7 @@ namespace TwinPalmsKPI
             services.AddScoped<ValidationFilterAttribute>(); 
             services.AddScoped<ValidateCompanyExistsAttribute>();
             services.AddScoped<ValidateOutletExistsAttribute>();
+            services.AddScoped<ValidateHotelExistsAttribute>();
             services.AddScoped<ValidateEmployeeForCompanyAttribute>();
             services.AddScoped<IAuthenticationManager, AuthenticationManager>(); // TODO: Is this correct?
 

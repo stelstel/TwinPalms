@@ -29,6 +29,7 @@ namespace Entities
             modelBuilder.ApplyConfiguration(new GuestSourceOfBusinessConfiguration());
             modelBuilder.ApplyConfiguration(new FbReportGuestSourceOfBusinessConfiguration());
             modelBuilder.ApplyConfiguration(new HotelUserConfiguration());
+            modelBuilder.ApplyConfiguration(new OutletUserConfiguration());
             modelBuilder.ApplyConfiguration(new WeatherFbReportConfiguration());
             modelBuilder.ApplyConfiguration(new WeatherOtherReportConfiguration());
             modelBuilder.ApplyConfiguration(new WeatherRoomsReportConfiguration());
