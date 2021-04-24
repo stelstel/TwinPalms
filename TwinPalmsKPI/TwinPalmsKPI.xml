@@ -54,6 +54,31 @@
             Updates employee by ID
             </summary>
         </member>
+        <member name="M:TwinPalmsKPI.Controllers.HotelsController.GetHotels">
+            <summary>
+            Gets a list of all Hotels
+            </summary>
+        </member>
+        <member name="M:TwinPalmsKPI.Controllers.HotelsController.GetHotel(System.Int32,System.Int32)">
+            <summary>
+            Gets a single Hotel by ID
+            </summary>
+        </member>
+        <member name="M:TwinPalmsKPI.Controllers.HotelsController.CreateHotel(Entities.DataTransferObjects.HotelForCreationDto)">
+            <summary>
+            Creates a new Hotel
+            </summary>
+        </member>
+        <member name="M:TwinPalmsKPI.Controllers.HotelsController.DeleteHotel(System.Int32)">
+            <summary>
+            Deletes a Hotel by ID
+            </summary>
+        </member>
+        <member name="M:TwinPalmsKPI.Controllers.HotelsController.UpdateHotel(System.Int32,Entities.DataTransferObjects.HotelForUpdateDto)">
+            <summary>
+            Updates a Hotel by ID
+            </summary>
+        </member>
         <member name="M:TwinPalmsKPI.Controllers.OutletsController.GetOutlets">
             <summary>
             Gets a list of all Outlets
