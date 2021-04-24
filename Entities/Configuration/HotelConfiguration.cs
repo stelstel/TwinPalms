@@ -6,19 +6,19 @@ using System;
 
 namespace Entities.Configuration
 {
-    public class HotelConfiguration : IEntityTypeConfiguration<Outlet>
+    public class HotelConfiguration : IEntityTypeConfiguration<Hotel>
     {
-        public void Configure(EntityTypeBuilder<Outlet> builder)
+        public void Configure(EntityTypeBuilder<Hotel> builder)
         {
             builder.HasData
             (
-                new Outlet
+                new Hotel
                 {
                     Id = 1,
                     Name = "Catch Beach Club"//,
                     //CompanyId = 1
                 },
-                new Outlet
+                new Hotel
                 {
                     Id = 2,
                     Name = "Catch Junior"//,

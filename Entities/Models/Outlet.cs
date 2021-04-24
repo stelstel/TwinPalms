@@ -22,7 +22,7 @@ namespace Entities.Models
         public virtual Company Company { get; set; }
 
         // TODO
-        //public virtual ICollection<FbReport> FbReports { get; set; }
-        //public virtual ICollection<OutletUser> OutletUsers { get; set; }
+        public virtual ICollection<FbReport> FbReports { get; set; }
+        public virtual ICollection<OutletUser> OutletUsers { get; set; }
     }
 }

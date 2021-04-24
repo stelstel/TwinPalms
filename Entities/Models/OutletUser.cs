@@ -7,7 +7,7 @@ namespace Entities.Models
 {
     public partial class OutletUser
     {
-        public int UserId { get; set; }
+        public string UserId { get; set; }
         public int OutletId { get; set; }
 
         public virtual Outlet Outlet { get; set; }
