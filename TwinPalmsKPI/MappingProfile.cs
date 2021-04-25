@@ -27,6 +27,24 @@ namespace TwinPalmsKPI
             CreateMap<OutletForCreationDto, Outlet>();
 
             CreateMap<OutletForUpdateDto, Outlet>();
+            
+            CreateMap<CruiseCompany, CruiseCompanyDto>();
+
+            CreateMap<CruiseCompanyForCreationDto, CruiseCompany>();
+
+            CreateMap<CruiseCompanyForUpdateDto, CruiseCompany>();
+            
+            CreateMap<CruiseShip,CruiseShipDto>();
+
+            CreateMap<CruiseShipForCreationDto, CruiseShip>();
+
+            CreateMap< CruiseShipForUpdateDto, CruiseShip>();
+            
+            CreateMap<FbReport, FbReportDto>();
+
+            CreateMap<FbReportForCreationDto, FbReport>();
+
+            CreateMap<FbReportForUpdateDto, FbReport>();
 
         }
     }

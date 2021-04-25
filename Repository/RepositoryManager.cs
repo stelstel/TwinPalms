@@ -14,6 +14,7 @@ namespace Repository
         private IHotelRepository _hotelRepository;
         private ICruiseShipRepository _cruiseShipRepository;
         private ICruiseCompanyRepository _cruiseCompanyRepository;
+        private IFbReportRepository _fbReportRepository;
 
         public RepositoryManager(RepositoryContext repositoryContext)
         {
@@ -81,6 +82,16 @@ namespace Repository
                     _employeeRepository = new EmployeeRepository(_repositoryContext);
 
                 return _employeeRepository;
+            }
+        }
+        public IFbReportRepository FbReport
+        {
+            get
+            {
+                if (_fbReportRepository == null)
+                    _fbReportRepository = new FbReportRepository(_repositoryContext);
+
+                return _fbReportRepository;
             }
         }
 

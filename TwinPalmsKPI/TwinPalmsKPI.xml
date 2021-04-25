@@ -104,6 +104,31 @@
             Updates employee by ID
             </summary>
         </member>
+        <member name="M:TwinPalmsKPI.Controllers.FbReportsController.GetFbReports">
+            <summary>
+            Gets a list of all fbReports
+            </summary>
+        </member>
+        <member name="M:TwinPalmsKPI.Controllers.FbReportsController.GetFbReport(System.Int32,System.Int32)">
+            <summary>
+            Gets a single fbReport by ID
+            </summary>
+        </member>
+        <member name="M:TwinPalmsKPI.Controllers.FbReportsController.CreateFbReport(Entities.DataTransferObjects.FbReportForCreationDto)">
+            <summary>
+            Creates a new fbReport
+            </summary>
+        </member>
+        <member name="M:TwinPalmsKPI.Controllers.FbReportsController.DeleteFbReport(System.Int32)">
+            <summary>
+            Deletes a fbReport by ID
+            </summary>
+        </member>
+        <member name="M:TwinPalmsKPI.Controllers.FbReportsController.UpdateFbReport(System.Int32,Entities.DataTransferObjects.FbReportForUpdateDto)">
+            <summary>
+            Updates a fbReport by ID
+            </summary>
+        </member>
         <member name="M:TwinPalmsKPI.Controllers.HotelsController.GetHotels">
             <summary>
             Gets a list of all Hotels

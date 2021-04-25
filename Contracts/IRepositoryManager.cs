@@ -13,6 +13,7 @@ namespace Contracts
         IHotelRepository Hotel { get; }
         ICruiseCompanyRepository CruiseCompany { get; }
         ICruiseShipRepository CruiseShip { get; }
+        IFbReportRepository FbReport { get; }
 
         Task SaveAsync();
     }
