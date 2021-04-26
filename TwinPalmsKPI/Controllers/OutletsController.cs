@@ -35,6 +35,7 @@ namespace TwinPalmsKPI.Controllers
         public async Task<IActionResult> GetOutlets()
         {
             var outlets = await _repository.Outlet.GetAllOutletsAsync(trackChanges: false);
+            outlets = outlets.OrderBy(o => o.Id); // Order by Outlet ID
             var outletsDto = _mapper.Map<IEnumerable<OutletDto>>(outlets);
             return Ok(outletsDto);
         }
@@ -43,7 +44,7 @@ namespace TwinPalmsKPI.Controllers
         /// Gets a single Outlet by ID
         /// </summary>
         [HttpGet("{id}", Name = "OutletById")]
-        public async Task<IActionResult> GetOutlet(/*int outletId,*/ int id)
+        public async Task<IActionResult> GetOutlet(int id)
         {
             var outlet = await _repository.Outlet.GetOutletAsync(id, trackChanges: false);
             if (outlet == null)
