@@ -139,7 +139,7 @@
             Gets a single Hotel by ID
             </summary>
         </member>
-        <member name="M:TwinPalmsKPI.Controllers.HotelsController.CreateHotel(Entities.DataTransferObjects.CruiseCompanyForCreationDto)">
+        <member name="M:TwinPalmsKPI.Controllers.HotelsController.CreateHotel(Entities.DataTransferObjects.HotelForCreationDto)">
             <summary>
             Creates a new Hotel
             </summary>
@@ -149,7 +149,7 @@
             Deletes a Hotel by ID
             </summary>
         </member>
-        <member name="M:TwinPalmsKPI.Controllers.HotelsController.UpdateHotel(System.Int32,Entities.DataTransferObjects.CruiseCompanyForUpdateDto)">
+        <member name="M:TwinPalmsKPI.Controllers.HotelsController.UpdateHotel(System.Int32,Entities.DataTransferObjects.HotelForUpdateDto)">
             <summary>
             Updates a Hotel by ID
             </summary>

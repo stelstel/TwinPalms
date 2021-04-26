@@ -21,7 +21,6 @@ namespace Entities.Models
         // Navigation properties
         public virtual Company Company { get; set; }
 
-        // TODO
         public virtual ICollection<FbReport> FbReports { get; set; }
         public virtual ICollection<OutletUser> OutletUsers { get; set; }
     }

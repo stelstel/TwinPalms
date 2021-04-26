@@ -14,22 +14,22 @@ namespace Entities.Configuration
             (
                 new Company
                 {
-                    Id = 1,
+                    Id = -1,
                     Name = "TPS"
                 },
                 new Company
                 {
-                    Id = 2,
+                    Id = -2,
                     Name = "TPMS"
                 },
                 new Company
                 {
-                    Id = 3,
+                    Id = -3,
                     Name = "TPMA"
                 },
                 new Company
                 {
-                    Id = 4,
+                    Id = -4,
                     Name = "PPT"
                 }
             );

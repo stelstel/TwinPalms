@@ -14,15 +14,15 @@ namespace Entities.Configuration
             (
                 new Hotel
                 {
-                    Id = 1,
-                    Name = "Catch Beach Club"//,
-                    //CompanyId = 1
+                    Id = -1,
+                    Name = "Catch Beach Club",
+                    CompanyId = -1
                 },
                 new Hotel
                 {
-                    Id = 2,
-                    Name = "Catch Junior"//,
-                    //CompanyId = 1,
+                    Id = -2,
+                    Name = "Catch Junior",
+                    CompanyId = -2,
                 }
             );
         }

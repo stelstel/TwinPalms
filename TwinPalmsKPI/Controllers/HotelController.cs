@@ -35,7 +35,7 @@ namespace TwinPalmsKPI.Controllers
         public async Task<IActionResult> GetHotels()
         {
             var hotels = await _repository.Hotel.GetAllHotelsAsync(trackChanges: false);
-            var hotelsDto = _mapper.Map<IEnumerable<CruiseCompanyDto>>(hotels);
+            var hotelsDto = _mapper.Map<IEnumerable<HotelDto>>(hotels);
             return Ok(hotelsDto);
         }
 
@@ -51,7 +51,7 @@ namespace TwinPalmsKPI.Controllers
                 _logger.LogInfo($"Hotels with id {id} doesn't exist in the database.");
                 return NotFound();
             }
-            var hotelDto = _mapper.Map<CruiseCompanyDto>(hotel);
+            var hotelDto = _mapper.Map<HotelDto>(hotel);
             return Ok(hotelDto);
         }
 
@@ -60,12 +60,12 @@ namespace TwinPalmsKPI.Controllers
         /// </summary>
         [HttpPost]
         [ServiceFilter(typeof(ValidationFilterAttribute))]
-        public async Task<IActionResult> CreateHotel([FromBody] CruiseCompanyForCreationDto hotel)
+        public async Task<IActionResult> CreateHotel([FromBody] HotelForCreationDto hotel)
         {
             var hotelEntity = _mapper.Map<Hotel>(hotel);
             _repository.Hotel.CreateHotel(hotelEntity);
             await _repository.SaveAsync();
-            var hotelToReturn = _mapper.Map<CruiseCompanyDto>(hotelEntity);
+            var hotelToReturn = _mapper.Map<HotelDto>(hotelEntity);
             return CreatedAtRoute("HotelById", new { id = hotelToReturn.Id }, hotelToReturn);
         }
 
@@ -88,13 +88,13 @@ namespace TwinPalmsKPI.Controllers
         [HttpPut("{id}")]
         [ServiceFilter(typeof(ValidationFilterAttribute))]
         [ServiceFilter(typeof(ValidateHotelExistsAttribute))]
-        public async Task<IActionResult> UpdateHotel(int id, [FromBody] CruiseCompanyForUpdateDto hotel)
+        public async Task<IActionResult> UpdateHotel(int id, [FromBody] HotelForUpdateDto hotel)
         {
             var hotelEntity = HttpContext.Items["hotel"] as Hotel;
             _repository.Hotel.UpdateHotel(hotelEntity);
             _mapper.Map(hotel, hotelEntity);
             await _repository.SaveAsync();
-            var hotelToReturn = _mapper.Map<CruiseCompanyDto>(hotelEntity);
+            var hotelToReturn = _mapper.Map<HotelDto>(hotelEntity);
             return CreatedAtRoute("HotelById", new { id = hotelToReturn.Id }, hotelToReturn);
         }
     }
