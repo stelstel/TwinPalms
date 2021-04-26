@@ -28,6 +28,8 @@ namespace Entities
             modelBuilder.ApplyConfiguration(new CruiseCompanyConfiguration());
             modelBuilder.ApplyConfiguration(new CruiseShipConfiguration());
             modelBuilder.ApplyConfiguration(new HotelConfiguration());
+            modelBuilder.ApplyConfiguration(new LocalEventConfiguration());
+
 
             //modelBuilder.ApplyConfiguration(new EmployeeConfiguration());
 

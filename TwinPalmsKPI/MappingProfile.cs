@@ -59,6 +59,12 @@ namespace TwinPalmsKPI
 
             CreateMap<FbReportForUpdateDto, FbReport>();
 
+
+            CreateMap<LocalEvent, LocalEventDto>();
+
+            CreateMap<LocalEventForCreationDto, LocalEvent>();
+
+            CreateMap<LocalEventForUpdateDto, LocalEvent>();
         }
     }
 }

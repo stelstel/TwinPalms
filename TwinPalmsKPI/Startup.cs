@@ -50,6 +50,7 @@ namespace TwinPalmsKPI
             services.AddScoped<ValidateCruiseShipExistsAttribute>();
             services.AddScoped<ValidateHotelExistsAttribute>();
             services.AddScoped<ValidateFbReportExistsAttribute>();
+            services.AddScoped<ValidateLocalEventExistsAttribute>();
             services.AddScoped<ValidateEmployeeForCompanyAttribute>();
             services.AddScoped<IAuthenticationManager, AuthenticationManager>(); // TODO: Is this correct?
 

@@ -154,6 +154,31 @@
             Updates a Hotel by ID
             </summary>
         </member>
+        <member name="M:TwinPalmsKPI.Controllers.LocalEventController.GetLocalEvents">
+            <summary>
+            Gets a list of all LocalEvents
+            </summary>
+        </member>
+        <member name="M:TwinPalmsKPI.Controllers.LocalEventController.GetLocalEvent(System.Int32)">
+            <summary>
+            Gets a single LocalEvent by ID
+            </summary>
+        </member>
+        <member name="M:TwinPalmsKPI.Controllers.LocalEventController.CreateLocalEvent(Entities.DataTransferObjects.LocalEventForCreationDto)">
+            <summary>
+            Creates a new LocalEvent
+            </summary>
+        </member>
+        <member name="M:TwinPalmsKPI.Controllers.LocalEventController.DeleteLocalEvent(System.Int32)">
+            <summary>
+            Deletes a LocalEvent by ID
+            </summary>
+        </member>
+        <member name="M:TwinPalmsKPI.Controllers.LocalEventController.UpdateLocalEvent(System.Int32,Entities.DataTransferObjects.LocalEventForUpdateDto)">
+            <summary>
+            Updates a LocalEvent by ID
+            </summary>
+        </member>
         <member name="M:TwinPalmsKPI.Controllers.OutletsController.GetOutlets">
             <summary>
             Gets a list of all Outlets
