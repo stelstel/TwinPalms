@@ -28,7 +28,12 @@ namespace Repository
         {
             Delete(employee);
         }
-                
+
+        public void UpdateEmployee(Employee employee)
+        {
+            Update(employee);
+        }
+
         public async Task<Employee> GetEmployeeAsync(int companyId, int id, bool trackChanges) =>
            await FindByCondition(e => e.CompanyId.Equals(companyId) && e.Id.Equals(id), trackChanges)
             .SingleOrDefaultAsync();
