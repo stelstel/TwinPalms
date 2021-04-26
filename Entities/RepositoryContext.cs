@@ -22,7 +22,8 @@ namespace Entities
 
             modelBuilder.ApplyConfiguration(new RoleConfiguration());
 
-            // TODO modelBuilder.ApplyConfiguration(new CompanyConfiguration());
+            // TODO
+            modelBuilder.ApplyConfiguration(new CompanyConfiguration());
             //modelBuilder.ApplyConfiguration(new EmployeeConfiguration());
             //modelBuilder.ApplyConfiguration(new OutletConfiguration());
             //modelBuilder.ApplyConfiguration(new CruiseCompanyConfiguration());
