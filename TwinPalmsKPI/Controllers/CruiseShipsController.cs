@@ -43,7 +43,7 @@ namespace TwinPalmsKPI.Controllers
         /// Gets a single cruiseShip by ID
         /// </summary>
         [HttpGet("{id}", Name = "CruiseShipById")]
-        public async Task<IActionResult> GetCruiseShip(int cruiseShipId, int id)
+        public async Task<IActionResult> GetCruiseShip(/*int cruiseShipId,*/ int id)
         {
             var cruiseShip = await _repository.CruiseShip.GetCruiseShipAsync(id, trackChanges: false);
             if (cruiseShip == null)

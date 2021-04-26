@@ -15,13 +15,13 @@ namespace Entities.Configuration
                 new CruiseShip
                 {
                     Id = 1,
-                    Name = "TPS",
+                    Name = "Olympia",
                     CruiseCompanyId = 1
                 },
                 new CruiseShip
                 {
                     Id = 2,
-                    Name = "TPMS",
+                    Name = "Chartered",
                     CruiseCompanyId = 1
                 }
             );

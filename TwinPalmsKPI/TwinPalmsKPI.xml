@@ -9,7 +9,7 @@
             Gets a list of all companies
             </summary>
         </member>
-        <member name="M:TwinPalmsKPI.Controllers.CompaniesController.GetCompany(System.Int32,System.Int32)">
+        <member name="M:TwinPalmsKPI.Controllers.CompaniesController.GetCompany(System.Int32)">
             <summary>
             Gets a single company by ID
             </summary>
@@ -34,7 +34,7 @@
             Gets a list of all companies
             </summary>
         </member>
-        <member name="M:TwinPalmsKPI.Controllers.CruiseCompaniesController.GetCruiseCompany(System.Int32,System.Int32)">
+        <member name="M:TwinPalmsKPI.Controllers.CruiseCompaniesController.GetCruiseCompany(System.Int32)">
             <summary>
             Gets a single cruiseCompany by ID
             </summary>
@@ -59,7 +59,7 @@
             Gets a list of all companies
             </summary>
         </member>
-        <member name="M:TwinPalmsKPI.Controllers.CruiseShipsController.GetCruiseShip(System.Int32,System.Int32)">
+        <member name="M:TwinPalmsKPI.Controllers.CruiseShipsController.GetCruiseShip(System.Int32)">
             <summary>
             Gets a single cruiseShip by ID
             </summary>
@@ -109,7 +109,7 @@
             Gets a list of all fbReports
             </summary>
         </member>
-        <member name="M:TwinPalmsKPI.Controllers.FbReportsController.GetFbReport(System.Int32,System.Int32)">
+        <member name="M:TwinPalmsKPI.Controllers.FbReportsController.GetFbReport(System.Int32)">
             <summary>
             Gets a single fbReport by ID
             </summary>
@@ -134,7 +134,7 @@
             Gets a list of all Hotels
             </summary>
         </member>
-        <member name="M:TwinPalmsKPI.Controllers.HotelsController.GetHotel(System.Int32,System.Int32)">
+        <member name="M:TwinPalmsKPI.Controllers.HotelsController.GetHotel(System.Int32)">
             <summary>
             Gets a single Hotel by ID
             </summary>
@@ -159,7 +159,7 @@
             Gets a list of all Outlets
             </summary>
         </member>
-        <member name="M:TwinPalmsKPI.Controllers.OutletsController.GetOutlet(System.Int32,System.Int32)">
+        <member name="M:TwinPalmsKPI.Controllers.OutletsController.GetOutlet(System.Int32)">
             <summary>
             Gets a single Outlet by ID
             </summary>

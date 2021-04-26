@@ -43,7 +43,7 @@ namespace TwinPalmsKPI.Controllers
         /// Gets a single Outlet by ID
         /// </summary>
         [HttpGet("{id}", Name = "OutletById")]
-        public async Task<IActionResult> GetOutlet(int outletId, int id)
+        public async Task<IActionResult> GetOutlet(/*int outletId,*/ int id)
         {
             var outlet = await _repository.Outlet.GetOutletAsync(id, trackChanges: false);
             if (outlet == null)
