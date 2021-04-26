@@ -16,13 +16,13 @@ namespace Entities.Configuration
                 {
                     Id = 1,
                     Name = "TPS",
-                    CompanyId = 1
+                    CompanyId = 2
                 },
                 new CruiseCompany
                 {
                     Id = 2,
                     Name = "TPMS",
-                    CompanyId = 2 
+                    CompanyId = 1 
                 }
             );
         }
