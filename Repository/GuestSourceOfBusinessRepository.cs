@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace Repository
 {
-    class GuestSourceOfBusinessRepository : RepositoryBase<GuestSourceOfBusiness>, IGuestSourceOfBusinessRepository
+    public class GuestSourceOfBusinessRepository : RepositoryBase<GuestSourceOfBusiness>, IGuestSourceOfBusinessRepository
     {
         public GuestSourceOfBusinessRepository(RepositoryContext repositoryContext) : base(repositoryContext)
         {
