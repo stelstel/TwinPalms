@@ -14,11 +14,9 @@ namespace Contracts
         ICruiseCompanyRepository CruiseCompany { get; }
         ICruiseShipRepository CruiseShip { get; }
         IFbReportRepository FbReport { get; }
-        IGuestSourceOfBusinessRepository GuestSourceOfBusinessRepository { get; }
-        IHotelRepository Hotel { get; }
+        IGuestSourceOfBusinessRepository GuestSourceOfBusinessRepository { get; }       
         ILocalEventRepository LocalEvent { get; }
-        IOtherReportRepository OtherReport { get;}
-        IOutletRepository Outlet { get; }
+        IOtherReportRepository OtherReport { get;}       
         IRoomsReportRepository RoomsReportRepository { get; }
         IRoomTypeRepository RoomTypeRepository { get; }
         IWeatherRepository WeatherRepository { get; }
