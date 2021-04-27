@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Entities.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -17,12 +18,9 @@ namespace Entities.DataTransferObjects
 
         public int Id { get; set; }
         public string Name { get; set; }
+        public int CruiseCompanyId { get; set; }
 
-        // TODO
-        //public int CompanyId { get; set; }
-
-        //public virtual Company Company { get; set; }
-        //public virtual ICollection<FbReport> FbReports { get; set; }
-        //public virtual ICollection<OutletUser> OutletUsers { get; set; }
+        public virtual CruiseCompany CruiseCompany { get; set; }
+        public virtual ICollection<OtherReport> OtherReports { get; set; }
     }
 }

@@ -43,7 +43,7 @@ namespace TwinPalmsKPI.Controllers
         /// Gets a single Hotel by ID
         /// </summary>
         [HttpGet("{id}", Name = "HotelById")]
-        public async Task<IActionResult> GetHotel(int hotelId, int id)
+        public async Task<IActionResult> GetHotel(/*int hotelId,*/ int id)
         {
             var hotel = await _repository.Hotel.GetHotelAsync(id, trackChanges: false);
             if (hotel == null)

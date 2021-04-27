@@ -43,7 +43,7 @@ namespace TwinPalmsKPI.Controllers
         /// Gets a single fbReport by ID
         /// </summary>
         [HttpGet("{id}", Name = "FbReportById")]
-        public async Task<IActionResult> GetFbReport(int fbReportId, int id)
+        public async Task<IActionResult> GetFbReport(/*int fbReportId,*/ int id)
         {
             var fbReport = await _repository.FbReport.GetFbReportAsync(id, trackChanges: false);
             if (fbReport == null)

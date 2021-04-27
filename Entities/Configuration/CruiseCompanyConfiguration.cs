@@ -15,14 +15,8 @@ namespace Entities.Configuration
                 new CruiseCompany
                 {
                     Id = 1,
-                    Name = "TPS",
-                    CompanyId = 1
-                },
-                new CruiseCompany
-                {
-                    Id = 2,
-                    Name = "TPMS",
-                    CompanyId = 2 
+                    Name = "Andaman Cruises",
+                    CompanyId = 2
                 }
             );
         }

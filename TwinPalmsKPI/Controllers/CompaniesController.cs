@@ -10,6 +10,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Security.Claims;
+
 namespace TwinPalmsKPI.Controllers
 {
     [Route("api/[controller]")]
@@ -43,7 +45,7 @@ namespace TwinPalmsKPI.Controllers
         /// Gets a single company by ID
         /// </summary>
         [HttpGet("{id}", Name = "CompanyById")]
-        public async Task<IActionResult> GetCompany(int companyId, int id)
+        public async Task<IActionResult> GetCompany(/*int companyId,*/ int id) // TODO Check if parameter has any use, otherwise delete
         {
             var company = await _repository.Company.GetCompanyAsync(id, trackChanges: false);
             if (company == null)
@@ -58,10 +60,11 @@ namespace TwinPalmsKPI.Controllers
         /// <summary>
         /// Creates a new company
         /// </summary>
-        [HttpPost]
+        [HttpPost, Authorize(Roles = "Administrator, Manager")]
         [ServiceFilter(typeof(ValidationFilterAttribute))]
         public async Task<IActionResult> CreateCompany([FromBody] CompanyForCreationDto company)
         {
+            _logger.LogInfo(User.FindFirst(ClaimTypes.NameIdentifier).Value);
             var companyEntity = _mapper.Map<Company>(company);
             _repository.Company.CreateCompany(companyEntity);
             await _repository.SaveAsync();
