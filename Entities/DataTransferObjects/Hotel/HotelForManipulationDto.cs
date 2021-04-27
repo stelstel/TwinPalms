@@ -11,7 +11,6 @@ namespace Entities.DataTransferObjects
         [Required(ErrorMessage = "Hotel name is a required field.")]
         [MaxLength(60, ErrorMessage = "Maximum length for the Name is 60 characters.")]
         public string Name { get; set; }
-
         public int CompanyId { get; set; }
     }
 }

@@ -6,31 +6,31 @@ using System;
 
 namespace Entities.Configuration
 {
-    public class CompanyConfiguration : IEntityTypeConfiguration<Company>
+    public class LocalEventConfiguration : IEntityTypeConfiguration<LocalEvent>
     {
-        public void Configure(EntityTypeBuilder<Company> builder)
+        public void Configure(EntityTypeBuilder<LocalEvent> builder)
         {
             builder.HasData
             (
-                new Company
+                new LocalEvent
                 {
                     Id = 1,
-                    Name = "TPS"
+                    Event = "Resident DJ"
                 },
-                new Company
+                new LocalEvent
                 {
                     Id = 2,
-                    Name = "TPMS"
+                    Event = "Guest DJ"
                 },
-                new Company
+                new LocalEvent
                 {
                     Id = 3,
-                    Name = "TPMA"
+                    Event = "International DJ"
                 },
-                new Company
+                new LocalEvent
                 {
                     Id = 4,
-                    Name = "PPT"
+                    Event = "Themed event"
                 }
             );
         }

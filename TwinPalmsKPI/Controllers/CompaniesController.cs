@@ -45,7 +45,7 @@ namespace TwinPalmsKPI.Controllers
         /// Gets a single company by ID
         /// </summary>
         [HttpGet("{id}", Name = "CompanyById")]
-        public async Task<IActionResult> GetCompany(int companyId, int id)
+        public async Task<IActionResult> GetCompany(/*int companyId,*/ int id) // TODO Check if parameter has any use, otherwise delete
         {
             var company = await _repository.Company.GetCompanyAsync(id, trackChanges: false);
             if (company == null)

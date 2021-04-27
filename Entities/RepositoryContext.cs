@@ -22,12 +22,16 @@ namespace Entities
 
             modelBuilder.ApplyConfiguration(new RoleConfiguration());
 
-            // TODO modelBuilder.ApplyConfiguration(new CompanyConfiguration());
+            // TODO
+            modelBuilder.ApplyConfiguration(new CompanyConfiguration());
+            modelBuilder.ApplyConfiguration(new OutletConfiguration());
+            modelBuilder.ApplyConfiguration(new CruiseCompanyConfiguration());
+            modelBuilder.ApplyConfiguration(new CruiseShipConfiguration());
+            modelBuilder.ApplyConfiguration(new HotelConfiguration());
+            modelBuilder.ApplyConfiguration(new LocalEventConfiguration());
+
+
             //modelBuilder.ApplyConfiguration(new EmployeeConfiguration());
-            //modelBuilder.ApplyConfiguration(new OutletConfiguration());
-            //modelBuilder.ApplyConfiguration(new CruiseCompanyConfiguration());
-            //modelBuilder.ApplyConfiguration(new CruiseShipConfiguration());
-            //modelBuilder.ApplyConfiguration(new HotelConfiguration());
 
             modelBuilder.ApplyConfiguration(new GuestSourceOfBusinessConfiguration());
             modelBuilder.ApplyConfiguration(new FbReportGuestSourceOfBusinessConfiguration());
@@ -36,15 +40,11 @@ namespace Entities
             modelBuilder.ApplyConfiguration(new WeatherFbReportConfiguration());
             modelBuilder.ApplyConfiguration(new WeatherOtherReportConfiguration());
             modelBuilder.ApplyConfiguration(new WeatherRoomsReportConfiguration());
-
-
         }
 
         public DbSet<Company> Companies { get; set; }
         public DbSet<Employee> Employees { get; set; }
         public virtual DbSet<GuestSourceOfBusiness> GuestSourceOfBusinesses { get; set; }
-
-        
         public virtual DbSet<CruiseCompany> CruiseCompanies { get; set; }
         public virtual DbSet<CruiseShip> CruiseShips { get; set; }
         public virtual DbSet<FbReport> FbReports { get; set; }
@@ -54,10 +54,8 @@ namespace Entities
         public virtual DbSet<OtherReport> OtherReports { get; set; }
         public virtual DbSet<Outlet> Outlets { get; set; }
         public virtual DbSet<OutletUser> OutletUsers { get; set; }
-       
         public virtual DbSet<RoomType> RoomTypes { get; set; }
         public virtual DbSet<RoomsReport> RoomsReports { get; set; }                
-       
         public virtual DbSet<Weather> Weathers { get; set; }
         public virtual DbSet<WeatherFbReport> WeatherFbReports { get; set; }
         public virtual DbSet<WeatherOtherReport> WeatherOtherReports { get; set; }

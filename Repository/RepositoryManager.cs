@@ -15,6 +15,7 @@ namespace Repository
         private ICruiseShipRepository _cruiseShipRepository;
         private ICruiseCompanyRepository _cruiseCompanyRepository;
         private IFbReportRepository _fbReportRepository;
+        private ILocalEventRepository _localEventRepository;
 
         public RepositoryManager(RepositoryContext repositoryContext)
         {
@@ -84,6 +85,7 @@ namespace Repository
                 return _employeeRepository;
             }
         }
+
         public IFbReportRepository FbReport
         {
             get
@@ -92,6 +94,17 @@ namespace Repository
                     _fbReportRepository = new FbReportRepository(_repositoryContext);
 
                 return _fbReportRepository;
+            }
+        }
+
+        public ILocalEventRepository LocalEvent
+        {
+            get
+            {
+                if (_localEventRepository == null)
+                    _localEventRepository = new LocalEventRepository(_repositoryContext);
+
+                return _localEventRepository;
             }
         }
 

@@ -10,7 +10,6 @@ namespace Contracts
     {
         Task<IEnumerable<Hotel>> GetAllHotelsAsync(bool trackChanges);
         Task<Hotel> GetHotelAsync(int id, bool trackChanges);
-
         void CreateHotel(Hotel hotel);
         void DeleteHotel(Hotel hotel);
         void UpdateHotel(Hotel hotel);
