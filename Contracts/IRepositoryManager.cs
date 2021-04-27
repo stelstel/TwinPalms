@@ -14,6 +14,8 @@ namespace Contracts
         IFbReportRepository FbReport { get; }
         IGuestSourceOfBusinessRepository GuestSourceOfBusinessRepository { get; }
         IHotelRepository Hotel { get; }
+        ILocalEventRepository LocalEvent { get; }
+        IOtherReportRepository OtherReport { get;}
         IOutletRepository Outlet { get; }
         IRoomsReportRepository RoomsReportRepository { get; }
         IWeatherRepository WeatherRepository { get; }
