@@ -16,6 +16,7 @@ namespace Repository
         private ICruiseCompanyRepository _cruiseCompanyRepository;
         private IFbReportRepository _fbReportRepository;
         private ILocalEventRepository _localEventRepository;
+        private IGuestSourceOfBusinessRepository _guestSourceOfBusinessRepository;
 
         public RepositoryManager(RepositoryContext repositoryContext)
         {
@@ -105,6 +106,17 @@ namespace Repository
                     _localEventRepository = new LocalEventRepository(_repositoryContext);
 
                 return _localEventRepository;
+            }
+        }
+
+        public IGuestSourceOfBusinessRepository GuestSourceOfBusiness
+        {
+            get
+            {
+                if (_guestSourceOfBusinessRepository == null)
+                    _guestSourceOfBusinessRepository = new GuestSourceOfBusinessRepository(_repositoryContext);
+
+                return _guestSourceOfBusinessRepository;
             }
         }
 

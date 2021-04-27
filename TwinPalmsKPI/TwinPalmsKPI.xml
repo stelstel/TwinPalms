@@ -129,6 +129,31 @@
             Updates a fbReport by ID
             </summary>
         </member>
+        <member name="M:TwinPalmsKPI.Controllers.GuestSourceOfBusinessController.GetGuestSourceOfBusinesses">
+            <summary>
+            Gets a list of all GuestSourceOfBusinesses
+            </summary>
+        </member>
+        <member name="M:TwinPalmsKPI.Controllers.GuestSourceOfBusinessController.GetGuestSourceOfBusiness(System.Int32)">
+            <summary>
+            Gets a single GuestSourceOfBusiness by ID
+            </summary>
+        </member>
+        <member name="M:TwinPalmsKPI.Controllers.GuestSourceOfBusinessController.CreateGuestSourceOfBusiness(Entities.DataTransferObjects.GuestSourceOfBusinessForCreationDto)">
+            <summary>
+            Creates a new GuestSourceOfBusiness
+            </summary>
+        </member>
+        <member name="M:TwinPalmsKPI.Controllers.GuestSourceOfBusinessController.DeleteGuestSourceOfBusiness(System.Int32)">
+            <summary>
+            Deletes a GuestSourceOfBusiness by ID
+            </summary>
+        </member>
+        <member name="M:TwinPalmsKPI.Controllers.GuestSourceOfBusinessController.UpdateGuestSourceOfBusiness(System.Int32,Entities.DataTransferObjects.GuestSourceOfBusinessForUpdateDto)">
+            <summary>
+            Updates a GuestSourceOfBusiness by ID
+            </summary>
+        </member>
         <member name="M:TwinPalmsKPI.Controllers.HotelsController.GetHotels">
             <summary>
             Gets a list of all Hotels

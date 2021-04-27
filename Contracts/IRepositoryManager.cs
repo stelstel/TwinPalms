@@ -15,6 +15,7 @@ namespace Contracts
         ICruiseShipRepository CruiseShip { get; }
         IFbReportRepository FbReport { get; }
         ILocalEventRepository LocalEvent { get; }
+        IGuestSourceOfBusinessRepository GuestSourceOfBusiness { get; }
 
         Task SaveAsync();
     }
