@@ -34,9 +34,10 @@ namespace TwinPalmsKPI.Controllers
         [HttpGet(Name = "GetCruiseShips")/*, Authorize(Roles = "Administrator, Manager")*/] 
         public async Task<IActionResult> GetCruiseShips()
         {
-            var companies = await _repository.CruiseShip.GetAllCruiseShipsAsync(trackChanges: false);
-            var companiesDto = _mapper.Map<IEnumerable<CruiseShipDto>>(companies);
-            return Ok(companiesDto);
+            var cruiseShips = await _repository.CruiseShip.GetAllCruiseShipsAsync(trackChanges: false);
+            cruiseShips = cruiseShips.OrderBy(cs => cs.Id); // Order by CruiseShip ID
+            var cruiseShipsDto = _mapper.Map<IEnumerable<CruiseShipDto>>(cruiseShips);
+            return Ok(cruiseShipsDto);
         }
 
         /// <summary>

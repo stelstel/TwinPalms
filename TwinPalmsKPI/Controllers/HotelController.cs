@@ -35,6 +35,7 @@ namespace TwinPalmsKPI.Controllers
         public async Task<IActionResult> GetHotels()
         {
             var hotels = await _repository.Hotel.GetAllHotelsAsync(trackChanges: false);
+            hotels = hotels.OrderBy(h => h.Id); // Order by Hotel ID
             var hotelsDto = _mapper.Map<IEnumerable<HotelDto>>(hotels);
             return Ok(hotelsDto);
         }
