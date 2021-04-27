@@ -17,6 +17,7 @@ namespace Entities.DataTransferObjects
         public bool IsPublicHoliday { get; set; }
         public string Notes { get; set; }
         public DateTime Date { get; set; }
+
         public int OutletId { get; set; }
         public int UserId { get; set; }
         public int? LocalEventId { get; set; }

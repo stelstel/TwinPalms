@@ -8,10 +8,10 @@ namespace Entities.Models
 {
     public partial class OtherReport
     {
-        public OtherReport()
-        {
-            WeatherOtherReports = new HashSet<WeatherOtherReport>();
-        }
+        //public OtherReport()
+        //{
+        //    OtherReports = new HashSet<OtherReport>();
+        //}
 
         public int Id { get; set; }
         public int? Trips { get; set; }
@@ -27,6 +27,7 @@ namespace Entities.Models
         [Required]
         public int CruiseShipId { get; set; }
 
+        // Navigation properties
         public virtual CruiseShip CruiseShip { get; set; }
         public virtual User User { get; set; }
         public virtual ICollection<WeatherOtherReport> WeatherOtherReports { get; set; }

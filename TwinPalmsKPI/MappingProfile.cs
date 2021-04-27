@@ -38,6 +38,10 @@ namespace TwinPalmsKPI
             CreateMap<FbReportForCreationDto, FbReport>();
             CreateMap<FbReportForUpdateDto, FbReport>();
 
+            CreateMap<OtherReport, OtherReportDto>();
+            CreateMap<OtherReportForCreationDto, OtherReport>();
+            CreateMap<OtherReportForUpdateDto, OtherReport>();
+
             CreateMap<LocalEvent, LocalEventDto>();
             CreateMap<LocalEventForCreationDto, LocalEvent>();
             CreateMap<LocalEventForUpdateDto, LocalEvent>();

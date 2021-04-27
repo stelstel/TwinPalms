@@ -17,6 +17,7 @@ namespace Repository
         private IFbReportRepository _fbReportRepository;
         private ILocalEventRepository _localEventRepository;
         private IGuestSourceOfBusinessRepository _guestSourceOfBusinessRepository;
+        private IOtherReportRepository _otherReportRepository;
 
         public RepositoryManager(RepositoryContext repositoryContext)
         {
@@ -117,6 +118,17 @@ namespace Repository
                     _guestSourceOfBusinessRepository = new GuestSourceOfBusinessRepository(_repositoryContext);
 
                 return _guestSourceOfBusinessRepository;
+            }
+        }
+
+        public IOtherReportRepository OtherReport
+        {
+            get
+            {
+                if (_otherReportRepository == null)
+                    _otherReportRepository = new OtherReportRepository(_repositoryContext);
+
+                return _otherReportRepository;
             }
         }
 

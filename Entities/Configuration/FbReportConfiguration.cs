@@ -25,7 +25,7 @@ namespace Entities.Configuration
                     Notes = "Horrible. A bunch of loud people from the U.S.",
                     Date = DateTime.Now,
                     OutletId = 1,
-                    UserId = 2
+                    UserId = 2 // TODO This should scream
                  },
                 new FbReport
                 {

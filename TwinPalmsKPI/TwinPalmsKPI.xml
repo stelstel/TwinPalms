@@ -204,6 +204,31 @@
             Updates a LocalEvent by ID
             </summary>
         </member>
+        <member name="M:TwinPalmsKPI.Controllers.OtherReportsController.GetOtherReports">
+            <summary>
+            Gets a list of all OtherReports
+            </summary>
+        </member>
+        <member name="M:TwinPalmsKPI.Controllers.OtherReportsController.GetOtherReport(System.Int32)">
+            <summary>
+            Gets a single OtherReport by ID
+            </summary>
+        </member>
+        <member name="M:TwinPalmsKPI.Controllers.OtherReportsController.CreateOtherReport(Entities.DataTransferObjects.OtherReportForCreationDto)">
+            <summary>
+            Creates a new OtherReport
+            </summary>
+        </member>
+        <member name="M:TwinPalmsKPI.Controllers.OtherReportsController.DeleteOtherReport(System.Int32)">
+            <summary>
+            Deletes a OtherReport by ID
+            </summary>
+        </member>
+        <member name="M:TwinPalmsKPI.Controllers.OtherReportsController.UpdateOtherReport(System.Int32,Entities.DataTransferObjects.OtherReportForUpdateDto)">
+            <summary>
+            Updates a OtherReport by ID
+            </summary>
+        </member>
         <member name="M:TwinPalmsKPI.Controllers.OutletsController.GetOutlets">
             <summary>
             Gets a list of all Outlets
