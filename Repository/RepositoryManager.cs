@@ -17,6 +17,12 @@ namespace Repository
         private IFbReportRepository _fbReportRepository;
         private ILocalEventRepository _localEventRepository;
 
+        private IGuestSourceOfBusinessRepository _guestSourceOfBusinessRepository;
+        private IOtherReportRepository _otherReportRepository;
+        private IRoomsReportRepository _roomsReportRepository;
+        private IRoomTypeRepository _roomTypeRepository;
+        private IWeatherRepository _weatherRepository;
+
         public RepositoryManager(RepositoryContext repositoryContext)
         {
             _repositoryContext = repositoryContext;
@@ -108,6 +114,27 @@ namespace Repository
             }
         }
 
+        public IGuestSourceOfBusinessRepository GuestSourceOfBusinessRepository
+        {
+            get => _guestSourceOfBusinessRepository ??= new GuestSourceOfBusinessRepository(_repositoryContext);            
+        }
+
+        public IOtherReportRepository OtherReport
+        {
+            get => _otherReportRepository ??= new OtherReportRepository(_repositoryContext);
+        }
+        public IRoomsReportRepository RoomsReportRepository
+        {
+            get => _roomsReportRepository ??= new RoomsReportRepository(_repositoryContext);
+        }
+        public IRoomTypeRepository RoomTypeRepository
+        {
+            get => _roomTypeRepository ??= new RoomTypeRepository(_repositoryContext);
+        }
+        public IWeatherRepository WeatherRepository
+        {
+            get => _weatherRepository ??= new WeatherRepository(_repositoryContext);
+        }
         public async Task SaveAsync() => await _repositoryContext.SaveChangesAsync();
     }
 }
