@@ -29,6 +29,8 @@ namespace Entities
             modelBuilder.ApplyConfiguration(new CruiseShipConfiguration());
             modelBuilder.ApplyConfiguration(new HotelConfiguration());
             modelBuilder.ApplyConfiguration(new LocalEventConfiguration());
+            
+            modelBuilder.ApplyConfiguration(new FbReportConfiguration());
 
 
             //modelBuilder.ApplyConfiguration(new EmployeeConfiguration());
