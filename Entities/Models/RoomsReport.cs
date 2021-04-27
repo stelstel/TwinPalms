@@ -20,7 +20,7 @@ namespace Entities.Models
         public bool IsPublicHoliday { get; set; }
         public string Notes { get; set; }
         public DateTime Date { get; set; }
-        public int LoggerId { get; set; }
+        public string LoggerId { get; set; }
         public int RoomTypeId { get; set; }
         public int? LocalEventId { get; set; }
 
