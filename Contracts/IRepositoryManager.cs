@@ -18,6 +18,7 @@ namespace Contracts
         IOtherReportRepository OtherReport { get;}
         IOutletRepository Outlet { get; }
         IRoomsReportRepository RoomsReportRepository { get; }
+        IRoomTypeRepository RoomTypeRepository { get; }
         IWeatherRepository WeatherRepository { get; }
 
         Task SaveAsync();
