@@ -34,7 +34,8 @@ namespace Entities
             modelBuilder.ApplyConfiguration(new OtherReportConfiguration());
 
             //modelBuilder.ApplyConfiguration(new EmployeeConfiguration());
-
+            
+            // Junction Tables
             modelBuilder.ApplyConfiguration(new FbReportGuestSourceOfBusinessConfiguration());
             modelBuilder.ApplyConfiguration(new HotelUserConfiguration());
             modelBuilder.ApplyConfiguration(new OutletUserConfiguration());
