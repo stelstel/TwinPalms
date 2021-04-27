@@ -35,7 +35,6 @@ namespace TwinPalmsKPI.Controllers
         public async Task<IActionResult> GetCruiseShips()
         {
             var cruiseShips = await _repository.CruiseShip.GetAllCruiseShipsAsync(trackChanges: false);
-            cruiseShips = cruiseShips.OrderBy(cs => cs.Id); // Order by CruiseShip ID
             var cruiseShipsDto = _mapper.Map<IEnumerable<CruiseShipDto>>(cruiseShips);
             return Ok(cruiseShipsDto);
         }

@@ -35,7 +35,6 @@ namespace TwinPalmsKPI.Controllers
         public async Task<IActionResult> GetFbReports()
         {
             var fbReports = await _repository.FbReport.GetAllFbReportsAsync(trackChanges: false);
-            fbReports = fbReports.OrderBy(fbr => fbr.Date); // Order by FbReport Date
             var fbReportsDto = _mapper.Map<IEnumerable<FbReportDto>>(fbReports);
             return Ok(fbReportsDto);
         }

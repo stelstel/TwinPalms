@@ -32,7 +32,7 @@ namespace Repository
 
         public async Task<IEnumerable<LocalEvent>> GetAllLocalEventsAsync(bool trackChanges) =>
             await FindAll(trackChanges)
-            .OrderBy(l => l.Event)
+            .OrderBy(l => l.Id)
             .ToListAsync();
 
         public async Task<LocalEvent> GetLocalEventAsync(int id, bool trackChanges) =>

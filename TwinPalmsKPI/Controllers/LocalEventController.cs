@@ -35,7 +35,6 @@ namespace TwinPalmsKPI.Controllers
         public async Task<IActionResult> GetLocalEvents()
         {
             var localEvents = await _repository.LocalEvent.GetAllLocalEventsAsync(trackChanges: false);
-            localEvents = localEvents.OrderBy(le => le.Id); // Order by localEvents ID
             var localEventsDto = _mapper.Map<IEnumerable<LocalEventDto>>(localEvents);
             return Ok(localEventsDto);
         }

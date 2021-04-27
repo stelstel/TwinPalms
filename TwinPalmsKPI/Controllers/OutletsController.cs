@@ -35,7 +35,6 @@ namespace TwinPalmsKPI.Controllers
         public async Task<IActionResult> GetOutlets()
         {
             var outlets = await _repository.Outlet.GetAllOutletsAsync(trackChanges: false);
-            outlets = outlets.OrderBy(o => o.Id); // Order by Outlet ID
             var outletsDto = _mapper.Map<IEnumerable<OutletDto>>(outlets);
             return Ok(outletsDto);
         }

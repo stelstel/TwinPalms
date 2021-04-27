@@ -32,7 +32,7 @@ namespace Repository
 
         public async Task<IEnumerable<CruiseCompany>> GetAllCruiseCompaniesAsync(bool trackChanges) =>
             await FindAll(trackChanges)
-            .OrderBy(c => c.Name)
+            .OrderBy(c => c.Id)
             .ToListAsync();
 
         public async Task<CruiseCompany> GetCruiseCompanyAsync(int id, bool trackChanges) =>

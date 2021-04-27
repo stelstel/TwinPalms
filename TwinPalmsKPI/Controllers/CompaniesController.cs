@@ -35,7 +35,6 @@ namespace TwinPalmsKPI.Controllers
         public async Task<IActionResult> GetCompanies()
         {
             var companies = await _repository.Company.GetAllCompaniesAsync(trackChanges: false);
-            companies = companies.OrderBy(c => c.Id); // Order by Company ID
             var companiesDto = _mapper.Map<IEnumerable<CompanyDto>>(companies);
             return Ok(companiesDto);
         }

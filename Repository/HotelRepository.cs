@@ -31,7 +31,7 @@ namespace Repository
 
         public async Task<IEnumerable<Hotel>> GetAllHotelsAsync(bool trackChanges) =>
             await FindAll(trackChanges)
-            .OrderBy(o => o.Name)
+            .OrderBy(o => o.Id)
             .ToListAsync();
 
         public async Task<Hotel> GetHotelAsync(int id, bool trackChanges) =>
