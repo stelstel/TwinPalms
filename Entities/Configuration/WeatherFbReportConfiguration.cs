@@ -38,11 +38,20 @@ namespace Entities.Configuration
                 {
                     WeatherId = 5,
                     FbReportId = 2
-                }
-                ,
+                },
                 new WeatherFbReport
                 {
                     WeatherId = 2,
+                    FbReportId = 3
+                },
+                new WeatherFbReport
+                {
+                    WeatherId = 5,
+                    FbReportId = 3
+                },
+                new WeatherFbReport
+                {
+                    WeatherId = 6,
                     FbReportId = 3
                 }
             );

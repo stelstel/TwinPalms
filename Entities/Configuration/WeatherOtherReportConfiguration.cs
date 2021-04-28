@@ -38,11 +38,20 @@ namespace Entities.Configuration
                 {
                     WeatherId = 5,
                     OtherReportId = 2
-                }
-                ,
+                },
+                new WeatherOtherReport
+                {
+                    WeatherId = 4,
+                    OtherReportId = 2
+                },
                 new WeatherOtherReport
                 {
                     WeatherId = 2,
+                    OtherReportId = 3
+                },
+                new WeatherOtherReport
+                {
+                    WeatherId = 3,
                     OtherReportId = 3
                 }
             );
