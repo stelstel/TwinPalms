@@ -1,19 +1,28 @@
+using Entities;
+using Entities.Models;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace TwinPalmsKPI
 {
     public class Program
     {
-        public static void Main(string[] args)
+        public static async Task Main(string[] args)
         {
-            CreateHostBuilder(args).Build().Run();
+            var host = CreateHostBuilder(args).Build();
+
+                var services = host.Services.CreateScope().ServiceProvider;
+                   /*var context = services.GetRequiredService<RepositoryContext>();
+                    context.Database.EnsureCreated();*/
+                    var userManager = services.GetRequiredService<UserManager<User>>();
+                    await ContextSeed.AddUserPasswordAsync(userManager);
+
+            host.Run();
+
         }
 
         public static IHostBuilder CreateHostBuilder(string[] args) =>
@@ -25,3 +34,4 @@ namespace TwinPalmsKPI
                         });
     }
 }
+    

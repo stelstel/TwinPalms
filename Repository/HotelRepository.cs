@@ -37,6 +37,6 @@ namespace Repository
         public async Task<Hotel> GetHotelAsync(int id, bool trackChanges) =>
             await FindByCondition(o => o.Id.Equals(id), trackChanges)
             .SingleOrDefaultAsync();
-    }
+    }   
 }
 

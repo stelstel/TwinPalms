@@ -103,6 +103,17 @@ namespace Repository
             }
         }
 
+        public IRoomsReportRepository RoomsReport
+        {
+            get
+            {
+                if (_roomsReportRepository == null)
+                    _roomsReportRepository = new RoomsReportRepository(_repositoryContext);
+
+                return _roomsReportRepository;
+            }
+        }
+
         public ILocalEventRepository LocalEvent
         {
             get

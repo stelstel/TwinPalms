@@ -17,7 +17,7 @@ namespace Contracts
         IGuestSourceOfBusinessRepository GuestSourceOfBusiness { get; }       
         ILocalEventRepository LocalEvent { get; }
         IOtherReportRepository OtherReport { get;}       
-        IRoomsReportRepository RoomsReportRepository { get; }
+        IRoomsReportRepository RoomsReport { get; }
         IRoomTypeRepository RoomTypeRepository { get; }
         IWeatherRepository WeatherRepository { get; }
 

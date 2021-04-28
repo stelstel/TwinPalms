@@ -9,9 +9,9 @@ namespace Entities.DataTransferObjects
 {
     public class UserForAuthenticationDto
     {
-        [Required(ErrorMessage = "User name is required")] 
+        [Required(ErrorMessage = "Username is required")] 
         public string UserName { get; set; }
-        [Required(ErrorMessage = "Password name is required")] 
+        [Required(ErrorMessage = "Password is required")] 
         public string Password { get; set; }
     }
 }
