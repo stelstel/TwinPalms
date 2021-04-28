@@ -20,7 +20,7 @@ namespace Entities.DataTransferObjects
         public DateTime Date { get; set; }
 
         public int OutletId { get; set; }
-        public Guid UserId { get; set; }
+        public string UserId { get; set; }
         public int? LocalEventId { get; set; }
     }
 }
