@@ -53,6 +53,7 @@ namespace TwinPalmsKPI
             services.AddScoped<ValidateLocalEventExistsAttribute>();
             services.AddScoped<ValidateEmployeeForCompanyAttribute>();
             services.AddScoped<IAuthenticationManager, AuthenticationManager>(); // TODO: Is this correct?
+            services.AddScoped<ValidateWeatherExistsAttribute>();
 
             services.Configure<ApiBehaviorOptions>(options =>
             {

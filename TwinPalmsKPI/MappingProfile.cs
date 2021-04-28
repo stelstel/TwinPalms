@@ -49,6 +49,8 @@ namespace TwinPalmsKPI
             CreateMap<LocalEvent, LocalEventDto>();
             CreateMap<LocalEventForCreationDto, LocalEvent>();
             CreateMap<LocalEventForUpdateDto, LocalEvent>();
+
+            CreateMap<Weather, WeatherDto>();
         }
     }
 }
