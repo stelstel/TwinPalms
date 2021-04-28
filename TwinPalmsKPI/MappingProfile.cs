@@ -33,7 +33,6 @@ namespace TwinPalmsKPI
             CreateMap<CruiseShip,CruiseShipDto>();
             CreateMap<CruiseShipForCreationDto, CruiseShip>();
             CreateMap<CruiseShipForUpdateDto, CruiseShip>();
-
             
             CreateMap<RoomsReport, RoomsReportDto>();
             CreateMap<RoomsReportForCreationDto, FbReport>();

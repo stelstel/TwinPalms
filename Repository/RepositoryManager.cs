@@ -134,10 +134,7 @@ namespace Repository
         {
             get => _otherReportRepository ??= new OtherReportRepository(_repositoryContext);
         }
-        public IRoomsReportRepository RoomsReport
-        {
-            get => _roomsReportRepository ??= new RoomsReportRepository(_repositoryContext);
-        }
+        
         public IRoomTypeRepository RoomType
         {
             get => _roomTypeRepository ??= new RoomTypeRepository(_repositoryContext);
@@ -145,11 +142,6 @@ namespace Repository
         public IWeatherRepository Weather
         {
             get => _weatherRepository ??= new WeatherRepository(_repositoryContext);
-        }
-
-        public IGuestSourceOfBusinessRepository GuestSourceOfBusiness 
-        {
-            get => _guestSourceOfBusinessRepository ??= new GuestSourceOfBusinessRepository(_repositoryContext);
         }
 
         public async Task SaveAsync() => await _repositoryContext.SaveChangesAsync();
