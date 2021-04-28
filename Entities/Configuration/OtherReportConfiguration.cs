@@ -23,9 +23,8 @@ namespace Entities.Configuration
                     IsPublicHoliday = false,
                     Notes = "Nice calm water today",
                     Date = DateTime.Now,
-                    
                     CruiseShipId = 1,
-                    UserId = 2 // TODO This should scream
+                    UserId = new Guid("35947f01-393b-442c-b815-d6d9f7d4b81e")
                 },
                 new OtherReport
                 {
@@ -38,9 +37,8 @@ namespace Entities.Configuration
                     IsPublicHoliday = false,
                     Notes = "Lorem Ipsum",
                     Date = DateTime.Now.AddDays(-1).AddHours(-4),
-
                     CruiseShipId = 2,
-                    UserId = 1 // TODO This should scream
+                    UserId = new Guid("b0b22e53-3ad2-4a0a-9e58-aa0a70a5a157")
                 },
                 new OtherReport
                 {
@@ -53,9 +51,8 @@ namespace Entities.Configuration
                     IsPublicHoliday = true,
                     Notes = "A lot of customers today",
                     Date = DateTime.Now.AddDays(-2).AddHours(-5).AddMinutes(-13),
-
                     CruiseShipId = 1,
-                    UserId = 3 // TODO This should scream
+                    UserId = new Guid("35947f01-393b-442c-b815-d6d9f7d4b81e")
                 }
             );
         }

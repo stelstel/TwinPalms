@@ -23,7 +23,7 @@ namespace Entities.Models
         public string Notes { get; set; }
         public DateTime Date { get; set; }
         [Required]
-        public int UserId { get; set; }
+        public Guid UserId { get; set; }
         [Required]
         public int CruiseShipId { get; set; }
 
