@@ -31,6 +31,8 @@ namespace Entities
             modelBuilder.ApplyConfiguration(new GuestSourceOfBusinessConfiguration());
             modelBuilder.ApplyConfiguration(new FbReportConfiguration());
             modelBuilder.ApplyConfiguration(new OtherReportConfiguration());
+            modelBuilder.ApplyConfiguration(new WeatherConfiguration());
+
 
             //modelBuilder.ApplyConfiguration(new EmployeeConfiguration());
             
