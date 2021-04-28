@@ -125,7 +125,7 @@ namespace Repository
             }
         }
 
-        public IGuestSourceOfBusinessRepository GuestSourceOfBusinessRepository
+        public IGuestSourceOfBusinessRepository GuestSourceOfBusiness
         {
             get => _guestSourceOfBusinessRepository ??= new GuestSourceOfBusinessRepository(_repositoryContext);            
         }
@@ -134,15 +134,15 @@ namespace Repository
         {
             get => _otherReportRepository ??= new OtherReportRepository(_repositoryContext);
         }
-        public IRoomsReportRepository RoomsReportRepository
+        public IRoomsReportRepository RoomsReport
         {
             get => _roomsReportRepository ??= new RoomsReportRepository(_repositoryContext);
         }
-        public IRoomTypeRepository RoomTypeRepository
+        public IRoomTypeRepository RoomType
         {
             get => _roomTypeRepository ??= new RoomTypeRepository(_repositoryContext);
         }
-        public IWeatherRepository WeatherRepository
+        public IWeatherRepository Weather
         {
             get => _weatherRepository ??= new WeatherRepository(_repositoryContext);
         }
