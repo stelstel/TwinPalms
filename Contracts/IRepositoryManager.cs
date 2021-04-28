@@ -14,12 +14,12 @@ namespace Contracts
         ICruiseCompanyRepository CruiseCompany { get; }
         ICruiseShipRepository CruiseShip { get; }
         IFbReportRepository FbReport { get; }
-        IGuestSourceOfBusinessRepository GuestSourceOfBusinessRepository { get; }       
+        IGuestSourceOfBusinessRepository GuestSourceOfBusiness { get; }       
         ILocalEventRepository LocalEvent { get; }
         IOtherReportRepository OtherReport { get;}       
-        IRoomsReportRepository RoomsReportRepository { get; }
-        IRoomTypeRepository RoomTypeRepository { get; }
-        IWeatherRepository WeatherRepository { get; }
+        IRoomsReportRepository RoomsReport { get; }
+        IRoomTypeRepository RoomType { get; }
+        IWeatherRepository Weather { get; }
 
         Task SaveAsync();
     }
