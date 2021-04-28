@@ -9,7 +9,7 @@ namespace Contracts
 {
     public interface IGuestSourceOfBusinessRepository
     {
-        Task<IEnumerable<GuestSourceOfBusiness>> GetAllGuestSourceOfBusinessAsync(bool trackChanges);
+        Task<IEnumerable<GuestSourceOfBusiness>> GetAllGuestSourceOfBusinessesAsync(bool trackChanges);
         Task<GuestSourceOfBusiness> GetGuestSourceOfBusinessAsync(int id, bool trackChanges);
 
         void CreateGuestSourceOfBusiness(GuestSourceOfBusiness guestSourceOfBusiness);
