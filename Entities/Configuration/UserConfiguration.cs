@@ -42,7 +42,7 @@ namespace Entities.Configuration
                 LastName = "Basic1",
                 UserName = "basic1",
                 Email = "basic1@twinpalms",
-                NormalizedEmail = "BASIC@TWINPALMS",
+                NormalizedEmail = "BASIC1@TWINPALMS",
                 EmailConfirmed = true
 
             }, new User
