@@ -41,9 +41,9 @@ namespace TwinPalmsKPI
             CreateMap< CruiseShipForUpdateDto, CruiseShip>();
 
             
-            CreateMap<FbReport, FbReportDto>();
-            CreateMap<FbReportForCreationDto, FbReport>();
-            CreateMap<FbReportForUpdateDto, FbReport>();
+            CreateMap<RoomsReport, RoomsReportDto>();
+            CreateMap<RoomsReportForCreationDto, FbReport>();
+            CreateMap<RoomsReportForUpdateDto, FbReport>();
 
 
             CreateMap<LocalEvent, LocalEventDto>();

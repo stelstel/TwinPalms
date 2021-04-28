@@ -204,5 +204,30 @@
             Updates a Outlet by ID
             </summary>
         </member>
+        <member name="M:TwinPalmsKPI.Controllers.RoomsReportController.GetRoomsReport">
+            <summary>
+            Gets a list of all roomsReports
+            </summary>
+        </member>
+        <member name="M:TwinPalmsKPI.Controllers.RoomsReportController.GetRoomsReport(System.Int32)">
+            <summary>
+            Gets a single roomsReport by ID
+            </summary>
+        </member>
+        <member name="M:TwinPalmsKPI.Controllers.RoomsReportController.CreateRoomsReport(Entities.DataTransferObjects.RoomsReportForCreationDto)">
+            <summary>
+            Creates a new roomsReport
+            </summary>
+        </member>
+        <member name="M:TwinPalmsKPI.Controllers.RoomsReportController.DeleteRoomsReport(System.Int32)">
+            <summary>
+            Deletes a roomsReport by ID
+            </summary>
+        </member>
+        <member name="M:TwinPalmsKPI.Controllers.RoomsReportController.UpdateRoomsReport(System.Int32,Entities.DataTransferObjects.RoomsReportForUpdateDto)">
+            <summary>
+            Updates a roomsReport by ID
+            </summary>
+        </member>
     </members>
 </doc>
