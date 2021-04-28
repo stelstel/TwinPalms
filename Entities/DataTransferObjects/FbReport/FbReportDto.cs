@@ -18,17 +18,9 @@ namespace Entities.DataTransferObjects
         public bool IsPublicHoliday { get; set; }
         public string Notes { get; set; }
         public DateTime Date { get; set; }
+
         public int OutletId { get; set; }
-        public int UserId { get; set; }
+        public Guid UserId { get; set; }
         public int? LocalEventId { get; set; }
-
-        // Navigation properties
-        /*public virtual Outlet Outlet { get; set; }
-        public virtual User User { get; set; }
-        public virtual LocalEvent LocalEvent { get; set; }
-        public virtual ICollection<WeatherFbReport> WeatherFbReports { get; set; }
-        public virtual ICollection<FbReportGuestSourceOfBusiness> FbReportGuestSourceOfBusinesses { get; set; }
-        */
-
     }
 }

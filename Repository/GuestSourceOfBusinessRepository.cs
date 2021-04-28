@@ -1,4 +1,4 @@
-﻿using Contracts;
+﻿    using Contracts;
 using Entities;
 using Entities.Models;
 using Microsoft.EntityFrameworkCore;
@@ -14,6 +14,7 @@ namespace Repository
     {
         public GuestSourceOfBusinessRepository(RepositoryContext repositoryContext) : base(repositoryContext)
         {
+
         }
 
         public void CreateGuestSourceOfBusiness(GuestSourceOfBusiness guestSourceOfBusiness) => Create(guestSourceOfBusiness);
@@ -22,13 +23,13 @@ namespace Repository
 
         public void UpdateGuestSourceOfBusiness(GuestSourceOfBusiness guestSourceOfBusiness) => Update(guestSourceOfBusiness);
 
-        public async Task<IEnumerable<GuestSourceOfBusiness>> GetAllGuestSourceOfBusinessAsync(bool trackChanges) =>
+        public async Task<IEnumerable<GuestSourceOfBusiness>> GetAllGuestSourceOfBusinessesAsync(bool trackChanges) =>
             await FindAll(trackChanges)
-            .OrderBy(c => c.SourceOfBusiness)
-            .ToListAsync();        
+            .OrderBy(c => c.Id)
+            .ToListAsync();
 
         public async Task<GuestSourceOfBusiness> GetGuestSourceOfBusinessAsync(int id, bool trackChanges) =>
             await FindByCondition(c => c.Id.Equals(id), trackChanges)
-            .SingleOrDefaultAsync();       
+            .SingleOrDefaultAsync();
     }
 }

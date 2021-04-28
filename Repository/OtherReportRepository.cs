@@ -1,4 +1,4 @@
-﻿using Contracts;
+﻿    using Contracts;
 using Entities;
 using Entities.Models;
 using Microsoft.EntityFrameworkCore;
@@ -10,10 +10,11 @@ using System.Threading.Tasks;
 
 namespace Repository
 {
-    class OtherReportRepository : RepositoryBase<OtherReport>, IOtherReportRepository
+    public class OtherReportRepository : RepositoryBase<OtherReport>, IOtherReportRepository
     {
         public OtherReportRepository(RepositoryContext repositoryContext) : base(repositoryContext)
         {
+
         }
 
         public void CreateOtherReport(OtherReport otherReport) => Create(otherReport);
@@ -24,11 +25,11 @@ namespace Repository
 
         public async Task<IEnumerable<OtherReport>> GetAllOtherReportsAsync(bool trackChanges) =>
             await FindAll(trackChanges)
-            .OrderBy(c => c.CruiseShipId)
+            .OrderByDescending(o => o.Date)
             .ToListAsync();
 
         public async Task<OtherReport> GetOtherReportAsync(int id, bool trackChanges) =>
-            await FindByCondition(c => c.Id.Equals(id), trackChanges)
+            await FindByCondition(o => o.Id.Equals(id), trackChanges)
             .SingleOrDefaultAsync();
     }
 }

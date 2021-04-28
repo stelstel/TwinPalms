@@ -27,6 +27,7 @@ namespace Entities.Models
         [Required]
         public int CruiseShipId { get; set; }
 
+        // Navigation properties
         public virtual CruiseShip CruiseShip { get; set; }
         public virtual User User { get; set; }
         public virtual ICollection<WeatherOtherReport> WeatherOtherReports { get; set; }

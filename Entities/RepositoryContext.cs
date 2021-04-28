@@ -29,11 +29,13 @@ namespace Entities
             modelBuilder.ApplyConfiguration(new CruiseShipConfiguration());
             modelBuilder.ApplyConfiguration(new HotelConfiguration());
             modelBuilder.ApplyConfiguration(new LocalEventConfiguration());
-
+            modelBuilder.ApplyConfiguration(new GuestSourceOfBusinessConfiguration());
+            modelBuilder.ApplyConfiguration(new FbReportConfiguration());
+            modelBuilder.ApplyConfiguration(new OtherReportConfiguration());
 
             //modelBuilder.ApplyConfiguration(new EmployeeConfiguration());
-
-            modelBuilder.ApplyConfiguration(new GuestSourceOfBusinessConfiguration());
+            
+            // Junction Tables
             modelBuilder.ApplyConfiguration(new FbReportGuestSourceOfBusinessConfiguration());
             modelBuilder.ApplyConfiguration(new HotelUserConfiguration());
             modelBuilder.ApplyConfiguration(new OutletUserConfiguration());

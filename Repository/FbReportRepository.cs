@@ -31,7 +31,7 @@ namespace Repository
 
         public async Task<IEnumerable<FbReport>> GetAllFbReportsAsync(bool trackChanges) =>
             await FindAll(trackChanges)
-            .OrderBy(o => o.UserId)
+            .OrderByDescending(o => o.Date)
             .ToListAsync();
 
         public async Task<FbReport> GetFbReportAsync(int id, bool trackChanges) =>

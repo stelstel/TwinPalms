@@ -5,7 +5,7 @@ using System;
 
 namespace Entities.Configuration
 {
-    class OtherReportConfiguration : IEntityTypeConfiguration<OtherReport>
+    public class OtherReportConfiguration : IEntityTypeConfiguration<OtherReport>
     {
         public void Configure(EntityTypeBuilder<OtherReport> builder)
         {
@@ -24,59 +24,51 @@ namespace Entities.Configuration
                 .WithMany(p => p.OtherReports)
                 .HasForeignKey(d => d.UserId)
                 .HasConstraintName("FK_Users_OtherReports");
-
-        ////Seeding data.
-        //// Must be after CruiseShips seed
-        //// Must be after Users seed
-        //    builder.HasData
-        //    (
-        //            new OtherReport
-        //            {
-        //                Id = -1,
-        //                Trips = 15,
-        //                RevenueTrips = 31200,
-        //                RevenueFoodAndBeverage = 50000,
-        //                RevenueOther = 1120,
-        //                TotNrOfGuests = 12,
-        //                IsPublicHoliday = false,
-        //                Notes = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et " +
-        //                        "dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco " +
-        //                        "laboris nisi ut aliquip ex ea commodo consequat.",
-        //                Date = DateTime.Now,
-        //                CruiseShipId = 1,
-        //                UserId = "guid3"
-        //            },
-        //            new OtherReport
-        //            {
-        //                Id = -2,
-        //                Trips = 5,
-        //                RevenueTrips = 32500,
-        //                RevenueFoodAndBeverage = 5000,
-        //                RevenueOther = 1230,
-        //                TotNrOfGuests = 22,
-        //                IsPublicHoliday = true,
-        //                Notes = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et " +
-        //                        "dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco " +
-        //                        "laboris nisi ut aliquip ex ea commodo consequat.",
-        //                Date = DateTime.Now.AddDays(-1),
-        //                CruiseShipId = 2,
-        //                UserId = "guid2"
-        //            },
-        //            new OtherReport
-        //            {
-        //                Id = -3,
-        //                Trips = 9,
-        //                RevenueTrips = 322500,
-        //                RevenueFoodAndBeverage = 51000,
-        //                RevenueOther = 130,
-        //                TotNrOfGuests = 29,
-        //                IsPublicHoliday = false,
-        //                Notes = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et ",
-        //                Date = DateTime.Now.AddDays(-2),
-        //                CruiseShipId = 2,
-        //                UserId = "guid1"
-        //            }
-        //    );
+            builder.HasData
+            (
+                new OtherReport
+                {
+                    Id = 1,
+                    Trips = 5,
+                    RevenueTrips = 11500,
+                    RevenueFoodAndBeverage = 24910,
+                    RevenueOther = 6150,
+                    TotNrOfGuests = 45,
+                    IsPublicHoliday = false,
+                    Notes = "Nice calm water today",
+                    Date = DateTime.Now,
+                    CruiseShipId = 1,
+                    UserId = new Guid("35947f01-393b-442c-b815-d6d9f7d4b81e")
+                },
+                new OtherReport
+                {
+                    Id = 2,
+                    Trips = 7,
+                    RevenueTrips = 18500,
+                    RevenueFoodAndBeverage = 29810,
+                    RevenueOther = 7150,
+                    TotNrOfGuests = 46,
+                    IsPublicHoliday = false,
+                    Notes = "Lorem Ipsum",
+                    Date = DateTime.Now.AddDays(-1).AddHours(-4),
+                    CruiseShipId = 2,
+                    UserId = new Guid("b0b22e53-3ad2-4a0a-9e58-aa0a70a5a157")
+                },
+                new OtherReport
+                {
+                    Id = 3,
+                    Trips = 8,
+                    RevenueTrips = 19500,
+                    RevenueFoodAndBeverage = 30810,
+                    RevenueOther = 7250,
+                    TotNrOfGuests = 49,
+                    IsPublicHoliday = true,
+                    Notes = "A lot of customers today",
+                    Date = DateTime.Now.AddDays(-2).AddHours(-5).AddMinutes(-13),
+                    CruiseShipId = 1,
+                    UserId = new Guid("35947f01-393b-442c-b815-d6d9f7d4b81e")
+                }
+            );
         }
     }
 }

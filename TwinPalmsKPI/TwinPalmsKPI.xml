@@ -129,6 +129,31 @@
             Updates a fbReport by ID
             </summary>
         </member>
+        <member name="M:TwinPalmsKPI.Controllers.GuestSourceOfBusinessController.GetGuestSourceOfBusinesses">
+            <summary>
+            Gets a list of all GuestSourceOfBusinesses
+            </summary>
+        </member>
+        <member name="M:TwinPalmsKPI.Controllers.GuestSourceOfBusinessController.GetGuestSourceOfBusiness(System.Int32)">
+            <summary>
+            Gets a single GuestSourceOfBusiness by ID
+            </summary>
+        </member>
+        <member name="M:TwinPalmsKPI.Controllers.GuestSourceOfBusinessController.CreateGuestSourceOfBusiness(Entities.DataTransferObjects.GuestSourceOfBusinessForCreationDto)">
+            <summary>
+            Creates a new GuestSourceOfBusiness
+            </summary>
+        </member>
+        <member name="M:TwinPalmsKPI.Controllers.GuestSourceOfBusinessController.DeleteGuestSourceOfBusiness(System.Int32)">
+            <summary>
+            Deletes a GuestSourceOfBusiness by ID
+            </summary>
+        </member>
+        <member name="M:TwinPalmsKPI.Controllers.GuestSourceOfBusinessController.UpdateGuestSourceOfBusiness(System.Int32,Entities.DataTransferObjects.GuestSourceOfBusinessForUpdateDto)">
+            <summary>
+            Updates a GuestSourceOfBusiness by ID
+            </summary>
+        </member>
         <member name="M:TwinPalmsKPI.Controllers.HotelsController.GetHotels">
             <summary>
             Gets a list of all Hotels
@@ -177,6 +202,31 @@
         <member name="M:TwinPalmsKPI.Controllers.LocalEventController.UpdateLocalEvent(System.Int32,Entities.DataTransferObjects.LocalEventForUpdateDto)">
             <summary>
             Updates a LocalEvent by ID
+            </summary>
+        </member>
+        <member name="M:TwinPalmsKPI.Controllers.OtherReportsController.GetOtherReports">
+            <summary>
+            Gets a list of all OtherReports
+            </summary>
+        </member>
+        <member name="M:TwinPalmsKPI.Controllers.OtherReportsController.GetOtherReport(System.Int32)">
+            <summary>
+            Gets a single OtherReport by ID
+            </summary>
+        </member>
+        <member name="M:TwinPalmsKPI.Controllers.OtherReportsController.CreateOtherReport(Entities.DataTransferObjects.OtherReportForCreationDto)">
+            <summary>
+            Creates a new OtherReport
+            </summary>
+        </member>
+        <member name="M:TwinPalmsKPI.Controllers.OtherReportsController.DeleteOtherReport(System.Int32)">
+            <summary>
+            Deletes a OtherReport by ID
+            </summary>
+        </member>
+        <member name="M:TwinPalmsKPI.Controllers.OtherReportsController.UpdateOtherReport(System.Int32,Entities.DataTransferObjects.OtherReportForUpdateDto)">
+            <summary>
+            Updates a OtherReport by ID
             </summary>
         </member>
         <member name="M:TwinPalmsKPI.Controllers.OutletsController.GetOutlets">
