@@ -17,7 +17,7 @@ namespace Entities.DataTransferObjects
         public string Notes { get; set; }
         public DateTime Date { get; set; }
 
-        public int UserId { get; set; }
+        public Guid UserId { get; set; }
         public int CruiseShipId { get; set; }
     }
 }
