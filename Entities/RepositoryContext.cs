@@ -45,9 +45,6 @@ namespace Entities
             
             modelBuilder.ApplyConfiguration(new RoomTypeConfiguration());
             modelBuilder.ApplyConfiguration(new RoomsReportConfiguration());
-            modelBuilder.ApplyConfiguration(new OtherReportConfiguration());
-
-
         }
 
         public DbSet<Company> Companies { get; set; }

@@ -135,6 +135,12 @@ namespace Repository
         {
             get => _weatherRepository ??= new WeatherRepository(_repositoryContext);
         }
+
+        public IGuestSourceOfBusinessRepository GuestSourceOfBusiness 
+        {
+            get => _guestSourceOfBusinessRepository ??= new GuestSourceOfBusinessRepository(_repositoryContext);
+        }
+
         public async Task SaveAsync() => await _repositoryContext.SaveChangesAsync();
     }
 }

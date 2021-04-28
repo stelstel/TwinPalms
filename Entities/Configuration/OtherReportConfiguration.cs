@@ -9,21 +9,7 @@ namespace Entities.Configuration
     {
         public void Configure(EntityTypeBuilder<OtherReport> builder)
         {
-            builder.HasIndex(e => e.CruiseShipId, "IX_OtherReports_CruiseShipId");
 
-            builder.HasIndex(e => e.UserId, "IX_OtherReports_UserId");
-
-            builder.Property(e => e.Date).HasColumnType("date");
-
-            builder.HasOne(d => d.CruiseShip)
-                .WithMany(p => p.OtherReports)
-                .HasForeignKey(d => d.CruiseShipId)
-                .HasConstraintName("FK_CruiseShips_OtherReports");
-
-            builder.HasOne(d => d.User)
-                .WithMany(p => p.OtherReports)
-                .HasForeignKey(d => d.UserId)
-                .HasConstraintName("FK_Users_OtherReports");
             builder.HasData
             (
                 new OtherReport
@@ -69,6 +55,22 @@ namespace Entities.Configuration
                     UserId = "35947f01-393b-442c-b815-d6d9f7d4b81e"
                 }
             );
+
+            builder.HasIndex(e => e.CruiseShipId, "IX_OtherReports_CruiseShipId");
+
+            builder.HasIndex(e => e.UserId, "IX_OtherReports_UserId");
+
+            builder.Property(e => e.Date).HasColumnType("date");
+
+            builder.HasOne(d => d.CruiseShip)
+                .WithMany(p => p.OtherReports)
+                .HasForeignKey(d => d.CruiseShipId)
+                .HasConstraintName("FK_CruiseShips_OtherReports");
+
+            builder.HasOne(d => d.User)
+                .WithMany(p => p.OtherReports)
+                .HasForeignKey(d => d.UserId)
+                .HasConstraintName("FK_Users_OtherReports");
         }
     }
 }
