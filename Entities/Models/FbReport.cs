@@ -29,13 +29,12 @@ namespace Entities.Models
         [Required]
         public string UserId { get; set; }
         public int? LocalEventId { get; set; }
-
+       
         // Navigation properties
         public virtual Outlet Outlet { get; set; }
         public virtual User User { get; set; }
         public virtual LocalEvent LocalEvent { get; set; }
         public virtual ICollection<WeatherFbReport> WeatherFbReports { get; set; }
-        
         public virtual ICollection<FbReportGuestSourceOfBusiness> FbReportGuestSourceOfBusinesses { get; set; }
     }
 }

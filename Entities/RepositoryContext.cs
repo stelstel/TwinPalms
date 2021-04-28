@@ -41,7 +41,6 @@ namespace Entities
             modelBuilder.ApplyConfiguration(new WeatherFbReportConfiguration());
             modelBuilder.ApplyConfiguration(new WeatherOtherReportConfiguration());
             modelBuilder.ApplyConfiguration(new WeatherRoomsReportConfiguration());
-            
             modelBuilder.ApplyConfiguration(new RoomTypeConfiguration());
             modelBuilder.ApplyConfiguration(new RoomsReportConfiguration());
         }
