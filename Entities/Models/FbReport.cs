@@ -27,7 +27,7 @@ namespace Entities.Models
         [Required]
         public int OutletId { get; set; }
         [Required]
-        public int UserId { get; set; }
+        public Guid UserId { get; set; }
         public int? LocalEventId { get; set; }
 
         // Navigation properties
