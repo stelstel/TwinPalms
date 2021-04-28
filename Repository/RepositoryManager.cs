@@ -103,16 +103,7 @@ namespace Repository
             }
         }
 
-        public IRoomsReportRepository RoomsReport
-        {
-            get
-            {
-                if (_roomsReportRepository == null)
-                    _roomsReportRepository = new RoomsReportRepository(_repositoryContext);
-
-                return _roomsReportRepository;
-            }
-        }
+        
 
         public ILocalEventRepository LocalEvent
         {
@@ -145,11 +136,6 @@ namespace Repository
         public IWeatherRepository Weather
         {
             get => _weatherRepository ??= new WeatherRepository(_repositoryContext);
-        }
-
-        public IGuestSourceOfBusinessRepository GuestSourceOfBusiness 
-        {
-            get => _guestSourceOfBusinessRepository ??= new GuestSourceOfBusinessRepository(_repositoryContext);
         }
 
         public async Task SaveAsync() => await _repositoryContext.SaveChangesAsync();
