@@ -9,6 +9,16 @@ namespace Entities.Configuration
     {
         public void Configure(EntityTypeBuilder<FbReport> builder)
         {
+            builder.HasOne(d => d.Outlet)
+                .WithMany(p => p.FbReports)
+                .HasForeignKey(d => d.OutletId)
+                .HasConstraintName("FK_Outlets_FbReports");
+
+            builder.HasOne(d => d.User)
+                .WithMany(p => p.FbReports)
+                .HasForeignKey(d => d.UserId)
+                .HasConstraintName("FK_Users_FbReports");
+
             builder.HasData
             (
                 new FbReport
@@ -41,8 +51,6 @@ namespace Entities.Configuration
                     OutletId = 2,
                     UserId = "b0b22e53-3ad2-4a0a-9e58-aa0a70a5a157",
                     LocalEventId = 2
-
-
                 },
                 new FbReport
                 {
@@ -61,15 +69,6 @@ namespace Entities.Configuration
                     LocalEventId = 1
                 }
             );
-            builder.HasOne(d => d.Outlet)
-                .WithMany(p => p.FbReports)
-                .HasForeignKey(d => d.OutletId)
-                .HasConstraintName("FK_Outlets_FbReports");
-
-            builder.HasOne(d => d.User)
-                .WithMany(p => p.FbReports)
-                .HasForeignKey(d => d.UserId)
-                .HasConstraintName("FK_Users_FbReports");
         }
     }
 }
