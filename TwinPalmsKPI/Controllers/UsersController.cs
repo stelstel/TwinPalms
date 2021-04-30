@@ -56,7 +56,7 @@ namespace TwinPalmsKPI.Controllers
             return Ok(users);
         }
         /// <summary>
-        /// Deletes employee by ID
+        /// Deletes user by ID
         /// </summary>
         [HttpDelete("{id}")]
         [ServiceFilter(typeof(ValidateUserExistsAttribute))]

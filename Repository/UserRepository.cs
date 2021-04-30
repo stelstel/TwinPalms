@@ -28,14 +28,15 @@ namespace Repository
         public async Task<User> GetUserAsync(string id, bool trackChanges) =>
             await FindByCondition(u => u.Id.Equals(id), trackChanges)
             .Include(u => u.OutletUsers).ThenInclude(ou => ou.Outlet)
-            .Include(u => u.Roles)
+            .Include(u => u.UserRoles).ThenInclude(ur => ur.Role)
             .SingleOrDefaultAsync();
 
-
+        // TODO IEnumerable<> ska inte vara dynamic
         public async Task<IEnumerable<dynamic>> GetUsersAsync(bool trackChanges) =>
              await FindAll(trackChanges)
             .Include(u => u.OutletUsers).ThenInclude(ou => ou.Outlet)
-            .Include(u => u.Roles)
+            .Include(u => u.UserRoles).ThenInclude(ur => ur.Role)
+            
             //.OrderBy(o => o.Outlet)
             .Select(u => new
             {
@@ -47,7 +48,7 @@ namespace Repository
                 Email = u.Email,
                 PhoneNumber = u.Email,
                 Outlets = u.OutletUsers.Select(ou => ou.Outlet).ToList(),
-                Roles = u.Roles.Select(ur => ur.Role.Name).ToList()
+                Roles = u.UserRoles.Select(ur => ur.Role.Name).ToList()
             })
             .ToListAsync();
 

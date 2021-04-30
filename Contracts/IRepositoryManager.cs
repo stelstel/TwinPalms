@@ -8,7 +8,7 @@ namespace Contracts
     public interface IRepositoryManager
     {
         ICompanyRepository Company { get; }
-        IUserRepository Employee { get; }
+        IUserRepository User { get; }
         IOutletRepository Outlet { get; }
         IHotelRepository Hotel { get; }
         ICruiseCompanyRepository CruiseCompany { get; }

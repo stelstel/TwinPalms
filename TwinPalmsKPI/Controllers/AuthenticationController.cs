@@ -43,6 +43,7 @@ namespace TwinPalmsKPI.Controllers
         {
 
             var user = _mapper.Map<User>(userForRegistration);
+            
             foreach (int outletId in userForRegistration.Outlets)
             {
                 var outletUser = new OutletUser

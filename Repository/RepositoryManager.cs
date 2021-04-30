@@ -84,10 +84,10 @@ namespace Repository
         {
             get
             {
-                if (_employeeRepository == null)
-                    _employeeRepository = new UserRepository(_repositoryContext);
+                if (_userRepository == null)
+                    _userRepository = new UserRepository(_repositoryContext);
 
-                return _employeeRepository;
+                return _userRepository;
             }
         }
 
@@ -135,6 +135,11 @@ namespace Repository
         public IWeatherRepository Weather
         {
             get => _weatherRepository ??= new WeatherRepository(_repositoryContext);
+        }
+
+        public IUserRepository User
+        {
+            get => _userRepository ??= new UserRepository(_repositoryContext);
         }
 
         public async Task SaveAsync() => await _repositoryContext.SaveChangesAsync();

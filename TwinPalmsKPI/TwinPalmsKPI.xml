@@ -254,6 +254,26 @@
             Updates a roomsReport by ID
             </summary>
         </member>
+        <member name="M:TwinPalmsKPI.Controllers.UsersController.GetUser(System.String)">
+            <summary>
+            Gets employee by ID
+            </summary>
+        </member>
+        <member name="M:TwinPalmsKPI.Controllers.UsersController.GetUsers">
+            <summary>
+            Gets a list of all users
+            </summary>
+        </member>
+        <member name="M:TwinPalmsKPI.Controllers.UsersController.DeleteUser(System.Int32)">
+            <summary>
+            Deletes user by ID
+            </summary>
+        </member>
+        <member name="M:TwinPalmsKPI.Controllers.UsersController.UpdateUser(System.String,Entities.DataTransferObjects.UserForUpdateDto)">
+            <summary>
+            Updates employee by ID
+            </summary>
+        </member>
         <member name="M:TwinPalmsKPI.Controllers.WeatherController.GetAllTypesOfWeather">
             <summary>
             Gets a list of all weathertypes
@@ -277,26 +297,6 @@
         <member name="M:TwinPalmsKPI.Controllers.WeatherController.UpdateWeather(System.Int32,Entities.DataTransferObjects.WeatherForUpdateDto)">
             <summary>
             Updates a weathertype by ID
-            </summary>
-        </member>
-        <member name="M:TwinPalmsKPI.Controllers.UsersController.GetUser(System.String)">
-            <summary>
-            Gets employee by ID
-            </summary>
-        </member>
-        <member name="M:TwinPalmsKPI.Controllers.UsersController.GetUsers">
-            <summary>
-            Gets a list of all users
-            </summary>
-        </member>
-        <member name="M:TwinPalmsKPI.Controllers.UsersController.DeleteUser(System.Int32)">
-            <summary>
-            Deletes employee by ID
-            </summary>
-        </member>
-        <member name="M:TwinPalmsKPI.Controllers.UsersController.UpdateUser(System.String,Entities.DataTransferObjects.UserForUpdateDto)">
-            <summary>
-            Updates employee by ID
             </summary>
         </member>
     </members>
