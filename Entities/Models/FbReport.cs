@@ -30,7 +30,8 @@ namespace Entities.Models
         [Required]
         public string UserId { get; set; }
         public int? LocalEventId { get; set; }
-       
+
+
         // Navigation properties
         public virtual Outlet Outlet { get; set; }
         public virtual User User { get; set; }
