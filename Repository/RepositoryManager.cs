@@ -7,20 +7,20 @@ namespace Repository
 {
     public class RepositoryManager : IRepositoryManager
     {
-        private RepositoryContext _repositoryContext;
-        private ICompanyRepository _companyRepository;
-        private IOutletRepository _outletRepository;
-        private IHotelRepository _hotelRepository;
-        private ICruiseShipRepository _cruiseShipRepository;
-        private ICruiseCompanyRepository _cruiseCompanyRepository;
-        private IFbReportRepository _fbReportRepository;
-        private ILocalEventRepository _localEventRepository;
-        private IUserRepository _userRepository;
-        private IGuestSourceOfBusinessRepository _guestSourceOfBusinessRepository;
-        private IOtherReportRepository _otherReportRepository;
-        private IRoomsReportRepository _roomsReportRepository;
-        private IRoomTypeRepository _roomTypeRepository;
-        private IWeatherRepository _weatherRepository;
+        private RepositoryContext                   _repositoryContext;
+        private ICompanyRepository                  _companyRepository;
+        private IOutletRepository                   _outletRepository;
+        private IHotelRepository                    _hotelRepository;
+        private ICruiseShipRepository               _cruiseShipRepository;
+        private ICruiseCompanyRepository            _cruiseCompanyRepository;
+        private IFbReportRepository                 _fbReportRepository;
+        private ILocalEventRepository               _localEventRepository;
+        private IUserRepository                     _userRepository;
+        private IGuestSourceOfBusinessRepository    _guestSourceOfBusinessRepository;
+        private IOtherReportRepository              _otherReportRepository;
+        private IRoomsReportRepository              _roomsReportRepository;
+        private IRoomTypeRepository                 _roomTypeRepository;
+        private IWeatherRepository                  _weatherRepository;
 
         public RepositoryManager(RepositoryContext repositoryContext)
         {
@@ -137,6 +137,11 @@ namespace Repository
         public IUserRepository User
         {
             get => _userRepository ??= new UserRepository(_repositoryContext);
+        }
+
+        public IRoomsReportRepository RoomsReport
+        {
+            get => _roomsReportRepository ??= new RoomsReportRepository(_repositoryContext);
         }
 
         public async Task SaveAsync() => await _repositoryContext.SaveChangesAsync();

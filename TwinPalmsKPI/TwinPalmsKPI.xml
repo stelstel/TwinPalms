@@ -256,32 +256,24 @@
         </member>
         <member name="M:TwinPalmsKPI.Controllers.UsersController.GetUser(System.String)">
             <summary>
-            Gets a list of all roomsReports
             Gets employee by ID
             </summary>
         </member>
-        <member name="M:TwinPalmsKPI.Controllers.RoomsReportController.GetRoomsReport(System.Int32)">
         <member name="M:TwinPalmsKPI.Controllers.UsersController.GetUsers">
             <summary>
-            Gets a single roomsReport by ID
             Gets a list of all users
             </summary>
         </member>
-        <member name="M:TwinPalmsKPI.Controllers.RoomsReportController.CreateRoomsReport(Entities.DataTransferObjects.RoomsReportForCreationDto)">
         <member name="M:TwinPalmsKPI.Controllers.UsersController.DeleteUser(System.Int32)">
             <summary>
-            Creates a new roomsReport
             Deletes user by ID
             </summary>
         </member>
-        <member name="M:TwinPalmsKPI.Controllers.RoomsReportController.DeleteRoomsReport(System.Int32)">
         <member name="M:TwinPalmsKPI.Controllers.UsersController.UpdateUser(System.String,Entities.DataTransferObjects.UserForUpdateDto)">
             <summary>
-            Deletes a roomsReport by ID
             Updates employee by ID
             </summary>
         </member>
-        <member name="M:TwinPalmsKPI.Controllers.RoomsReportController.UpdateRoomsReport(System.Int32,Entities.DataTransferObjects.RoomsReportForUpdateDto)">
         <member name="M:TwinPalmsKPI.Controllers.WeatherController.GetAllTypesOfWeather">
             <summary>
             Gets a list of all weathertypes
