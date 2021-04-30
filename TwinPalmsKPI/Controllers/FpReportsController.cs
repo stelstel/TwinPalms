@@ -64,6 +64,17 @@ namespace TwinPalmsKPI.Controllers
         {
             var fbReportEntity = _mapper.Map<FbReport>(fbReport);
             _repository.FbReport.CreateFbReport(fbReportEntity);
+            foreach (var weatherId in fbReport.Weathers)
+            {
+                var fbReportWeather = new WeatherFbReport
+                {
+                    WeatherId = weatherId,
+                    FbReportId = fbReportEntity.Id
+                };
+                fbReportEntity.WeatherFbReports.Add(fbReportWeather);
+
+            }
+            
             await _repository.SaveAsync();
             var fbReportToReturn = _mapper.Map<FbReportDto>(fbReportEntity);
             return CreatedAtRoute("FbReportById", new { id = fbReportToReturn.Id }, fbReportToReturn);

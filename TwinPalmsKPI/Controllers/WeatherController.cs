@@ -32,7 +32,7 @@ namespace TwinPalmsKPI.Controllers
         /// Gets a list of all weathertypes
         /// </summary>
         // TODO Add Authorize
-        [HttpGet(Name = "GetWeatherTypes")/*, Authorize(Roles = "Administrator, Manager")*/]
+        [HttpGet(Name = "GetWeatherTypes"), Authorize(Roles = "Admin, SuperAdmin")]
         public async Task<IActionResult> GetAllTypesOfWeather()
         {
             var weathertypes = await _repository.Weather.GetAllTypesOfWeatherAsync(trackChanges: false);
@@ -58,11 +58,11 @@ namespace TwinPalmsKPI.Controllers
         /// <summary>
         /// Creates a new type of weather
         /// </summary>
-        [HttpPost, Authorize(Roles = "Administrator, Manager")]
+        [HttpPost/*, Authorize(Roles = "Administrator, Manager")*/]
         [ServiceFilter(typeof(ValidationFilterAttribute))]
         public async Task<IActionResult> CreateWeather([FromBody] WeatherForCreationDto weather)
         {
-            _logger.LogInfo(User.FindFirst(ClaimTypes.NameIdentifier).Value);
+            //_logger.LogInfo(User.FindFirst(ClaimTypes.NameIdentifier).Value);
             var weatherEntity = _mapper.Map<Weather>(weather);
             _repository.Weather.CreateWeather(weatherEntity);
             await _repository.SaveAsync();
