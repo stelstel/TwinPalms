@@ -11,6 +11,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Text;
+using System.Text.Json;
 
 namespace TwinPalmsKPI.Controllers
 {
@@ -67,11 +68,11 @@ namespace TwinPalmsKPI.Controllers
         {
             var fbReportEntity = _mapper.Map<FbReport>(fbReport);
             _repository.FbReport.CreateFbReport(fbReportEntity);
-            
+
             StringBuilder sbWeatherIds = new StringBuilder();
             int weatherCounter = 0;
 
-            // Adding to juntion table Weather*
+            // Adding to Weather*
             foreach (var weatherId in fbReport.Weathers)
             {
                 var fbReportWeather = new WeatherFbReport
@@ -94,7 +95,7 @@ namespace TwinPalmsKPI.Controllers
             StringBuilder sbGuestSourceOfBusinessIds = new StringBuilder();
             int guestSourceOfBusinessCounter = 0;
 
-            // Adding to junction table *GuestSourceOfBusiness
+            // Adding *GuestSourceOfBusiness
             foreach (var guestSourceOfBusinessId in fbReport.GuestSourceOfBusinesses)
             {
                 var fbReportGuestSourceOfBusiness = new FbReportGuestSourceOfBusiness
@@ -118,28 +119,36 @@ namespace TwinPalmsKPI.Controllers
             var fbReportToReturn = _mapper.Map<FbReportDto>(fbReportEntity);
 
             //return CreatedAtRoute("FbReportById", new { id = fbReportToReturn.Id }, fbReportToReturn);
-            //IActionResult createdAtRoute = CreatedAtRoute("FbReportById", new { id = fbReportToReturn.Id }, fbReportToReturn).;
 
-            StringBuilder sbToReturn = new StringBuilder($"\"Tables\": {fbReportEntity.Tables},{Environment.NewLine}");
-
-            if (fbReportEntity.Food > 0)
-            {
-                sbToReturn.Append($"\"Weathers\": {fbReportEntity.Food}{Environment.NewLine},");
-            }
-
-            sbToReturn.Append($"\"Weathers\": [{Environment.NewLine}");
-            sbToReturn.Append($"{sbWeatherIds.ToString()}{Environment.NewLine}],{Environment.NewLine}");
-            sbToReturn.Append($"\"GuestSourceOfBusinesses\": [{Environment.NewLine}");
-            sbToReturn.Append($" {sbGuestSourceOfBusinessIds.ToString()}{Environment.NewLine}]");
+            StringBuilder sbToReturn = BuildResponse(fbReportEntity, sbWeatherIds, sbGuestSourceOfBusinessIds);
 
             return Ok(sbToReturn.ToString());
 
+        }
 
-            //$"\"Weathers\": [{Environment.NewLine}" +
-            //$"{sbWeatherIds.ToString()}{Environment.NewLine}],{Environment.NewLine}" +
-            //$"\"GuestSourceOfBusinesses\": [{Environment.NewLine}" +
-            //$" {sbGuestSourceOfBusinessIds.ToString()}{Environment.NewLine}]"
-            //);
+        private static StringBuilder BuildResponse(FbReport fbReportEntity, StringBuilder sbWeatherIds, StringBuilder sbGuestSourceOfBusinessIds)
+        {
+            StringBuilder sbToReturn = new StringBuilder();
+
+            sbToReturn.Append($"\"tables\": {fbReportEntity.Tables},{Environment.NewLine}");
+            sbToReturn.Append($"\"food\": {fbReportEntity.Food},{Environment.NewLine}");
+            sbToReturn.Append($"\"beverage\": {fbReportEntity.Beverage},{Environment.NewLine}");
+            sbToReturn.Append($"\"date\": {fbReportEntity.Date},{Environment.NewLine}");
+            sbToReturn.Append($"\"otherincome\": {fbReportEntity.OtherIncome},{Environment.NewLine}");
+            sbToReturn.Append($"\"guestsfromhotel\": {fbReportEntity.GuestsFromHotel},{Environment.NewLine}");
+            sbToReturn.Append($"\"ispublicholiday\": {fbReportEntity.IsPublicHoliday},{Environment.NewLine}");
+            sbToReturn.Append($"\"notes\": \"{fbReportEntity.Notes}\",{Environment.NewLine}");
+            sbToReturn.Append($"\"guestsfromoutsidehotel\": {fbReportEntity.GuestsFromOutsideHotel},{Environment.NewLine}");
+            sbToReturn.Append($"\"outletid\": {fbReportEntity.OutletId},{Environment.NewLine}");
+            sbToReturn.Append($"\"userid\": \"{fbReportEntity.UserId}\",{Environment.NewLine}");
+            sbToReturn.Append($"\"localeventid\": {fbReportEntity.LocalEventId},{Environment.NewLine}");
+
+            sbToReturn.Append($"\"weathers\": [{Environment.NewLine}");
+            sbToReturn.Append($"{sbWeatherIds.ToString()}{Environment.NewLine}],{Environment.NewLine}");
+            sbToReturn.Append($"\"guestsourceofbusinesses\": [{Environment.NewLine}");
+            sbToReturn.Append($" {sbGuestSourceOfBusinessIds.ToString()}{Environment.NewLine}]");
+
+            return sbToReturn;
         }
 
         /// <summary>
