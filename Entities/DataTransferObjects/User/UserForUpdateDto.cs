@@ -4,7 +4,7 @@ using Xunit;
 
 namespace Entities.DataTransferObjects
 {
-    public class EmployeeForUpdateDto : EmployeeForManipulationDto
+    public class UserForUpdateDto : UserForManipulationDto
     {
         
     }

@@ -9,14 +9,14 @@ namespace Repository
     {
         private RepositoryContext _repositoryContext;
         private ICompanyRepository _companyRepository;
-        private IEmployeeRepository _employeeRepository;
+        private IUserRepository _employeeRepository;
         private IOutletRepository _outletRepository;
         private IHotelRepository _hotelRepository;
         private ICruiseShipRepository _cruiseShipRepository;
         private ICruiseCompanyRepository _cruiseCompanyRepository;
         private IFbReportRepository _fbReportRepository;
         private ILocalEventRepository _localEventRepository;
-
+        private IUserRepository _userRepository;
         private IGuestSourceOfBusinessRepository _guestSourceOfBusinessRepository;
         private IOtherReportRepository _otherReportRepository;
         private IRoomsReportRepository _roomsReportRepository;
@@ -81,12 +81,12 @@ namespace Repository
             }
         }
 
-        public IEmployeeRepository Employee
+        public IUserRepository Employee
         {
             get
             {
                 if (_employeeRepository == null)
-                    _employeeRepository = new EmployeeRepository(_repositoryContext);
+                    _employeeRepository = new UserRepository(_repositoryContext);
 
                 return _employeeRepository;
             }
@@ -150,6 +150,11 @@ namespace Repository
         public IGuestSourceOfBusinessRepository GuestSourceOfBusiness 
         {
             get => _guestSourceOfBusinessRepository ??= new GuestSourceOfBusinessRepository(_repositoryContext);
+        }
+
+        public IUserRepository User
+        {
+            get => _userRepository ??= new UserRepository(_repositoryContext);
         }
 
         public async Task SaveAsync() => await _repositoryContext.SaveChangesAsync();

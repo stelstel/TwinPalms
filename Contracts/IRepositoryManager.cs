@@ -8,7 +8,7 @@ namespace Contracts
     public interface IRepositoryManager
     {
         ICompanyRepository Company { get; }
-        IEmployeeRepository Employee { get; }
+        IUserRepository Employee { get; }
         IOutletRepository Outlet { get; }
         IHotelRepository Hotel { get; }
         ICruiseCompanyRepository CruiseCompany { get; }
@@ -20,6 +20,7 @@ namespace Contracts
         IRoomsReportRepository RoomsReport { get; }
         IRoomTypeRepository RoomTypeRepository { get; }
         IWeatherRepository WeatherRepository { get; }
+        IUserRepository User { get; }
 
         Task SaveAsync();
     }
