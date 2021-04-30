@@ -43,6 +43,8 @@ namespace TwinPalmsKPI.Controllers
         /// Gets a single LocalEvent by ID
         /// </summary>
         [HttpGet("{id}", Name = "LocalEventById")]
+
+        [Authorize(Roles = "Admin, SuperAdmin")]
         public async Task<IActionResult> GetLocalEvent(/*int companyId,*/ int id) // TODO Check if parameter has any use, otherwise delete
         {
             var localEvent = await _repository.LocalEvent.GetLocalEventAsync(id, trackChanges: false);
