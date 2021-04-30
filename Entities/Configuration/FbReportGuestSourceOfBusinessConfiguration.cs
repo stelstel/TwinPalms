@@ -25,7 +25,9 @@ namespace Entities.Configuration
             builder.HasOne(d => d.GuestSourceOfBusiness)
                 .WithMany(p => p.FbReportGuestSourceOfBusinesses)
                 .HasForeignKey(d => d.GuestSourceOfBusinessId)
-                .HasConstraintName("FK_FbReport_FbReportGuestSourceOfBusiness");          
+                .HasConstraintName("FK_FbReport_FbReportGuestSourceOfBusiness");  
+            
+            // TODO seed
         }
     }
 }

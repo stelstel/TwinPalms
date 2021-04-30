@@ -18,9 +18,8 @@ namespace Contracts
         ILocalEventRepository LocalEvent { get; }
         IOtherReportRepository OtherReport { get;}       
         IRoomsReportRepository RoomsReport { get; }
-        IRoomTypeRepository RoomTypeRepository { get; }
-        IWeatherRepository WeatherRepository { get; }
-        IUserRepository User { get; }
+        IRoomTypeRepository RoomType { get; }
+        IWeatherRepository Weather { get; }
 
         Task SaveAsync();
     }

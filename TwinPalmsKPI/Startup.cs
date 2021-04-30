@@ -56,6 +56,7 @@ namespace TwinPalmsKPI
 
             services.AddScoped<ValidateUserExistsAttribute>();
             services.AddScoped<IAuthenticationManager, AuthenticationManager>(); // TODO: Is this correct?
+            services.AddScoped<ValidateWeatherExistsAttribute>();
 
             services.Configure<ApiBehaviorOptions>(options =>
             {

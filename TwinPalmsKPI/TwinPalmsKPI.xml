@@ -254,6 +254,31 @@
             Updates a roomsReport by ID
             </summary>
         </member>
+        <member name="M:TwinPalmsKPI.Controllers.WeatherController.GetAllTypesOfWeather">
+            <summary>
+            Gets a list of all weathertypes
+            </summary>
+        </member>
+        <member name="M:TwinPalmsKPI.Controllers.WeatherController.GetWeatherType(System.Int32)">
+            <summary>
+            Gets a single weathertype by ID
+            </summary>
+        </member>
+        <member name="M:TwinPalmsKPI.Controllers.WeatherController.CreateWeather(Entities.DataTransferObjects.WeatherForCreationDto)">
+            <summary>
+            Creates a new type of weather
+            </summary>
+        </member>
+        <member name="M:TwinPalmsKPI.Controllers.WeatherController.DeleteWeather(System.Int32)">
+            <summary>
+            Deletes a Weathertype by ID
+            </summary>
+        </member>
+        <member name="M:TwinPalmsKPI.Controllers.WeatherController.UpdateWeather(System.Int32,Entities.DataTransferObjects.WeatherForUpdateDto)">
+            <summary>
+            Updates a weathertype by ID
+            </summary>
+        </member>
         <member name="M:TwinPalmsKPI.Controllers.UsersController.GetUser(System.String)">
             <summary>
             Gets employee by ID
