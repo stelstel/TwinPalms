@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Entities.Models
 {
-    class Role : IdentityRole
+    public class Role : IdentityRole<string>
     {
     }
 }

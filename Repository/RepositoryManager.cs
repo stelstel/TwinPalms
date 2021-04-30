@@ -9,14 +9,13 @@ namespace Repository
     {
         private RepositoryContext _repositoryContext;
         private ICompanyRepository _companyRepository;
-        private IEmployeeRepository _employeeRepository;
         private IOutletRepository _outletRepository;
         private IHotelRepository _hotelRepository;
         private ICruiseShipRepository _cruiseShipRepository;
         private ICruiseCompanyRepository _cruiseCompanyRepository;
         private IFbReportRepository _fbReportRepository;
         private ILocalEventRepository _localEventRepository;
-
+        private IUserRepository _userRepository;
         private IGuestSourceOfBusinessRepository _guestSourceOfBusinessRepository;
         private IOtherReportRepository _otherReportRepository;
         private IRoomsReportRepository _roomsReportRepository;
@@ -81,12 +80,12 @@ namespace Repository
             }
         }
 
-        public IEmployeeRepository Employee
+        public IUserRepository Employee
         {
             get
             {
                 if (_employeeRepository == null)
-                    _employeeRepository = new EmployeeRepository(_repositoryContext);
+                    _employeeRepository = new UserRepository(_repositoryContext);
 
                 return _employeeRepository;
             }
@@ -103,16 +102,7 @@ namespace Repository
             }
         }
 
-        public IRoomsReportRepository RoomsReport
-        {
-            get
-            {
-                if (_roomsReportRepository == null)
-                    _roomsReportRepository = new RoomsReportRepository(_repositoryContext);
-
-                return _roomsReportRepository;
-            }
-        }
+        
 
         public ILocalEventRepository LocalEvent
         {

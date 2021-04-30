@@ -5,6 +5,10 @@ namespace Entities.Models
 {
     public class User : IdentityUser
     {
+        public User()
+        {
+            OutletUsers = new HashSet<OutletUser>();
+        }
         public string FirstName { get; set; }
         public string LastName { get; set; }
 
@@ -13,6 +17,7 @@ namespace Entities.Models
         public virtual ICollection<OtherReport> OtherReports { get; set; }
         public virtual ICollection<OutletUser> OutletUsers { get; set; }
         public virtual ICollection<RoomsReport> RoomsReports { get; set; }
+        public virtual ICollection<UserRole> Roles { get; set; }
         
     }
 }

@@ -16,11 +16,10 @@ namespace TwinPalmsKPI
             CreateMap<HotelForCreationDto, Hotel>();
             CreateMap<HotelForUpdateDto, Hotel>();
 
-            CreateMap<Employee, EmployeeDto>();
-            CreateMap<EmployeeForCreationDto, Employee>();
-            CreateMap<EmployeeForUpdateDto, Employee>();
-            
+            CreateMap<User, UserDto>();
             CreateMap<UserForRegistrationDto, User>();
+            CreateMap<UserForUpdateDto, User>();
+            
 
             CreateMap<Outlet, OutletDto>();
             CreateMap<OutletForCreationDto, Outlet>();

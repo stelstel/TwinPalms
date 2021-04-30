@@ -79,31 +79,6 @@
             Updates a cruiseShip by ID
             </summary>
         </member>
-        <member name="M:TwinPalmsKPI.Controllers.EmployeesController.GetEmployeesForCompany(System.Int32)">
-            <summary>
-            Gets all employees for selected company
-            </summary>
-        </member>
-        <member name="M:TwinPalmsKPI.Controllers.EmployeesController.GetEmployeeForCompany(System.Int32,System.Int32)">
-            <summary>
-            Gets employee by ID
-            </summary>
-        </member>
-        <member name="M:TwinPalmsKPI.Controllers.EmployeesController.CreateEmployeeForCompany(System.Int32,Entities.DataTransferObjects.EmployeeForCreationDto)">
-            <summary>
-            Creates new employee for selected company
-            </summary>
-        </member>
-        <member name="M:TwinPalmsKPI.Controllers.EmployeesController.DeleteEmployeeForCompany(System.Guid,System.Guid)">
-            <summary>
-            Deletes employee by ID
-            </summary>
-        </member>
-        <member name="M:TwinPalmsKPI.Controllers.EmployeesController.UpdateEmployeeForCompany(System.Guid,System.Guid,Entities.DataTransferObjects.EmployeeForUpdateDto)">
-            <summary>
-            Updates employee by ID
-            </summary>
-        </member>
         <member name="M:TwinPalmsKPI.Controllers.FbReportsController.GetFbReports">
             <summary>
             Gets a list of all fbReports
@@ -281,27 +256,47 @@
         </member>
         <member name="M:TwinPalmsKPI.Controllers.WeatherController.GetAllTypesOfWeather">
             <summary>
-            Gets a list of all weathertypes
+            Gets a list of all roomsReports
             </summary>
         </member>
-        <member name="M:TwinPalmsKPI.Controllers.WeatherController.GetWeatherType(System.Int32)">
+        <member name="M:TwinPalmsKPI.Controllers.RoomsReportController.GetRoomsReport(System.Int32)">
             <summary>
-            Gets a single weathertype by ID
+            Gets a single roomsReport by ID
             </summary>
         </member>
-        <member name="M:TwinPalmsKPI.Controllers.WeatherController.CreateWeather(Entities.DataTransferObjects.WeatherForCreationDto)">
+        <member name="M:TwinPalmsKPI.Controllers.RoomsReportController.CreateRoomsReport(Entities.DataTransferObjects.RoomsReportForCreationDto)">
             <summary>
-            Creates a new type of weather
+            Creates a new roomsReport
             </summary>
         </member>
-        <member name="M:TwinPalmsKPI.Controllers.WeatherController.DeleteWeather(System.Int32)">
+        <member name="M:TwinPalmsKPI.Controllers.RoomsReportController.DeleteRoomsReport(System.Int32)">
             <summary>
-            Deletes a Weathertype by ID
+            Deletes a roomsReport by ID
             </summary>
         </member>
-        <member name="M:TwinPalmsKPI.Controllers.WeatherController.UpdateWeather(System.Int32,Entities.DataTransferObjects.WeatherForUpdateDto)">
+        <member name="M:TwinPalmsKPI.Controllers.RoomsReportController.UpdateRoomsReport(System.Int32,Entities.DataTransferObjects.RoomsReportForUpdateDto)">
             <summary>
             Updates a weathertype by ID
+            </summary>
+        </member>
+        <member name="M:TwinPalmsKPI.Controllers.UsersController.GetUser(System.String)">
+            <summary>
+            Gets employee by ID
+            </summary>
+        </member>
+        <member name="M:TwinPalmsKPI.Controllers.UsersController.GetUsers">
+            <summary>
+            Gets a list of all users
+            </summary>
+        </member>
+        <member name="M:TwinPalmsKPI.Controllers.UsersController.DeleteUser(System.Int32)">
+            <summary>
+            Deletes employee by ID
+            </summary>
+        </member>
+        <member name="M:TwinPalmsKPI.Controllers.UsersController.UpdateUser(System.String,Entities.DataTransferObjects.UserForUpdateDto)">
+            <summary>
+            Updates employee by ID
             </summary>
         </member>
     </members>

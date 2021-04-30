@@ -20,25 +20,39 @@ namespace TwinPalmsKPI.Controllers
         private readonly ILoggerManager _logger; 
         private readonly IMapper _mapper; 
         private readonly UserManager<User> _userManager;
-        private readonly IAuthenticationManager _authManager; 
+        private readonly IAuthenticationManager _authManager;
+        //private IUserRepository _userRepository;
 
         public AuthenticationController(
             ILoggerManager logger, 
             IMapper mapper, 
             UserManager<User> userManager, 
-            IAuthenticationManager authManager)
+            IAuthenticationManager authManager
+            /*IUserRepository userRepository*/)
             {
                 _logger = logger; 
                 _mapper = mapper; 
                 _userManager = userManager; 
                 _authManager = authManager;
+                //_userRepository = userRepository;
             }
 
         [HttpPost]  
         [ServiceFilter(typeof(ValidationFilterAttribute))]
         public async Task<IActionResult> RegisterUser([FromBody] UserForRegistrationDto userForRegistration)
         {
+
             var user = _mapper.Map<User>(userForRegistration);
+            foreach (int outletId in userForRegistration.Outlets)
+            {
+                var outletUser = new OutletUser
+                {
+                    OutletId = outletId,
+                    UserId = user.Id
+                };
+                user.OutletUsers.Add(outletUser);
+            }
+            
             var result = await _userManager.CreateAsync(user, userForRegistration.Password); 
             if (!result.Succeeded)
             {
@@ -48,7 +62,9 @@ namespace TwinPalmsKPI.Controllers
                 }
                 return BadRequest(ModelState);
             }
-            await _userManager.AddToRolesAsync(user, userForRegistration.Roles); 
+            await _userManager.AddToRolesAsync(user, userForRegistration.Roles);
+           
+            
             return StatusCode(201);
         }
         [HttpPost("login")]
@@ -62,8 +78,6 @@ namespace TwinPalmsKPI.Controllers
             }
             return Ok(new {
                 
-                Outlets = new List<dynamic>() { new { Id = 3, Name = "asdf" } },
-                Hotels = new List<dynamic>() { new { Id = 3, Name = "asdf" } },
                 Token = await _authManager.CreateToken() });
         }
     }
