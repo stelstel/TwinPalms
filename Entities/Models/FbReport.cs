@@ -11,6 +11,7 @@ namespace Entities.Models
         public FbReport()
         {
             WeatherFbReports = new HashSet<WeatherFbReport>();
+            FbReportGuestSourceOfBusinesses = new HashSet<FbReportGuestSourceOfBusiness>();
         }
 
         public int Id { get; set; }

@@ -64,6 +64,8 @@ namespace TwinPalmsKPI.Controllers
         {
             var fbReportEntity = _mapper.Map<FbReport>(fbReport);
             _repository.FbReport.CreateFbReport(fbReportEntity);
+
+            // Adding to juntion table Weather*
             foreach (var weatherId in fbReport.Weathers)
             {
                 var fbReportWeather = new WeatherFbReport
@@ -71,10 +73,22 @@ namespace TwinPalmsKPI.Controllers
                     WeatherId = weatherId,
                     FbReportId = fbReportEntity.Id
                 };
-                fbReportEntity.WeatherFbReports.Add(fbReportWeather);
 
+                fbReportEntity.WeatherFbReports.Add(fbReportWeather);
             }
-            
+
+            // Adding to juntion table *GuestSourceOfBusiness
+            foreach (var guestSourceOfBusinessId in fbReport.GuestSourceOfBusinesses)
+            {
+                var fbReportGuestSourceOfBusiness = new FbReportGuestSourceOfBusiness
+                {
+                    GuestSourceOfBusinessId = guestSourceOfBusinessId,
+                    FbReportId = fbReportEntity.Id
+                };
+
+                fbReportEntity.FbReportGuestSourceOfBusinesses.Add(fbReportGuestSourceOfBusiness);
+            }
+
             await _repository.SaveAsync();
             var fbReportToReturn = _mapper.Map<FbReportDto>(fbReportEntity);
             return CreatedAtRoute("FbReportById", new { id = fbReportToReturn.Id }, fbReportToReturn);
