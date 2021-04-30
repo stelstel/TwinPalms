@@ -23,5 +23,6 @@ namespace Entities.DataTransferObjects
         public string UserId { get; set; }
         public int? LocalEventId { get; set; }
         public ICollection<FbReportGuestSourceOfBusiness> fbReportGuestSourceOfBusinesses { get; set; }
+        public ICollection<Weather>  Weathers { get; set; }
     }
 }
