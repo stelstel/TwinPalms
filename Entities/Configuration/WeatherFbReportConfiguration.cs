@@ -31,13 +31,18 @@ namespace Entities.Configuration
             (
                 new WeatherFbReport
                 {
-                    WeatherId = 1,
-                    FbReportId = 3
+                    WeatherId = 6,
+                    FbReportId = 1
                 },
                 new WeatherFbReport
                 {
                     WeatherId = 5,
                     FbReportId = 2
+                },
+                new WeatherFbReport
+                {
+                    WeatherId = 1,
+                    FbReportId = 3
                 },
                 new WeatherFbReport
                 {

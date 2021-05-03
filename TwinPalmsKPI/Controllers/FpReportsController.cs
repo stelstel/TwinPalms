@@ -46,16 +46,31 @@ namespace TwinPalmsKPI.Controllers
         /// Gets a single fbReport by ID
         /// </summary>
         [HttpGet("{id}", Name = "FbReportById")]
-        public async Task<IActionResult> GetFbReport(/*int fbReportId,*/ int id)
+        public async Task<IActionResult> GetFbReport(int id)
         {
             var fbReport = await _repository.FbReport.GetFbReportAsync(id, trackChanges: false);
+
             if (fbReport == null)
             {
                 _logger.LogInfo($"FbReport with id {id} doesn't exist in the database.");
                 return NotFound();
             }
             var fbReportDto = _mapper.Map<FbReportDto>(fbReport);
-            return Ok(fbReportDto);
+
+            // Adding weather Ids
+            ICollection<Weather> fbWeathers = new List<Weather>();
+
+            foreach (var wfbr in fbReport.WeatherFbReports)
+            {
+                if (wfbr.FbReportId == id)
+                {
+                    fbWeathers.Add(new Weather { Id = wfbr.WeatherId });
+                }
+            }
+
+            fbReportDto.Weathers = fbWeathers; ///////////////
+            return CreatedAtRoute("FbReportById", new { id = fbReportDto.Id }, fbReportDto);
+            // return Ok(fbReportDto);
         }
 
         // *********************************************************** POST **************************************
@@ -131,32 +146,6 @@ namespace TwinPalmsKPI.Controllers
             //return Ok(sbToReturn.ToString());
         }
 
-        //************************************ BuildResponse ***********************************************************
-        //private static StringBuilder BuildResponse(FbReport fbReportEntity, StringBuilder sbWeatherIds, StringBuilder sbGuestSourceOfBusinessIds)
-        //{
-        //    StringBuilder sbToReturn = new StringBuilder();
-
-        //    sbToReturn.Append($"\"tables\":         {fbReportEntity.Tables},{Environment.NewLine}");
-        //    sbToReturn.Append($"\"food\":           {fbReportEntity.Food},{Environment.NewLine}");
-        //    sbToReturn.Append($"\"beverage\":       {fbReportEntity.Beverage},{Environment.NewLine}");
-        //    sbToReturn.Append($"\"date\":           {fbReportEntity.Date},{Environment.NewLine}");
-        //    sbToReturn.Append($"\"otherincome\":    {fbReportEntity.OtherIncome},{Environment.NewLine}");
-        //    sbToReturn.Append($"\"guestsfromhotel\": {fbReportEntity.GuestsFromHotel},{Environment.NewLine}");
-        //    sbToReturn.Append($"\"ispublicholiday\": {fbReportEntity.IsPublicHoliday},{Environment.NewLine}");
-        //    sbToReturn.Append($"\"notes\": \"       {fbReportEntity.Notes}\",{Environment.NewLine}");
-        //    sbToReturn.Append($"\"guestsfromoutsidehotel\": {fbReportEntity.GuestsFromOutsideHotel},{Environment.NewLine}");
-        //    sbToReturn.Append($"\"outletid\":       {fbReportEntity.OutletId},{Environment.NewLine}");
-        //    sbToReturn.Append($"\"userid\": \"      {fbReportEntity.UserId}\",{Environment.NewLine}");
-        //    sbToReturn.Append($"\"localeventid\":   {fbReportEntity.LocalEventId},{Environment.NewLine}");
-
-        //    sbToReturn.Append($"\"weathers\": [{Environment.NewLine}");
-        //    sbToReturn.Append($"{sbWeatherIds.ToString()}{Environment.NewLine}],{Environment.NewLine}");
-        //    sbToReturn.Append($"\"guestsourceofbusinesses\": [{Environment.NewLine}");
-        //    sbToReturn.Append($" {sbGuestSourceOfBusinessIds.ToString()}{Environment.NewLine}]");
-
-        //    return sbToReturn;
-        //}
-
         /// <summary>
         /// Deletes a fbReport by ID
         /// </summary>
@@ -185,5 +174,31 @@ namespace TwinPalmsKPI.Controllers
             var fbReportToReturn = _mapper.Map<FbReportDto>(fbReportEntity);
             return CreatedAtRoute("FbReportById", new { id = fbReportToReturn.Id }, fbReportToReturn);
         }
+
+        //************************************ BuildResponse ***********************************************************
+        //private static StringBuilder BuildResponse(FbReport fbReportEntity, StringBuilder sbWeatherIds, StringBuilder sbGuestSourceOfBusinessIds)
+        //{
+        //    StringBuilder sbToReturn = new StringBuilder();
+
+        //    sbToReturn.Append($"\"tables\":         {fbReportEntity.Tables},{Environment.NewLine}");
+        //    sbToReturn.Append($"\"food\":           {fbReportEntity.Food},{Environment.NewLine}");
+        //    sbToReturn.Append($"\"beverage\":       {fbReportEntity.Beverage},{Environment.NewLine}");
+        //    sbToReturn.Append($"\"date\":           {fbReportEntity.Date},{Environment.NewLine}");
+        //    sbToReturn.Append($"\"otherincome\":    {fbReportEntity.OtherIncome},{Environment.NewLine}");
+        //    sbToReturn.Append($"\"guestsfromhotel\": {fbReportEntity.GuestsFromHotel},{Environment.NewLine}");
+        //    sbToReturn.Append($"\"ispublicholiday\": {fbReportEntity.IsPublicHoliday},{Environment.NewLine}");
+        //    sbToReturn.Append($"\"notes\": \"       {fbReportEntity.Notes}\",{Environment.NewLine}");
+        //    sbToReturn.Append($"\"guestsfromoutsidehotel\": {fbReportEntity.GuestsFromOutsideHotel},{Environment.NewLine}");
+        //    sbToReturn.Append($"\"outletid\":       {fbReportEntity.OutletId},{Environment.NewLine}");
+        //    sbToReturn.Append($"\"userid\": \"      {fbReportEntity.UserId}\",{Environment.NewLine}");
+        //    sbToReturn.Append($"\"localeventid\":   {fbReportEntity.LocalEventId},{Environment.NewLine}");
+
+        //    sbToReturn.Append($"\"weathers\": [{Environment.NewLine}");
+        //    sbToReturn.Append($"{sbWeatherIds.ToString()}{Environment.NewLine}],{Environment.NewLine}");
+        //    sbToReturn.Append($"\"guestsourceofbusinesses\": [{Environment.NewLine}");
+        //    sbToReturn.Append($" {sbGuestSourceOfBusinessIds.ToString()}{Environment.NewLine}]");
+
+        //    return sbToReturn;
+        //}
     }
 }
