@@ -54,6 +54,8 @@ namespace TwinPalmsKPI
             CreateMap<GuestSourceOfBusinessForUpdateDto, GuestSourceOfBusiness>();
 
             CreateMap<Weather, WeatherDto>();
+            CreateMap<WeatherForCreationDto, Weather>();
+            CreateMap<WeatherForUpdateDto, Weather>();
         }
     }
 }
