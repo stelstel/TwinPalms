@@ -16,6 +16,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using EmailService;
 
 namespace TwinPalmsKPI
 {
@@ -43,6 +44,11 @@ namespace TwinPalmsKPI
             services.AddAuthentication(); 
             services.ConfigureIdentity();
             services.ConfigureJWT(Configuration);
+            
+            var emailConfig = Configuration.GetSection("EmailConfiguration").Get<EmailConfiguration>();
+            services.AddSingleton(emailConfig);
+            services.AddScoped<IEmailSender, EmailSender>();
+
             services.AddScoped<ValidationFilterAttribute>(); 
             services.AddScoped<ValidateCompanyExistsAttribute>();
             services.AddScoped<ValidateOutletExistsAttribute>();

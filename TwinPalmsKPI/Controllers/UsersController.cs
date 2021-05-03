@@ -20,7 +20,6 @@ namespace TwinPalmsKPI.Controllers
         private readonly IRepositoryManager _repository;
         private readonly ILoggerManager _logger;
         private readonly IMapper _mapper;
-        private readonly UserManager<User> _userManager;
 
         public UsersController(IRepositoryManager repository, ILoggerManager logger, IMapper mapper)
         {
