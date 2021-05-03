@@ -57,19 +57,9 @@ namespace TwinPalmsKPI.Controllers
             }
             var fbReportDto = _mapper.Map<FbReportDto>(fbReport);
 
-            // Adding weather Ids
-            ICollection<Weather> fbWeathers = new List<Weather>();
+            // Adding weathers
+           fbReportDto.Weathers = fbReport.WeatherFbReports.Select(fbwr => fbwr.Weather).ToList();
 
-            foreach (var wfbr in fbReport.WeatherFbReports)
-            {
-                if (wfbr.FbReportId == id)
-                {
-                    fbWeathers.Add(new Weather { Id = wfbr.WeatherId });
-                }
-            }
-
-            fbReportDto.Weathers = fbReportDto.Weathers = fbReport.WeatherFbReports.Select(fbwr => fbwr.Weather).ToList(); // fbWeathers; ///////////////
-            // return CreatedAtRoute("FbReportById", new { id = fbReportDto.Id }, fbReportDto);
             return Ok(fbReportDto);
         }
 
