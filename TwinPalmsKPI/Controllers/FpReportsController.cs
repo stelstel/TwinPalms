@@ -55,10 +55,14 @@ namespace TwinPalmsKPI.Controllers
                 _logger.LogInfo($"FbReport with id {id} doesn't exist in the database.");
                 return NotFound();
             }
+
             var fbReportDto = _mapper.Map<FbReportDto>(fbReport);
 
             // Adding weathers
-           fbReportDto.Weathers = fbReport.WeatherFbReports.Select(fbwr => fbwr.Weather).ToList();
+            fbReportDto.Weathers = fbReport.WeatherFbReports.Select(fbwr => fbwr.Weather).ToList();
+
+            // Adding guestSourceOfBusinesses
+            fbReportDto.GuestSourceOfBusinesses = fbReport.FbReportGuestSourceOfBusinesses.Select(fbwr => fbwr.GuestSourceOfBusiness).ToList();
 
             return Ok(fbReportDto);
         }

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Text.Json.Serialization;
 
 
 #nullable disable
@@ -14,9 +15,12 @@ namespace Entities.Models
         }
 
         public int Id { get; set; }
+
+        [JsonIgnore]
         public string SourceOfBusiness { get; set; }
 
         // Navigation property
+        [JsonIgnore]
         public virtual ICollection<FbReportGuestSourceOfBusiness> FbReportGuestSourceOfBusinesses { get; set; }
     }
 }
