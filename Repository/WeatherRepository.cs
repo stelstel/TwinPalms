@@ -24,7 +24,7 @@ namespace Repository
 
         public async Task<IEnumerable<Weather>> GetAllTypesOfWeatherAsync(bool trackChanges) =>
             await FindAll(trackChanges)
-            .OrderBy(c => c.TypeOfWeather)
+            .OrderBy(c => c.Id)
             .ToListAsync();
 
         public async Task<Weather> GetTypeOfWeatherAsync(int id, bool trackChanges) =>

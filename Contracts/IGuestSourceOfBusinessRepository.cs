@@ -11,7 +11,6 @@ namespace Contracts
     {
         Task<IEnumerable<GuestSourceOfBusiness>> GetAllGuestSourceOfBusinessesAsync(bool trackChanges);
         Task<GuestSourceOfBusiness> GetGuestSourceOfBusinessAsync(int id, bool trackChanges);
-
         void CreateGuestSourceOfBusiness(GuestSourceOfBusiness guestSourceOfBusiness);
         void DeleteGuestSourceOfBusiness(GuestSourceOfBusiness guestSourceOfBusiness);
         void UpdateGuestSourceOfBusiness(GuestSourceOfBusiness guestSourceOfBusiness);

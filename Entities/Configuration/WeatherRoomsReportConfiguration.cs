@@ -26,6 +26,36 @@ namespace Entities.Configuration
                 .WithMany(p => p.WeatherRoomsReports)
                 .HasForeignKey(d => d.WeatherId)
                 .HasConstraintName("FK_Weather_WeatherRoomsReport");
+
+            // Seeder
+            builder.HasData
+            (
+                new WeatherRoomsReport
+                {
+                    WeatherId = 2,
+                    RoomsReportId = 1
+                },
+                new WeatherRoomsReport
+                {
+                    WeatherId = 3,
+                    RoomsReportId = 1
+                },
+                new WeatherRoomsReport
+                {
+                    WeatherId = 5,
+                    RoomsReportId = 2
+                },
+                new WeatherRoomsReport
+                {
+                    WeatherId = 1,
+                    RoomsReportId = 3
+                },
+                new WeatherRoomsReport
+                {
+                    WeatherId = 2,
+                    RoomsReportId = 3
+                }
+            );
         }
     }
 }

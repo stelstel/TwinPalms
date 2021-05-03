@@ -19,10 +19,13 @@ namespace Entities.DataTransferObjects
         public bool IsPublicHoliday { get; set; }
         public string Notes { get; set; }
         public DateTime Date { get; set; }
-
         public int OutletId { get; set; }
         public string UserId { get; set; }
         public int? LocalEventId { get; set; }
-        public ICollection<Weather>  Weathers { get; set; }
+
+        public ICollection<FbReportGuestSourceOfBusiness> GuestSourceOfBusinesses { get; set; }
+        public ICollection<Weather> Weathers { get; set; }
+
+
     }
 }

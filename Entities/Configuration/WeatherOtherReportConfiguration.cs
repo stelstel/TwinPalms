@@ -26,6 +26,35 @@ namespace Entities.Configuration
                 .WithMany(p => p.WeatherOtherReports)
                 .HasForeignKey(d => d.WeatherId)
                 .HasConstraintName("FK_Weather_WeatherOtherReport");
+
+            builder.HasData
+            (
+                new WeatherOtherReport
+                {
+                    WeatherId = 1,
+                    OtherReportId = 3
+                },
+                new WeatherOtherReport
+                {
+                    WeatherId = 5,
+                    OtherReportId = 2
+                },
+                new WeatherOtherReport
+                {
+                    WeatherId = 4,
+                    OtherReportId = 2
+                },
+                new WeatherOtherReport
+                {
+                    WeatherId = 2,
+                    OtherReportId = 3
+                },
+                new WeatherOtherReport
+                {
+                    WeatherId = 3,
+                    OtherReportId = 3
+                }
+            );
         }
     }
 }

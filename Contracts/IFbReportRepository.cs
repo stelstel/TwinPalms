@@ -10,7 +10,6 @@ namespace Contracts
     {
         Task<IEnumerable<FbReport>> GetAllFbReportsAsync(bool trackChanges);
         Task<FbReport> GetFbReportAsync(int id, bool trackChanges);
-
         void CreateFbReport(FbReport fbReport);
         void DeleteFbReport(FbReport fbReport);
         void UpdateFbReport(FbReport fbReport);
