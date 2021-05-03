@@ -46,6 +46,17 @@ namespace Entities.Configuration
                     RoleId = "d83846e6-7a92-41d6-8c6e-9394df0b35f3"
                 }
             );
+
+
+            builder.HasOne(ur => ur.Role)
+            .WithMany(r => r.UserRoles)
+            .HasForeignKey(ur => ur.RoleId)
+            .IsRequired();
+
+            builder.HasOne(ur => ur.User)
+                .WithMany(r => r.UserRoles)
+                .HasForeignKey(ur => ur.UserId)
+                .IsRequired();
         }
     }
 }

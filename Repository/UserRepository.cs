@@ -3,7 +3,6 @@ using Entities;
 using Entities.DataTransferObjects;
 using Entities.Models;
 using Microsoft.EntityFrameworkCore;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -13,10 +12,11 @@ namespace Repository
 {
     public class UserRepository : RepositoryBase<User>, IUserRepository
     {
+        private readonly RepositoryContext _repositoryContext;
         public UserRepository(RepositoryContext repositoryContext)
             :base(repositoryContext)
         {
-             
+            _repositoryContext = repositoryContext;
         }
 
 
@@ -31,26 +31,42 @@ namespace Repository
             .Include(u => u.UserRoles).ThenInclude(ur => ur.Role)
             .SingleOrDefaultAsync();
 
+
         // TODO IEnumerable<> ska inte vara dynamic
-        public async Task<IEnumerable<dynamic>> GetUsersAsync(bool trackChanges) =>
-             await FindAll(trackChanges)
-            .Include(u => u.OutletUsers).ThenInclude(ou => ou.Outlet)
-            .Include(u => u.UserRoles).ThenInclude(ur => ur.Role)
-            
-            //.OrderBy(o => o.Outlet)
-            .Select(u => new
-            {
-                Id = u.Id,
-                FirstName = u.FirstName,
-                LastName = u.LastName,
-                UserName = u.UserName,
-        
-                Email = u.Email,
-                PhoneNumber = u.Email,
-                Outlets = u.OutletUsers.Select(ou => ou.Outlet).ToList(),
-                Roles = u.UserRoles.Select(ur => ur.Role.Name).ToList()
-            })
-            .ToListAsync();
+        public async Task<IEnumerable<dynamic>> GetUsersAsync(bool trackChanges)
+        {
+            var list = await (from user in _repositoryContext.Users
+                              join userRoles in _repositoryContext.UserRoles on user.Id equals userRoles.UserId
+                              join role in _repositoryContext.Roles on userRoles.RoleId equals role.Id
+                              select new
+                              {
+                                  UserId = user.Id,
+                                  UserName = user.UserName,
+                                  Roles = new List<Role> {
+                                      new Role{Id = role.Id, Name = role.Name}
+                                  }
+
+                              }).GroupBy(x => x.UserName).ToListAsync();
+            return list;
+            await FindAll(trackChanges)
+                    .Include(u => u.OutletUsers).ThenInclude(ou => ou.Outlet)
+                    .Include(u => u.UserRoles).ThenInclude(ur => ur.Role)
+
+                    //.OrderBy(o => o.Outlet)
+                    .Select(u => new
+                    {
+                        Id = u.Id,
+                        FirstName = u.FirstName,
+                        LastName = u.LastName,
+                        UserName = u.UserName,
+
+                        Email = u.Email,
+                        PhoneNumber = u.Email,
+                        Outlets = u.OutletUsers.Select(ou => ou.Outlet).ToList(),
+                        Roles = u.UserRoles.Select(ur => ur.Role.Name).ToList()
+                    })
+                    .ToListAsync();
+        }
 
         /*public void AddOutletsAsync(string[] outletIds, string userId, bool trackChanges)
         {

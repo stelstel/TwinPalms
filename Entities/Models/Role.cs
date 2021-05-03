@@ -7,7 +7,8 @@ using System.Threading.Tasks;
 
 namespace Entities.Models
 {
-    public class Role : IdentityRole<string>
+    public class Role : IdentityRole
     {
+        public virtual ICollection<UserRole> UserRoles { get; set; }
     }
 }

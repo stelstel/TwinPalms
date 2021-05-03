@@ -9,6 +9,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Identity;
+
 namespace TwinPalmsKPI.Controllers
 {
     [Route("api/[controller]")]
@@ -18,6 +20,8 @@ namespace TwinPalmsKPI.Controllers
         private readonly IRepositoryManager _repository;
         private readonly ILoggerManager _logger;
         private readonly IMapper _mapper;
+        private readonly UserManager<User> _userManager;
+
         public UsersController(IRepositoryManager repository, ILoggerManager logger, IMapper mapper)
         {
             _repository = repository;
@@ -49,6 +53,7 @@ namespace TwinPalmsKPI.Controllers
         [HttpGet(Name = "GetUsers")]
         public async Task<IActionResult> GetUsers()
         {
+            
 
             var users = await _repository.User.GetUsersAsync(trackChanges: false);
             //var usersDto = _mapper.Map<IEnumerable<UserDto>>(users);
