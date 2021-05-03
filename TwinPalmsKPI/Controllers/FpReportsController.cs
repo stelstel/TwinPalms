@@ -68,10 +68,9 @@ namespace TwinPalmsKPI.Controllers
                 }
             }
 
-            fbReportDto.Weathers = fbWeathers; 
-            return CreatedAtRoute("FbReportById", new { id = fbReportDto.Id }, fbReportDto);
-
-            // return Ok(fbReportDto);
+            fbReportDto.Weathers = fbReportDto.Weathers = fbReport.WeatherFbReports.Select(fbwr => fbwr.Weather).ToList(); // fbWeathers; ///////////////
+            // return CreatedAtRoute("FbReportById", new { id = fbReportDto.Id }, fbReportDto);
+            return Ok(fbReportDto);
         }
 
         // *********************************************************** POST **************************************
