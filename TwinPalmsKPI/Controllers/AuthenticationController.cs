@@ -11,6 +11,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using EmailService;
+using Helpers;
 
 namespace TwinPalmsKPI.Controllers
 {
@@ -42,6 +43,7 @@ namespace TwinPalmsKPI.Controllers
         [ServiceFilter(typeof(ValidationFilterAttribute))]
         public async Task<IActionResult> RegisterUser([FromBody] UserForRegistrationDto userForRegistration)
         {
+            
 
             var user = _mapper.Map<User>(userForRegistration);
             if (userForRegistration.Outlets.Count > 0)
@@ -57,7 +59,9 @@ namespace TwinPalmsKPI.Controllers
             }
             }
             
-            var result = await _userManager.CreateAsync(user, userForRegistration.Password); 
+            var password = Password.GenerateRandomPassword();
+            var result = await _userManager.CreateAsync(user, password); 
+            //await _userManager.AddPasswordAsync(user, password);
             if (!result.Succeeded)
             {
                 foreach (var error in result.Errors)
@@ -66,9 +70,14 @@ namespace TwinPalmsKPI.Controllers
                 }
                 return BadRequest(ModelState);
             }
+
             await _userManager.AddToRolesAsync(user, userForRegistration.Roles);
-            var token = await _userManager.GeneratePasswordResetTokenAsync(user);
-            var message = new Message(new string[] { user.Email }, "Set new password", "token = "+token);
+            
+            // This can be used if we want to send the password directly by email
+            // and use a token instead
+            //var token = await _userManager.GeneratePasswordResetTokenAsync(user);
+            
+            var message = new Message(new string[] { user.Email }, "Welcome", "Your username is " + user.UserName + " and password is " + password);
             _emailSender.SendEmail(message);
 
             return StatusCode(201);

@@ -299,5 +299,15 @@
             Updates a weathertype by ID
             </summary>
         </member>
+        <member name="M:Helpers.Password.GenerateRandomPassword(Microsoft.AspNetCore.Identity.PasswordOptions)">
+            <summary>
+            Generates a Random Password
+            respecting the given strength requirements.
+            See https://www.ryadel.com/en/c-sharp-random-password-generator-asp-net-core-mvc/
+            </summary>
+            <param name="opts">A valid PasswordOptions object
+            containing the password strength requirements.</param>
+            <returns>A random password</returns>
+        </member>
     </members>
 </doc>
