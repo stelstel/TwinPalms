@@ -36,8 +36,7 @@ namespace Repository
 
         public async Task<IEnumerable<FbReport>> GetAllOutletFbReportsForOneOutlet(int outletId, DateTime fromDate, DateTime toDate, bool trackChanges) =>
             await FindAll(trackChanges)
-            .Where(fbr => fbr.Id == outletId)
-            // And between from and to
+            .Where(fbr => fbr.OutletId == outletId && fbr.Date >= fromDate && fbr.Date <= toDate)
             .OrderByDescending(o => o.Date)
             .ToListAsync();
 

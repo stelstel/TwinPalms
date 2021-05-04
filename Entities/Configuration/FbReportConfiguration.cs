@@ -39,6 +39,51 @@ namespace Entities.Configuration
                 new FbReport
                 {
                     Id = 2,
+                    Tables = 14,
+                    Food = 19000,
+                    Beverage = 31000,
+                    OtherIncome = 9100,
+                    GuestsFromHotel = 25,
+                    GuestsFromOutsideHotel = 4,
+                    IsPublicHoliday = false,
+                    Notes = "Typical day",
+                    Date = DateTime.Now.AddMonths(-1),
+                    OutletId = 1,
+                    UserId = "35947f01-393b-442c-b815-d6d9f7d4b81e"
+                },
+                new FbReport
+                {
+                    Id = 3,
+                    Tables = 19,
+                    Food = 15000,
+                    Beverage = 21000,
+                    OtherIncome = 6500,
+                    GuestsFromHotel = 35,
+                    GuestsFromOutsideHotel = 18,
+                    IsPublicHoliday = false,
+                    Notes = "Lorem",
+                    Date = DateTime.Now.AddMonths(-2),
+                    OutletId = 1,
+                    UserId = "35947f01-393b-442c-b815-d6d9f7d4b81e"
+                },
+                new FbReport
+                {
+                    Id = 4,
+                    Tables = 16,
+                    Food = 27000,
+                    Beverage = 28000,
+                    OtherIncome = 51000,
+                    GuestsFromHotel = 11,
+                    GuestsFromOutsideHotel = 44,
+                    IsPublicHoliday = false,
+                    Notes = "Ipsum",
+                    Date = DateTime.Now.AddMonths(-3),
+                    OutletId = 1,
+                    UserId = "35947f01-393b-442c-b815-d6d9f7d4b81e"
+                },
+                new FbReport
+                {
+                    Id = 5,
                     Tables = 10,
                     Food = 88000,
                     Beverage = 91000,
@@ -54,7 +99,7 @@ namespace Entities.Configuration
                 },
                 new FbReport
                 {
-                    Id = 3,
+                    Id = 6,
                     Tables = 20,
                     Food = 21000,
                     Beverage = 32000,

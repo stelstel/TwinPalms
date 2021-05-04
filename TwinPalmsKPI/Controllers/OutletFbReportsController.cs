@@ -44,7 +44,7 @@ namespace TwinPalmsKPI.Controllers
         // [HttpGet("{outletid}/fbReport", Name = "OutletById")] //////
 
         /// <summary>
-        /// Gets a All FbReports by Outlet Id and Dates
+        /// Gets a All FbReports by Outlet Id between two DateTimes
         /// </summary>
         [HttpGet("/outlet/{outletId}/fbReports", Name = "OutletFbReportsByIdAndDate")]
         public async Task<IActionResult> GetOutletFbReport(int outletId, DateTime fromDate, DateTime toDate)
