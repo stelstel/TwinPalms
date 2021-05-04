@@ -31,13 +31,13 @@ namespace TwinPalmsKPI.Controllers
         /// Gets a list of all roomsReports
         /// </summary>
         // TODO Add Authorize
-        [HttpGet(Name = "GetRoomsReport")/*, Authorize(Roles = "Administrator, Manager")*/] 
+       /* [HttpGet(Name = "GetRoomsReport")*//*, Authorize(Roles = "Administrator, Manager")*//*]
         public async Task<IActionResult> GetRoomsReport()
         {
             var roomsReports = await _repository.RoomsReport.GetAllRoomsReportsAsync(trackChanges: false);
             var roomsReportsDto = _mapper.Map<IEnumerable<RoomsReportDto>>(roomsReports);
             return Ok(roomsReportsDto);
-        }
+        }*/
 
         /// <summary>
         /// Gets a single roomsReport by ID
@@ -66,7 +66,7 @@ namespace TwinPalmsKPI.Controllers
             _repository.RoomsReport.CreateRoomsReport(roomsReportEntity);
             await _repository.SaveAsync();
             var roomsReportToReturn = _mapper.Map<RoomsReportDto>(roomsReportEntity);
-            return CreatedAtRoute("oomsReportById", new { id = roomsReportToReturn.Id }, roomsReportToReturn);
+            return CreatedAtRoute("RoomsReportById", new { id = roomsReportToReturn.Id }, roomsReportToReturn);
         }
 
         /// <summary>
@@ -96,6 +96,28 @@ namespace TwinPalmsKPI.Controllers
             await _repository.SaveAsync();
             var roomsReportToReturn = _mapper.Map<RoomsReportDto>(roomsReportEntity);
             return CreatedAtRoute("RoomsReportById", new { id = roomsReportToReturn.Id }, roomsReportToReturn);
+        }
+        /// <summary>
+        /// Gets a list of all roomsReports
+        /// </summary>
+        // TODO Add Authorize
+        [HttpGet()/*, Authorize(Roles = "Administrator, Manager")*/]
+        public async Task<IActionResult> GetReportsData([FromQuery] int[] roomTypes, DateTime fromDate, DateTime toDate)
+        {
+            var roomsReports = await _repository.RoomsReport.GetAllRoomsReportsDataAsync(roomTypes, fromDate, toDate, false);
+            //var roomsReportsDto = _mapper.Map<IEnumerable<RoomsReportDto>>(roomsReports);
+            var query = roomsReports.Select(x => new
+            {
+                Date = x.Date,
+                NewRoomNights = x.NewRoomNights,
+                TodaysRevenuePickup = x.TodaysRevenuePickup,
+                OtherRevenue = x.OtherRevenue,
+                IsPublicHoliday = x.IsPublicHoliday,
+                RoomTypeId = x.RoomTypeId,
+                HotelId = x.RoomType.HotelId,
+                LocalEvent = x.LocalEventId
+            }).ToArray();
+            return Ok(query);
         }
     }
 }

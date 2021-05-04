@@ -24,7 +24,7 @@ namespace Entities.Models
         public int RoomTypeId { get; set; }
         public int? LocalEventId { get; set; }
 
-        // Navigation properties
+        // Navigation properties    
         public virtual User Logger { get; set; }
         public virtual RoomType RoomType { get; set; }
         public virtual LocalEvent LocalEvent { get; set; }
