@@ -36,8 +36,10 @@ namespace Repository
 
         public async Task<FbReport> GetFbReportAsync(int id, bool trackChanges) =>
             await FindByCondition(o => o.Id.Equals(id), trackChanges)
-            .Include(wfbr => wfbr.WeatherFbReports) // Include junction table
-            .ThenInclude(w => w.Weather)
+            .Include(fbr => fbr.FbReportGuestSourceOfBusinesses) // Include guestSourceOFBusiness junction table
+                .ThenInclude(gsb => gsb.GuestSourceOfBusiness)
+            .Include(fbr => fbr.WeatherFbReports) // Include weather junction table
+                .ThenInclude(w => w.Weather)
             .SingleOrDefaultAsync();
     }
 }

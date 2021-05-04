@@ -36,13 +36,28 @@ namespace Entities.Configuration
                 },
                 new FbReportGuestSourceOfBusiness
                 {
-                    FbReportId = 3,
+                    FbReportId = 1,
+                    GuestSourceOfBusinessId = 4
+                },
+                new FbReportGuestSourceOfBusiness
+                {
+                    FbReportId = 2,
                     GuestSourceOfBusinessId = 1
                 },
                 new FbReportGuestSourceOfBusiness
                 {
                     FbReportId = 2,
                     GuestSourceOfBusinessId = 2
+                },
+                new FbReportGuestSourceOfBusiness
+                {
+                    FbReportId = 3,
+                    GuestSourceOfBusinessId = 1
+                },
+                new FbReportGuestSourceOfBusiness
+                {
+                    FbReportId = 3,
+                    GuestSourceOfBusinessId = 5
                 }
             );
         }
