@@ -34,6 +34,13 @@ namespace Repository
             .OrderByDescending(o => o.Date)
             .ToListAsync();
 
+        public async Task<IEnumerable<FbReport>> GetAllOutletFbReportsForOneOutlet(int outletId, DateTime fromDate, DateTime toDate, bool trackChanges) =>
+            await FindAll(trackChanges)
+            .Where(fbr => fbr.Id == outletId)
+            // And between from and to
+            .OrderByDescending(o => o.Date)
+            .ToListAsync();
+
         public async Task<FbReport> GetFbReportAsync(int id, bool trackChanges) =>
             await FindByCondition(o => o.Id.Equals(id), trackChanges)
             .Include(fbr => fbr.FbReportGuestSourceOfBusinesses) // Include guestSourceOFBusiness junction table

@@ -204,6 +204,11 @@
             Updates a OtherReport by ID
             </summary>
         </member>
+        <member name="M:TwinPalmsKPI.Controllers.OutletsFbReportsController.GetOutletFbReport(System.Int32,System.DateTime,System.DateTime)">
+            <summary>
+            Gets a All FbReports by Outlet Id and Dates
+            </summary>
+        </member>
         <member name="M:TwinPalmsKPI.Controllers.OutletsController.GetOutlets">
             <summary>
             Gets a list of all Outlets
