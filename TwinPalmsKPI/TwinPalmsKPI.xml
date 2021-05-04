@@ -256,7 +256,7 @@
         </member>
         <member name="M:TwinPalmsKPI.Controllers.UsersController.GetUser(System.String)">
             <summary>
-            Gets employee by ID
+            Gets user by ID
             </summary>
         </member>
         <member name="M:TwinPalmsKPI.Controllers.UsersController.GetUsers">
@@ -271,7 +271,7 @@
         </member>
         <member name="M:TwinPalmsKPI.Controllers.UsersController.UpdateUser(System.String,Entities.DataTransferObjects.UserForUpdateDto)">
             <summary>
-            Updates employee by ID
+            Updates user by ID
             </summary>
         </member>
         <member name="M:TwinPalmsKPI.Controllers.WeatherController.GetAllTypesOfWeather">

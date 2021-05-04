@@ -20,16 +20,18 @@ namespace TwinPalmsKPI.Controllers
         private readonly IRepositoryManager _repository;
         private readonly ILoggerManager _logger;
         private readonly IMapper _mapper;
+        private readonly UserManager<User> _userManager;
 
-        public UsersController(IRepositoryManager repository, ILoggerManager logger, IMapper mapper)
+        public UsersController(IRepositoryManager repository, ILoggerManager logger, IMapper mapper, UserManager<User> userManager)
         {
             _repository = repository;
             _logger = logger;
             _mapper = mapper;
+            _userManager = userManager;
         }
 
         /// <summary>
-        /// Gets employee by ID
+        /// Gets user by ID
         /// </summary>
         [HttpGet("{id}", Name = "UserById")]
         public async Task<IActionResult> GetUser(string id)
@@ -43,7 +45,7 @@ namespace TwinPalmsKPI.Controllers
             }
 
             var user = _mapper.Map<UserDto>(userDb);
-            return Ok(userDb);
+            return Ok(user);
         }
 
         /// <summary>
@@ -55,9 +57,28 @@ namespace TwinPalmsKPI.Controllers
             
 
             var users = await _repository.User.GetUsersAsync(trackChanges: false);
-            //var usersDto = _mapper.Map<IEnumerable<UserDto>>(users);
-            //return Ok(usersDto); 
-            return Ok(users);
+            _mapper.Map<IEnumerable<UserDto>>(users);
+            
+            var result = users.Select(async u => new UserDto
+            {
+                Id = u.Id,
+                FirstName = u.FirstName,
+                LastName = u.LastName,
+                UserName = u.UserName,
+                Email = u.Email,
+                Outlets = u.OutletUsers.Select(ou => ou.Outlet).ToList(),
+                Hotels = u.HotelUsers.Select(hu => hu.Hotel).ToList(),
+                Roles = await _userManager.GetRolesAsync(u)
+            });
+            
+            
+            /*foreach (var item in usersDto)
+            {
+                item.Outlets = users.Where(u => u.Id == item.Id).FirstOrDefault().OutletUsers.Select(ou => ou.Outlet).ToList();
+                item.Hotels = users.Where(u => u.Id == item.Id).FirstOrDefault().OutletUsers.Select(ou => ou.Outlet).ToList();
+                item.Roles = users.Where(u => u.Id == item.Id).FirstOrDefault().UserRoles.Select(ur => ur.Role).ToList();
+            }*/
+            return Ok(result); 
         }
         /// <summary>
         /// Deletes user by ID
@@ -74,7 +95,7 @@ namespace TwinPalmsKPI.Controllers
             return NoContent();
         }
         /// <summary>
-        /// Updates employee by ID
+        /// Updates user by ID
         /// </summary>
         [HttpPut("{id}")]
         [ServiceFilter(typeof(ValidationFilterAttribute))]

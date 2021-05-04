@@ -7,6 +7,7 @@ namespace Entities.Models
     {
         public User()
         {
+            UserRoles = new HashSet<UserRole>();
             OutletUsers = new HashSet<OutletUser>();
         }
         public string FirstName { get; set; }

@@ -33,27 +33,25 @@ namespace Repository
 
 
         // TODO IEnumerable<> ska inte vara dynamic
-        public async Task<IEnumerable<dynamic>> GetUsersAsync(bool trackChanges)
+        public async Task<IEnumerable<User>> GetUsersAsync(bool trackChanges)
         {
-            var users = await (from user in _repositoryContext.Users
-                               join userRoles in _repositoryContext.UserRoles on user.Id equals userRoles.UserId
-                               join role in _repositoryContext.Roles on userRoles.RoleId equals role.Id
+            /*return await (from user in _repositoryContext.Users
+                          join userRoles in _repositoryContext.UserRoles on user.Id equals userRoles.UserId
+                          join role in _repositoryContext.Roles on userRoles.RoleId equals role.Id
 
-                               select new
-                               {
-                                   UserId = user.Id,
-                                   user.UserName,
-                                   UserRoles = role.Name
+                          select new User
+                          {
+                              Id = user.Id,
+                              UserName = user.UserName,
+                              UserRoles = 
 
-                               }).OrderBy(x => x.UserId).ToListAsync();
-            return users;
-            
-            /*await FindAll(trackChanges)
+                          }).OrderBy(x => x.UserId).ToListAsync();*/
+
+            return await FindAll(trackChanges)
                     .Include(u => u.OutletUsers).ThenInclude(ou => ou.Outlet)
-                    .Include(u => u.UserRoles).ThenInclude(ur => ur.Role)
-
-                    //.OrderBy(o => o.Outlet)
-                    .Select(u => new
+                    .Include(u => u.HotelUsers).ThenInclude(hu => hu.Hotel)
+                    //.Include(u => u.UserRoles).ThenInclude(ur => ur.Role)
+                    .Select(u => new User
                     {
                         Id = u.Id,
                         FirstName = u.FirstName,
@@ -62,10 +60,11 @@ namespace Repository
 
                         Email = u.Email,
                         PhoneNumber = u.Email,
-                        Outlets = u.OutletUsers.Select(ou => ou.Outlet).ToList(),
-                        Roles = u.UserRoles.Select(ur => ur.Role.Name).ToList()
+                        OutletUsers = u.OutletUsers/*.Select(ou => ou.Outlet)*/.ToList(),
+                        HotelUsers = u.HotelUsers/*.Select(ou => ou.Outlet)*/.ToList()
+
                     })
-                    .ToListAsync();*/
+                    .ToListAsync();
         }
 
         /*public void AddOutletsAsync(string[] outletIds, string userId, bool trackChanges)

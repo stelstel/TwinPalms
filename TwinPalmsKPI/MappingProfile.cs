@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Entities.DataTransferObjects;
 using Entities.Models;
+using System.Collections.Generic;
 
 namespace TwinPalmsKPI
 {
@@ -17,6 +18,7 @@ namespace TwinPalmsKPI
             CreateMap<HotelForUpdateDto, Hotel>();
 
             CreateMap<User, UserDto>();
+            //CreateMap<IEnumerable<User>, UserDto>();
             CreateMap<UserForRegistrationDto, User>();
             CreateMap<UserForUpdateDto, User>();
             
