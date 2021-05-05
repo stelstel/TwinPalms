@@ -102,9 +102,9 @@ namespace TwinPalmsKPI.Controllers
         /// </summary>
         // TODO Add Authorize
         [HttpGet()/*, Authorize(Roles = "Administrator, Manager")*/]
-        public async Task<IActionResult> GetReportsData([FromQuery] int[] roomTypes, DateTime fromDate, DateTime toDate)
+        public async Task<IActionResult> GetReportsData(int hotelId, [FromQuery] int[] roomTypes, DateTime fromDate, DateTime toDate)
         {
-            var roomsReports = await _repository.RoomsReport.GetAllRoomsReportsDataAsync(roomTypes, fromDate, toDate, false);
+            var roomsReports = await _repository.RoomsReport.GetAllRoomsReportsDataAsync(hotelId, roomTypes, fromDate, toDate, false);
             //var roomsReportsDto = _mapper.Map<IEnumerable<RoomsReportDto>>(roomsReports);
             var query = roomsReports.Select(x => new
             {

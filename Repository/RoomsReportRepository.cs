@@ -26,7 +26,7 @@ namespace Repository
             await FindAll(trackChanges)
             .OrderBy(c => c.RoomTypeId) //sorts by roomtype, which is assumed unique between hotels
             .ToListAsync();
-        public async Task<IEnumerable<RoomsReport>> GetAllRoomsReportsDataAsync(int[] roomTypes, DateTime fromDate, DateTime toDate, bool trackChanges) =>
+        public async Task<IEnumerable<RoomsReport>> GetAllRoomsReportsDataAsync(int hotelId, int[] roomTypes, DateTime fromDate, DateTime toDate, bool trackChanges) =>
             await FindAll(trackChanges)
             .Include(rr => rr.RoomType).ThenInclude(rt => rt.Hotel)
             .Where(rr => roomTypes.Contains(rr.RoomTypeId) && rr.Date >= fromDate && rr.Date <= toDate)

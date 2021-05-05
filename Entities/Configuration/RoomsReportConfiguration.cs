@@ -39,7 +39,7 @@ namespace Entities.Configuration
                                 "dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco",
                     Date = DateTime.Now,
                     RoomTypeId = 1,
-                    LoggerId = "35947f01-393b-442c-b815-d6d9f7d4b81e"
+                    LoggerId = "b0b22e53-3ad2-4a0a-9e58-aa0a70a5a157"
                 },
                 new RoomsReport
                 {
@@ -50,9 +50,9 @@ namespace Entities.Configuration
                     IsPublicHoliday = false,
                     Notes = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et " +
                             "dolore magna aliqua. Ut enim ad minim veniam",
-                    Date = DateTime.Now.AddDays(-1),
+                    Date = DateTime.Now,
                     RoomTypeId = 2,
-                    LoggerId = "35947f01-393b-442c-b815-d6d9f7d4b81e"
+                    LoggerId = "b0b22e53-3ad2-4a0a-9e58-aa0a70a5a157"
                 },
                 new RoomsReport
                 {
@@ -62,10 +62,227 @@ namespace Entities.Configuration
                     OtherRevenue = 6000,
                     IsPublicHoliday = false,
                     Notes = "Lorem ipsum dolor sit amet",
-                    Date = DateTime.Now.AddDays(-2),
+                    Date = DateTime.Now,
                     RoomTypeId = 3,
                     LoggerId = "b0b22e53-3ad2-4a0a-9e58-aa0a70a5a157"
-                }
+                },
+                 new RoomsReport
+                 {
+                     Id = 4,
+                     NewRoomNights = 4,
+                     TodaysRevenuePickup = 39400,
+                     OtherRevenue = 6000,
+                     IsPublicHoliday = false,
+                     Notes = "Lorem ipsum dolor sit amet",
+                     Date = DateTime.Now,
+                     RoomTypeId = 4,
+                     LoggerId = "b0b22e53-3ad2-4a0a-9e58-aa0a70a5a157"
+                 },
+                  new RoomsReport
+                  {
+                      Id = 5,
+                      NewRoomNights = 4,
+                      TodaysRevenuePickup = 39400,
+                      OtherRevenue = 6000,
+                      IsPublicHoliday = false,
+                      Notes = "Lorem ipsum dolor sit amet",
+                      Date = DateTime.Now,
+                      RoomTypeId = 5,
+                      LoggerId = "35947f01-393b-442c-b815-d6d9f7d4b81e"
+                  },
+                   new RoomsReport
+                   {
+                       Id = 6,
+                       NewRoomNights = 4,
+                       TodaysRevenuePickup = 39400,
+                       OtherRevenue = 6000,
+                       IsPublicHoliday = false,
+                       Notes = "Lorem ipsum dolor sit amet",
+                       Date = DateTime.Now,
+                       RoomTypeId = 6,
+                       LoggerId = "35947f01-393b-442c-b815-d6d9f7d4b81e"
+                   },
+                    new RoomsReport
+                    {
+                        Id = 7,
+                        NewRoomNights = 4,
+                        TodaysRevenuePickup = 39400,
+                        OtherRevenue = 6000,
+                        IsPublicHoliday = false,
+                        Notes = "Lorem ipsum dolor sit amet",
+                        Date = DateTime.Now,
+                        RoomTypeId = 7,
+                        LoggerId = "35947f01-393b-442c-b815-d6d9f7d4b81e"
+                    },
+                     new RoomsReport
+                     {
+                         Id = 8,
+                         NewRoomNights = 4,
+                         TodaysRevenuePickup = 39400,
+                         OtherRevenue = 6000,
+                         IsPublicHoliday = false,
+                         Notes = "Lorem ipsum dolor sit amet",
+                         Date = DateTime.Now.AddDays(-1),
+                         RoomTypeId = 1,
+                         LoggerId = "b0b22e53-3ad2-4a0a-9e58-aa0a70a5a157"
+                     },
+                      new RoomsReport
+                      {
+                          Id = 9,
+                          NewRoomNights = 4,
+                          TodaysRevenuePickup = 39400,
+                          OtherRevenue = 6000,
+                          IsPublicHoliday = false,
+                          Notes = "Lorem ipsum dolor sit amet",
+                          Date = DateTime.Now.AddDays(-1),
+                          RoomTypeId = 2,
+                          LoggerId = "b0b22e53-3ad2-4a0a-9e58-aa0a70a5a157"
+                      },
+                       new RoomsReport
+                       {
+                           Id = 10,
+                           NewRoomNights = 4,
+                           TodaysRevenuePickup = 39400,
+                           OtherRevenue = 6000,
+                           IsPublicHoliday = false,
+                           Notes = "Lorem ipsum dolor sit amet",
+                           Date = DateTime.Now.AddDays(-1),
+                           RoomTypeId = 3,
+                           LoggerId = "b0b22e53-3ad2-4a0a-9e58-aa0a70a5a157"
+                       },
+                        new RoomsReport
+                        {
+                            Id = 11,
+                            NewRoomNights = 4,
+                            TodaysRevenuePickup = 39400,
+                            OtherRevenue = 6000,
+                            IsPublicHoliday = false,
+                            Notes = "Lorem ipsum dolor sit amet",
+                            Date = DateTime.Now.AddDays(-1),
+                            RoomTypeId = 4,
+                            LoggerId = "b0b22e53-3ad2-4a0a-9e58-aa0a70a5a157"
+                        },
+                         new RoomsReport
+                         {
+                             Id = 12,
+                             NewRoomNights = 4,
+                             TodaysRevenuePickup = 39400,
+                             OtherRevenue = 6000,
+                             IsPublicHoliday = false,
+                             Notes = "Lorem ipsum dolor sit amet",
+                             Date = DateTime.Now.AddDays(-1),
+                             RoomTypeId = 5,
+                             LoggerId = "35947f01-393b-442c-b815-d6d9f7d4b81e"
+                         },
+                          new RoomsReport
+                          {
+                              Id = 13,
+                              NewRoomNights = 4,
+                              TodaysRevenuePickup = 39400,
+                              OtherRevenue = 6000,
+                              IsPublicHoliday = false,
+                              Notes = "Lorem ipsum dolor sit amet",
+                              Date = DateTime.Now.AddDays(-1),
+                              RoomTypeId = 6,
+                              LoggerId = "35947f01-393b-442c-b815-d6d9f7d4b81e"
+                          },
+                           new RoomsReport
+                           {
+                               Id = 14,
+                               NewRoomNights = 4,
+                               TodaysRevenuePickup = 39400,
+                               OtherRevenue = 6000,
+                               IsPublicHoliday = false,
+                               Notes = "Lorem ipsum dolor sit amet",
+                               Date = DateTime.Now.AddDays(-1),
+                               RoomTypeId = 7,
+                               LoggerId = "35947f01-393b-442c-b815-d6d9f7d4b81e"
+                           },
+                            new RoomsReport
+                            {
+                                Id = 15,
+                                NewRoomNights = 3,
+                                TodaysRevenuePickup = 22700,
+                                OtherRevenue = 4600,
+                                IsPublicHoliday = false,
+                                Notes = "Lorem ipsum dolor sit amet",
+                                Date = DateTime.Now.AddDays(-2),
+                                RoomTypeId = 1,
+                                LoggerId = "b0b22e53-3ad2-4a0a-9e58-aa0a70a5a157"
+                            },
+                             new RoomsReport
+                             {
+                                 Id = 16,
+                                 NewRoomNights = 4,
+                                 TodaysRevenuePickup = 39400,
+                                 OtherRevenue = 6000,
+                                 IsPublicHoliday = false,
+                                 Notes = "Lorem ipsum dolor sit amet",
+                                 Date = DateTime.Now.AddDays(-2),
+                                 RoomTypeId = 2,
+                                 LoggerId = "b0b22e53-3ad2-4a0a-9e58-aa0a70a5a157"
+                             },
+                              new RoomsReport
+                              {
+                                  Id = 17,
+                                  NewRoomNights = 4,
+                                  TodaysRevenuePickup = 39400,
+                                  OtherRevenue = 6000,
+                                  IsPublicHoliday = false,
+                                  Notes = "Lorem ipsum dolor sit amet",
+                                  Date = DateTime.Now.AddDays(-2),
+                                  RoomTypeId = 3,
+                                  LoggerId = "b0b22e53-3ad2-4a0a-9e58-aa0a70a5a157"
+                              },
+                               new RoomsReport
+                               {
+                                   Id = 18,
+                                   NewRoomNights = 4,
+                                   TodaysRevenuePickup = 39400,
+                                   OtherRevenue = 6000,
+                                   IsPublicHoliday = false,
+                                   Notes = "Lorem ipsum dolor sit amet",
+                                   Date = DateTime.Now.AddDays(-2),
+                                   RoomTypeId = 4,
+                                   LoggerId = "b0b22e53-3ad2-4a0a-9e58-aa0a70a5a157"
+                               },
+                                new RoomsReport
+                                {
+                                    Id = 19,
+                                    NewRoomNights = 4,
+                                    TodaysRevenuePickup = 39400,
+                                    OtherRevenue = 6000,
+                                    IsPublicHoliday = false,
+                                    Notes = "Lorem ipsum dolor sit amet",
+                                    Date = DateTime.Now.AddDays(-2),
+                                    RoomTypeId = 5,
+                                    LoggerId = "35947f01-393b-442c-b815-d6d9f7d4b81e"
+                                },
+                                 new RoomsReport
+                                 {
+                                     Id = 20,
+                                     NewRoomNights = 4,
+                                     TodaysRevenuePickup = 39400,
+                                     OtherRevenue = 6000,
+                                     IsPublicHoliday = false,
+                                     Notes = "Lorem ipsum dolor sit amet",
+                                     Date = DateTime.Now.AddDays(-2),
+                                     RoomTypeId = 6,
+                                     LoggerId = "35947f01-393b-442c-b815-d6d9f7d4b81e"
+                                 },
+                                  new RoomsReport
+                                  {
+                                      Id = 21,
+                                      NewRoomNights = 4,
+                                      TodaysRevenuePickup = 39400,
+                                      OtherRevenue = 6000,
+                                      IsPublicHoliday = false,
+                                      Notes = "Lorem ipsum dolor sit amet",
+                                      Date = DateTime.Now.AddDays(-2),
+                                      RoomTypeId = 7,
+                                      LoggerId = "35947f01-393b-442c-b815-d6d9f7d4b81e"
+                                  }
+
             );
         }
     }
