@@ -10,6 +10,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Text;
 
 namespace TwinPalmsKPI.Controllers
 {
@@ -105,7 +106,35 @@ namespace TwinPalmsKPI.Controllers
             // Needed to include also reports from toDate day
             DateTime toDateCorrected = toDate.AddDays(1);
 
+            StringBuilder sbOutletIds = new StringBuilder();
+
+            int outletIdCounter = 0;
+
+            foreach (var oi in outletIds)
+            {
+                outletIdCounter++;
+
+                if (await _repository.FbReport.GetFbReportAsync(oi, false) == null)
+                {
+                    _logger.LogInfo($"Outlet with id {oi} doesn't exist in the database.");
+                    return NotFound();
+                }
+
+                sbOutletIds.Append($"{oi}");
+
+                if (outletIdCounter < outletIds.Count())
+                {
+                    sbOutletIds.Append($", ");
+                }
+            }
+
             var outletFbReports = await _repository.FbReport.GetAllOutletFbReportsForOutlets(outletIds, fromDate, toDateCorrected, trackChanges: false);
+
+            if (outletFbReports.Count() == 0)
+            {
+                _logger.LogInfo($"No reports for Outlet with ids {sbOutletIds.ToString()} found in the database between dates {fromDate} and {toDateCorrected}.");
+                return NotFound();
+            }
 
             var outletFbReportsToReturn = outletFbReports.Select(o => new
             {
