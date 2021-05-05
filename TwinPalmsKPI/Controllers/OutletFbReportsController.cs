@@ -29,7 +29,8 @@ namespace TwinPalmsKPI.Controllers
             _mapper = mapper;
         }
 
-        // ************************************* GetOutletFbReport ***********************************************
+        // TODO delete?
+        // ************************************* GetOutletFbReports ***********************************************
         /// <summary>
         /// Gets a All FbReports by Outlet Id between two Dates
         /// </summary>
@@ -43,7 +44,7 @@ namespace TwinPalmsKPI.Controllers
         ///     
         /// </remarks>     
         [HttpGet("/outlet/fbReports/{outletId}", Name = "OutletFbReportsByIdAndDate")]
-        public async Task<IActionResult> GetOutletFbReport(int outletId, DateTime fromDate, DateTime toDate)
+        public async Task<IActionResult> GetOutletFbReports(int outletId, DateTime fromDate, DateTime toDate)
         {
             // Needed to include also reports from toDate day
             DateTime toDateCorrected = toDate.AddDays(1);
@@ -85,7 +86,7 @@ namespace TwinPalmsKPI.Controllers
             return Ok(outletFbReportsToReturn);
         }
 
-        // ***************************************** GetOutletFbReports ***************************************************
+        // ***************************************** GetOutletsFbReports ***************************************************
         /// <summary>
         /// Gets a All FbReports by many Outlet Ids between two Dates
         /// </summary>
@@ -99,37 +100,12 @@ namespace TwinPalmsKPI.Controllers
         ///     
         /// </remarks>     
         [HttpGet("/outlets/fbReports", Name = "OutletsFbReportsByIdAndDate")]
-        public async Task<IActionResult> GetOutletFbReports( [FromQuery] int[] outletIds, DateTime fromDate, DateTime toDate)
+        public async Task<IActionResult> GetOutletsFbReports( [FromQuery] int[] outletIds, DateTime fromDate, DateTime toDate)
         {
             // Needed to include also reports from toDate day
             DateTime toDateCorrected = toDate.AddDays(1);
 
-            ////ICollection<Outlet> outlets = null;
-
-            ////Outlet outlet;
-
-            ////foreach (var oi in outletIds)
-            ////{
-            ////    outlet = await _repository.Outlet.GetOutletAsync(oi, trackChanges: false);
-
-            ////    if (outlet == null)
-            ////    {
-            ////        _logger.LogInfo($"Outlets with id {oi} doesn't exist in the database.");
-            ////        return NotFound();
-            ////    }
-
-            ////    outlets.Add(outlet);
-            ////}
-
-            ////var outlet = await _repository.Outlet.GetOutletAsync(outletId, trackChanges: false);
-
             var outletFbReports = await _repository.FbReport.GetAllOutletFbReportsForOutlets(outletIds, fromDate, toDateCorrected, trackChanges: false);
-
-            //if (outletFbReports == null)
-            //{
-            //    _logger.LogInfo($"No reports for Outlet with id {outletId} found in the database between {fromDate} and {toDateCorrected}.");
-            //    return NotFound();
-            //}
 
             var outletFbReportsToReturn = outletFbReports.Select(o => new
             {
@@ -150,7 +126,6 @@ namespace TwinPalmsKPI.Controllers
             }).ToArray();
 
             return Ok(outletFbReportsToReturn);
-            //return Ok(); ////////////////////////
         }
     }
 }

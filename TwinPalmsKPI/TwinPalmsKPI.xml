@@ -204,7 +204,7 @@
             Updates a OtherReport by ID
             </summary>
         </member>
-        <member name="M:TwinPalmsKPI.Controllers.OutletsFbReportsController.GetOutletFbReport(System.Int32,System.DateTime,System.DateTime)">
+        <member name="M:TwinPalmsKPI.Controllers.OutletsFbReportsController.GetOutletFbReports(System.Int32,System.DateTime,System.DateTime)">
             <summary>
             Gets a All FbReports by Outlet Id between two Dates
             </summary>
@@ -218,7 +218,7 @@
                 
             </remarks>     
         </member>
-        <member name="M:TwinPalmsKPI.Controllers.OutletsFbReportsController.GetOutletFbReports(System.Int32[],System.DateTime,System.DateTime)">
+        <member name="M:TwinPalmsKPI.Controllers.OutletsFbReportsController.GetOutletsFbReports(System.Int32[],System.DateTime,System.DateTime)">
             <summary>
             Gets a All FbReports by many Outlet Ids between two Dates
             </summary>
