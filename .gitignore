@@ -4,6 +4,7 @@
 ## Get latest from https://github.com/github/gitignore/blob/master/VisualStudio.gitignore
 TwinPalmsKPI/logs/*
 TwinPalmsKPI/internal_logs/*
+nlog.config
 # User-specific files
 *.rsuser
 *.suo

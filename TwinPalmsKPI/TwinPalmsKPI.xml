@@ -234,11 +234,6 @@
             Updates a Outlet by ID
             </summary>
         </member>
-        <member name="M:TwinPalmsKPI.Controllers.RoomsReportController.GetRoomsReport">
-            <summary>
-            Gets a list of all roomsReports
-            </summary>
-        </member>
         <member name="M:TwinPalmsKPI.Controllers.RoomsReportController.GetRoomsReport(System.Int32)">
             <summary>
             Gets a single roomsReport by ID
@@ -257,6 +252,11 @@
         <member name="M:TwinPalmsKPI.Controllers.RoomsReportController.UpdateRoomsReport(System.Int32,Entities.DataTransferObjects.RoomsReportForUpdateDto)">
             <summary>
             Updates a roomsReport by ID
+            </summary>
+        </member>
+        <member name="M:TwinPalmsKPI.Controllers.RoomsReportController.GetReportsData(System.Int32,System.Int32[],System.DateTime,System.DateTime)">
+            <summary>
+            Gets a list of all roomsReports
             </summary>
         </member>
         <member name="M:TwinPalmsKPI.Controllers.UsersController.GetUser(System.String)">

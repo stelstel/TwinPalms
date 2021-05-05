@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Text.Json.Serialization;
 
 #nullable disable
 
@@ -18,8 +19,11 @@ namespace Entities.Models
         public int CompanyId { get; set; }
 
         // Navigation properties
+        [JsonIgnore]
         public virtual Company Company { get; set; }
+        [JsonIgnore]
         public virtual ICollection<HotelUser> HotelUsers { get; set; }
+        [JsonIgnore]
         public virtual ICollection<RoomType> RoomTypes { get; set; }
     }
 }
