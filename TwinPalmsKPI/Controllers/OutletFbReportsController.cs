@@ -10,6 +10,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+
 namespace TwinPalmsKPI.Controllers
 {
     //[Route("api/[controller]")]
@@ -44,7 +45,7 @@ namespace TwinPalmsKPI.Controllers
         public async Task<IActionResult> GetOutletFbReport(int outletId, DateTime fromDate, DateTime toDate)
         {
             var outlet = await _repository.Outlet.GetOutletAsync(outletId, trackChanges: false);
-            
+
             if (outlet == null)
             {
                 _logger.LogInfo($"Outlets with id {outletId} doesn't exist in the database.");
@@ -53,31 +54,32 @@ namespace TwinPalmsKPI.Controllers
 
             var outletFbReports = await _repository.FbReport.GetAllOutletFbReportsForOneOutlet(outletId, fromDate, toDate, trackChanges: false);
 
-           if (outletFbReports == null)
+            if (outletFbReports == null)
             {
                 _logger.LogInfo($"No reports for Outlet with id {outletId} found in the database between {fromDate} and {toDate}.");
                 return NotFound();
             }
 
-            //var outletFbReportsToReturn = outletFbReports.Select(o => new
-            //{
-            //    Beverage = o.Beverage,
-            //    Date = o.Date,
-            //    FbReportGuestSourceOfBusinesses = o (o => o.)
+            var outletFbReportsToReturn = outletFbReports.Select(o => new
+            {
+                Tables = o.Tables,
+                Food = o.Food,
+                Beverage = o.Beverage,
+                OtherIncome = o.OtherIncome,
+                Date = o.Date,
+                GuestsFromHotel = o.GuestsFromHotel,
+                GuestsFromOutsideHotel = o.GuestsFromOutsideHotel,
+                IsPublicHoliday = o.IsPublicHoliday,
+                Notes = o.Notes,
+                OutletId = o.OutletId,
+                UserId = o.UserId,
+                LocalEventId = o.LocalEventId,
+                GuestSourceOfBusinesses = o.FbReportGuestSourceOfBusinesses.Select(f => f.GuestSourceOfBusinessId).ToList(),
+                Weathers = o.WeatherFbReports.Select(w => w.Weather).ToList()
+            }).ToArray();
 
-            //    //Date = x.Date,
-            //    //NewRoomNights = x.NewRoomNights,
-            //    //TodaysRevenuePickup = x.TodaysRevenuePickup,
-            //    //OtherRevenue = x.OtherRevenue,
-            //    //IsPublicHoliday = x.IsPublicHoliday,
-            //    //RoomTypeId = x.RoomTypeId,
-            //    //HotelId = x.RoomType.HotelId,
-            //    //LocalEvent = x.LocalEventId
-            //}).ToArray();
-
-
-            // return Ok(outletFbReportsToReturn);
-            return Ok();
+            return Ok(outletFbReportsToReturn);
         }
     }
 }
+
