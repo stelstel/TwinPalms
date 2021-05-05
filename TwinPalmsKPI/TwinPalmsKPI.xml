@@ -209,12 +209,12 @@
             Gets a All FbReports by Outlet Id between two Dates
             </summary>
             <remarks>
-            Gets all FbReports between fromDate and toDate, not including toDate
+            Gets all FbReports between fromDate and toDate, including toDate
             
-            For example: to get the reports from 2021-05-04
+            For example: to get the reports from only 2021-05-04
             
                 fromDate = 2021-05-04
-                toDate = 2021-05-05
+                toDate = 2021-05-04
                 
             </remarks>     
         </member>

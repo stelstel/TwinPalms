@@ -33,17 +33,20 @@ namespace TwinPalmsKPI.Controllers
         /// Gets a All FbReports by Outlet Id between two Dates
         /// </summary>
         /// <remarks>
-        /// Gets all FbReports between fromDate and toDate, not including toDate
+        /// Gets all FbReports between fromDate and toDate, including toDate
         /// 
-        /// For example: to get the reports from 2021-05-04
+        /// For example: to get the reports from only 2021-05-04
         /// 
         ///     fromDate = 2021-05-04
-        ///     toDate = 2021-05-05
+        ///     toDate = 2021-05-04
         ///     
         /// </remarks>     
         [HttpGet("/outlet/{outletId}/fbReports", Name = "OutletFbReportsByIdAndDate")]
         public async Task<IActionResult> GetOutletFbReport(int outletId, DateTime fromDate, DateTime toDate)
         {
+            // Needed to include also reports from toDate day
+            DateTime toDateCorrected = toDate.AddDays(1);
+
             var outlet = await _repository.Outlet.GetOutletAsync(outletId, trackChanges: false);
 
             if (outlet == null)
@@ -52,11 +55,11 @@ namespace TwinPalmsKPI.Controllers
                 return NotFound();
             }
 
-            var outletFbReports = await _repository.FbReport.GetAllOutletFbReportsForOneOutlet(outletId, fromDate, toDate, trackChanges: false);
+            var outletFbReports = await _repository.FbReport.GetAllOutletFbReportsForOneOutlet(outletId, fromDate, toDateCorrected, trackChanges: false);
 
             if (outletFbReports == null)
             {
-                _logger.LogInfo($"No reports for Outlet with id {outletId} found in the database between {fromDate} and {toDate}.");
+                _logger.LogInfo($"No reports for Outlet with id {outletId} found in the database between {fromDate} and {toDateCorrected}.");
                 return NotFound();
             }
 
@@ -74,7 +77,7 @@ namespace TwinPalmsKPI.Controllers
                 OutletId = o.OutletId,
                 UserId = o.UserId,
                 LocalEventId = o.LocalEventId,
-                GuestSourceOfBusinesses = o.FbReportGuestSourceOfBusinesses.Select(f => f.GuestSourceOfBusinessId).ToList(),
+                GuestSourceOfBusinesses = o.FbReportGuestSourceOfBusinesses.Select(f => f.GuestSourceOfBusiness).ToList(),
                 Weathers = o.WeatherFbReports.Select(w => w.Weather).ToList()
             }).ToArray();
 
