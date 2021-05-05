@@ -206,8 +206,17 @@
         </member>
         <member name="M:TwinPalmsKPI.Controllers.OutletsFbReportsController.GetOutletFbReport(System.Int32,System.DateTime,System.DateTime)">
             <summary>
-            Gets a All FbReports by Outlet Id between two DateTimes
+            Gets a All FbReports by Outlet Id between two Dates
             </summary>
+            <remarks>
+            Gets all FbReports between fromDate and toDate, not including toDate
+            
+            For example: to get the reports from 2021-05-04
+            
+                fromDate = 2021-05-04
+                toDate = 2021-05-05
+                
+            </remarks>     
         </member>
         <member name="M:TwinPalmsKPI.Controllers.OutletsController.GetOutlets">
             <summary>

@@ -29,23 +29,17 @@ namespace TwinPalmsKPI.Controllers
         }
 
         /// <summary>
-        /// Gets a list of all Outlets
+        /// Gets a All FbReports by Outlet Id between two Dates
         /// </summary>
-        // TODO Add Authorize
-        //[HttpGet(Name = "GetOutlets")/*, Authorize(Roles = "Administrator, Manager")*/] 
-        //public async Task<IActionResult> GetOutlets()
-        //{
-        //    var outlets = await _repository.Outlet.GetAllOutletsAsync(trackChanges: false);
-        //    var outletsDto = _mapper.Map<IEnumerable<OutletDto>>(outlets);
-        //    return Ok(outletsDto);
-        //}
-
-        // {outletId}/fbReport ////////////////////////////////////////
-        // [HttpGet("{outletid}/fbReport", Name = "OutletById")] //////
-
-        /// <summary>
-        /// Gets a All FbReports by Outlet Id between two DateTimes
-        /// </summary>
+        /// <remarks>
+        /// Gets all FbReports between fromDate and toDate, not including toDate
+        /// 
+        /// For example: to get the reports from 2021-05-04
+        /// 
+        ///     fromDate = 2021-05-04
+        ///     toDate = 2021-05-05
+        ///     
+        /// </remarks>     
         [HttpGet("/outlet/{outletId}/fbReports", Name = "OutletFbReportsByIdAndDate")]
         public async Task<IActionResult> GetOutletFbReport(int outletId, DateTime fromDate, DateTime toDate)
         {
@@ -58,59 +52,32 @@ namespace TwinPalmsKPI.Controllers
             }
 
             var outletFbReports = await _repository.FbReport.GetAllOutletFbReportsForOneOutlet(outletId, fromDate, toDate, trackChanges: false);
-            
-            if (outletFbReports == null)
+
+           if (outletFbReports == null)
             {
                 _logger.LogInfo($"No reports for Outlet with id {outletId} found in the database between {fromDate} and {toDate}.");
                 return NotFound();
             }
 
-            //var outletDto = _mapper.Map<OutletDto>(outlet);
-            //var outletFbReportsDto = _mapper.Map<FbReportDto>(outletFbReports);
-            return Ok(outletFbReports);
+            //var outletFbReportsToReturn = outletFbReports.Select(o => new
+            //{
+            //    Beverage = o.Beverage,
+            //    Date = o.Date,
+            //    FbReportGuestSourceOfBusinesses = o (o => o.)
+
+            //    //Date = x.Date,
+            //    //NewRoomNights = x.NewRoomNights,
+            //    //TodaysRevenuePickup = x.TodaysRevenuePickup,
+            //    //OtherRevenue = x.OtherRevenue,
+            //    //IsPublicHoliday = x.IsPublicHoliday,
+            //    //RoomTypeId = x.RoomTypeId,
+            //    //HotelId = x.RoomType.HotelId,
+            //    //LocalEvent = x.LocalEventId
+            //}).ToArray();
+
+
+            // return Ok(outletFbReportsToReturn);
+            return Ok();
         }
-
-        /// <summary>
-        /// Creates a new Outlet
-        /// </summary>
-        //[HttpPost]
-        //[ServiceFilter(typeof(ValidationFilterAttribute))]
-        //public async Task<IActionResult> CreateOutlet([FromBody] OutletForCreationDto outlet)
-        //{
-        //    var outletEntity = _mapper.Map<Outlet>(outlet);
-        //    _repository.Outlet.CreateOutlet(outletEntity);
-        //    await _repository.SaveAsync();
-        //    var outletToReturn = _mapper.Map<OutletDto>(outletEntity);
-        //    return CreatedAtRoute("OutletById", new { id = outletToReturn.Id }, outletToReturn);
-        //}
-
-        /// <summary>
-        /// Deletes a Outlet by ID
-        /// </summary>
-        //[HttpDelete("{id}")]
-        //[ServiceFilter(typeof(ValidateOutletExistsAttribute))]
-        //public async Task<IActionResult> DeleteOutlet(int id)
-        //{
-        //    var outlet = HttpContext.Items["outlet"] as Outlet;
-        //    _repository.Outlet.DeleteOutlet(outlet);
-        //    await _repository.SaveAsync();
-        //    return NoContent();
-        //}
-
-        /// <summary>
-        /// Updates a Outlet by ID
-        /// </summary>
-        //[HttpPut("{id}")]
-        //[ServiceFilter(typeof(ValidationFilterAttribute))]
-        //[ServiceFilter(typeof(ValidateOutletExistsAttribute))]
-        //public async Task<IActionResult> UpdateOutlet(int id, [FromBody] OutletForUpdateDto outlet)
-        //{
-        //    var outletEntity = HttpContext.Items["outlet"] as Outlet;
-        //    _repository.Outlet.UpdateOutlet(outletEntity);
-        //    _mapper.Map(outlet, outletEntity);
-        //    await _repository.SaveAsync();
-        //    var outletToReturn = _mapper.Map<OutletDto>(outletEntity);
-        //    return CreatedAtRoute("OutletById", new { id = outletToReturn.Id }, outletToReturn);
-        //}
     }
 }
