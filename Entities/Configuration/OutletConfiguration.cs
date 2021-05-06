@@ -21,7 +21,7 @@ namespace Entities.Configuration
                 new Outlet
                 {
                     Id = 2,
-                    Name = "Catch Junior",
+                    Name = "The Lazy Coconut",
                     CompanyId = 1,
                 },
                 new Outlet
@@ -75,7 +75,7 @@ namespace Entities.Configuration
                 new Outlet
                 {
                     Id = 11,
-                    Name = "Bake Pytong",
+                    Name = "Bake Patong",
                     CompanyId = 2,
                 },
                 new Outlet

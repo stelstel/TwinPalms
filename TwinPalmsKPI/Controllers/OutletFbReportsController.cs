@@ -31,7 +31,7 @@ namespace TwinPalmsKPI.Controllers
         }
 
         // TODO delete?
-        // ************************************* GetOutletFbReports ***********************************************
+        // ************************************** GetOutletFbReports ************************************************
         /// <summary>
         /// Gets a All FbReports by Outlet Id between two Dates
         /// </summary>
@@ -87,7 +87,7 @@ namespace TwinPalmsKPI.Controllers
             return Ok(outletFbReportsToReturn);
         }
 
-        // ***************************************** GetOutletsFbReports ***************************************************
+        // ****************************************** GetOutletsFbReports ****************************************************
         /// <summary>
         /// Gets a All FbReports by many Outlet Ids between two Dates
         /// </summary>
