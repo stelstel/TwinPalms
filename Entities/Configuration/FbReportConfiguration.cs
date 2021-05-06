@@ -34,7 +34,8 @@ namespace Entities.Configuration
                     Notes = "Horrible. A bunch of loud people from the U.S.",
                     Date = DateTime.Now,
                     OutletId = 1,
-                    UserId = "35947f01-393b-442c-b815-d6d9f7d4b81e"
+                    UserId = "35947f01-393b-442c-b815-d6d9f7d4b81e",
+                    LocalEventId = 2
                 },
                 new FbReport
                 {
@@ -49,7 +50,8 @@ namespace Entities.Configuration
                     Notes = "Typical day",
                     Date = DateTime.Now.AddMonths(-1),
                     OutletId = 1,
-                    UserId = "35947f01-393b-442c-b815-d6d9f7d4b81e"
+                    UserId = "35947f01-393b-442c-b815-d6d9f7d4b81e",
+                    LocalEventId = 3
                 },
                 new FbReport
                 {
@@ -64,7 +66,8 @@ namespace Entities.Configuration
                     Notes = "Lorem",
                     Date = DateTime.Now.AddMonths(-2),
                     OutletId = 1,
-                    UserId = "35947f01-393b-442c-b815-d6d9f7d4b81e"
+                    UserId = "35947f01-393b-442c-b815-d6d9f7d4b81e",
+                    LocalEventId = 4
                 },
                 new FbReport
                 {

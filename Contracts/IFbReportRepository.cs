@@ -10,6 +10,7 @@ namespace Contracts
     {
         Task<IEnumerable<FbReport>> GetAllFbReportsAsync(bool trackChanges);
         Task<IEnumerable<FbReport>> GetAllOutletFbReportsForOneOutlet(int outletId, DateTime fromDate, DateTime toDate, bool trackChanges);
+        Task<IEnumerable<FbReport>> GetAllOutletFbReportsForOutlets(int[] outletIds, DateTime fromDate, DateTime toDate, bool trackChanges);
         Task<FbReport> GetFbReportAsync(int id, bool trackChanges);
         void CreateFbReport(FbReport fbReport);
         void DeleteFbReport(FbReport fbReport);

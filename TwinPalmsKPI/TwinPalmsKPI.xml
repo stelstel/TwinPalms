@@ -204,10 +204,33 @@
             Updates a OtherReport by ID
             </summary>
         </member>
-        <member name="M:TwinPalmsKPI.Controllers.OutletsFbReportsController.GetOutletFbReport(System.Int32,System.DateTime,System.DateTime)">
+        <member name="M:TwinPalmsKPI.Controllers.OutletsFbReportsController.GetOutletFbReports(System.Int32,System.DateTime,System.DateTime)">
             <summary>
-            Gets a All FbReports by Outlet Id between two DateTimes
+            Gets a All FbReports by Outlet Id between two Dates
             </summary>
+            <remarks>
+            Gets all FbReports for one outlet between fromDate and toDate, including toDate
+            
+            For example: to get the reports from only 2021-05-04
+            
+                fromDate = 2021-05-04
+                toDate = 2021-05-04
+                
+            </remarks>     
+        </member>
+        <member name="M:TwinPalmsKPI.Controllers.OutletsFbReportsController.GetOutletsFbReports(System.Int32[],System.DateTime,System.DateTime)">
+            <summary>
+            Gets a All FbReports by many Outlet Ids between two Dates
+            </summary>
+            <remarks>
+            Gets all FbReports for many outlets between fromDate and toDate, including toDate
+            
+            For example: to get the reports from only 2021-05-04
+            
+                fromDate = 2021-05-04
+                toDate = 2021-05-04
+                
+            </remarks>     
         </member>
         <member name="M:TwinPalmsKPI.Controllers.OutletsController.GetOutlets">
             <summary>

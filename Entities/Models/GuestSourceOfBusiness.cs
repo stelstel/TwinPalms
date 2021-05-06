@@ -16,7 +16,6 @@ namespace Entities.Models
 
         public int Id { get; set; }
 
-        [JsonIgnore]
         public string SourceOfBusiness { get; set; }
 
         // Navigation property
