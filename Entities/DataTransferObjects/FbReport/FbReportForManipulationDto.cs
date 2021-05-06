@@ -19,6 +19,8 @@ namespace Entities.DataTransferObjects
         public DateTime Date { get; set; }
 
         public int OutletId { get; set; }
+        
+        [Required]
         public string UserId { get; set; }
         public int? LocalEventId { get; set; }
         public ICollection<int> Weathers { get; set; }

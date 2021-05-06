@@ -10,15 +10,17 @@ namespace Entities.Models
             UserRoles = new HashSet<UserRole>();
             OutletUsers = new HashSet<OutletUser>();
         }
+
         public string FirstName { get; set; }
         public string LastName { get; set; }
 
+        // Navigation properties
         public virtual ICollection<FbReport> FbReports { get; set; }
         public virtual ICollection<HotelUser> HotelUsers { get; set; }
         public virtual ICollection<OtherReport> OtherReports { get; set; }
         public virtual ICollection<OutletUser> OutletUsers { get; set; }
         public virtual ICollection<RoomsReport> RoomsReports { get; set; }
         public virtual ICollection<UserRole> UserRoles { get; set; }
-        
+        public virtual ICollection<CompanyUser> CompanyUsers { get; set; }
     }
 }

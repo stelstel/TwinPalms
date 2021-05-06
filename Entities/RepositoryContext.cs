@@ -40,6 +40,7 @@ namespace Entities
             modelBuilder.ApplyConfiguration(new FbReportGuestSourceOfBusinessConfiguration());
             modelBuilder.ApplyConfiguration(new HotelUserConfiguration());
             modelBuilder.ApplyConfiguration(new OutletUserConfiguration());
+            modelBuilder.ApplyConfiguration(new CompanyUserConfiguration());
             modelBuilder.ApplyConfiguration(new WeatherFbReportConfiguration());
             modelBuilder.ApplyConfiguration(new WeatherOtherReportConfiguration());
             modelBuilder.ApplyConfiguration(new WeatherRoomsReportConfiguration());
@@ -60,6 +61,7 @@ namespace Entities
         public virtual DbSet<OtherReport> OtherReports { get; set; }
         public virtual DbSet<Outlet> Outlets { get; set; }
         public virtual DbSet<OutletUser> OutletUsers { get; set; }
+        public virtual DbSet<CompanyUser> CompanyUsers { get; set; }
         public virtual DbSet<RoomType> RoomTypes { get; set; }
         public virtual DbSet<RoomsReport> RoomsReports { get; set; }                
         public virtual DbSet<Weather> Weathers { get; set; }

@@ -1,17 +1,15 @@
 ﻿using AutoMapper;
-using TwinPalmsKPI.ActionFilters;
 using Contracts;
 using Entities.DataTransferObjects;
 using Entities.Models;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Threading.Tasks;
-using System.Text;
-using System.Text.Json;
+using TwinPalmsKPI.ActionFilters;
 
 namespace TwinPalmsKPI.Controllers
 {
@@ -100,12 +98,19 @@ namespace TwinPalmsKPI.Controllers
                 fbReportEntity.FbReportGuestSourceOfBusinesses.Add(fbReportGuestSourceOfBusiness);
             }
 
-            await _repository.SaveAsync();
-
+            try
+            {
+                await _repository.SaveAsync();
+            }
+            catch (Exception e)
+            {
+                return BadRequest(ModelState);
+            }
+ 
             return Ok();
 
             // TODO, maybe change back to this?
-            //return CreatedAtRoute("FbReportById", new { id = fbReportToReturn.Id }, fbReportToReturn); 
+            //return CreatedAtRoute("FbReportById", new { id = fbReportEntity.Id }, fbReportEntity); 
         }
 
         /// <summary>

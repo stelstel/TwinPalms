@@ -21,7 +21,7 @@ namespace Entities.DataTransferObjects
         public int CompanyId { get; set; }
 
         public virtual Company Company { get; set; }
-        public virtual ICollection<FbReport> FbReports { get; set; }
-        public virtual ICollection<OutletUser> OutletUsers { get; set; }
+        // public virtual ICollection<FbReport> FbReports { get; set; }
+        // public virtual ICollection<OutletUser> OutletUsers { get; set; }
     }
 }
