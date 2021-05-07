@@ -8,7 +8,7 @@ namespace Entities.DataTransferObjects
 {
     public abstract class FbReportForManipulationDto
     {
-        [Range(0, 10000, ErrorMessage = "Tables can't be lower than 0")]
+        [Range(0, 10000, ErrorMessage = "Tables can't be lower than 0 or higher than 10000")]
         public int? Tables { get; set; }
 
         [Range(0, int.MaxValue, ErrorMessage = "Food can't be lower than 0")]
@@ -45,7 +45,7 @@ namespace Entities.DataTransferObjects
         [StringLength(36, MinimumLength = 36, ErrorMessage = "UserId should contain exactly 36 characters")]
         public string UserId { get; set; }
 
-        [Range(1, 1000, ErrorMessage = "LocalEventId can't be lower than 1")]
+        [Range(1, 10000, ErrorMessage = "LocalEventId can't be lower than 1 or higher than 10000")]
         public int? LocalEventId { get; set; }
 
         public ICollection<int> Weathers { get; set; }

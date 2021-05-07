@@ -76,15 +76,43 @@ namespace TwinPalmsKPI.Controllers
             var fbReportEntity = _mapper.Map<FbReport>(fbReport);
             _repository.FbReport.CreateFbReport(fbReportEntity);
 
-            List<Weather> weathersFromDb = (List<Weather>)await _repository.Weather.GetAllTypesOfWeatherAsync(trackChanges: false);
-            int nrOfWeathersFromDb = weathersFromDb.Count;
+            // Validating if there is any weather in report
+            if (fbReport.Weathers == null)
+            {
+                ModelState.AddModelError("ArgumentOutOfRangeError", "At least one WeatherId is required.");
+            }
+            else // Validate weathers
+            {
+                List<Weather> weathersFromDb = (List<Weather>)await _repository.Weather.GetAllTypesOfWeatherAsync(trackChanges: false);
+                int nrOfWeathersFromDb = weathersFromDb.Count;
+
+                int weatherCounter = 0;
+
+                foreach (var weatherId in fbReport.Weathers)
+                {
+                    weatherCounter++;
+
+                    // Validating if inputted weatherId exists in DB
+                    if (weatherId < 1 || weatherId > nrOfWeathersFromDb)
+                    {
+                        ModelState.AddModelError("ArgumentOutOfRangeError", $"WeatherId[{weatherCounter}] must be an integer between 1 and {nrOfWeathersFromDb}. It's now {weatherId}");
+                    }
+
+                    var fbReportWeather = new WeatherFbReport
+                    {
+                        WeatherId = weatherId,
+                        FbReportId = fbReportEntity.Id
+                    };
+
+                    fbReportEntity.WeatherFbReports.Add(fbReportWeather);
+                }
+            }
 
             List<GuestSourceOfBusiness> GuestSourcesOfBusinessesFromDb =
                 (List<GuestSourceOfBusiness>)await _repository.GuestSourceOfBusiness.GetAllGuestSourceOfBusinessesAsync(trackChanges: false);
             int nrOfGuestSourcesOfBusinessesFromDb = GuestSourcesOfBusinessesFromDb.Count;
 
-            List<Outlet> OutletsFromDb =
-                (List<Outlet>)await _repository.Outlet.GetAllOutletsAsync(trackChanges: false);
+            List<Outlet> OutletsFromDb = (List<Outlet>)await _repository.Outlet.GetAllOutletsAsync(trackChanges: false);
             int nrOfOutletsFromDb = OutletsFromDb.Count;
 
             List<LocalEvent> LocalEventFromDb = (List<LocalEvent>)await _repository.LocalEvent.GetAllLocalEventsAsync(trackChanges: false);
@@ -92,26 +120,6 @@ namespace TwinPalmsKPI.Controllers
 
             await Validations(fbReport, nrOfOutletsFromDb, nrOfLocalEventsFromDb);
 
-            int weatherCounter = 0;
-
-            foreach (var weatherId in fbReport.Weathers)
-            {
-                weatherCounter++;
-
-                // Validating if inputted weatherId exists in DB
-                if (weatherId < 1 || weatherId > nrOfWeathersFromDb)
-                {
-                    ModelState.AddModelError("ArgumentOutOfRangeError", $"WeatherId[{weatherCounter}] must be an integer between 1 and {nrOfWeathersFromDb}");
-                }
-
-                var fbReportWeather = new WeatherFbReport
-                {
-                    WeatherId = weatherId,
-                    FbReportId = fbReportEntity.Id
-                };
-
-                fbReportEntity.WeatherFbReports.Add(fbReportWeather);
-            }
 
             int gsobCounter = 0;
 
@@ -123,7 +131,7 @@ namespace TwinPalmsKPI.Controllers
                 if (gsobId < 1 || gsobId > nrOfGuestSourcesOfBusinessesFromDb)
                 {
                     ModelState.AddModelError("ArgumentOutOfRangeError",
-                        $"GuestSourceOFBusiness[{gsobCounter}] must be an integer between 1 and {nrOfGuestSourcesOfBusinessesFromDb}");
+                        $"GuestSourceOFBusiness[{gsobCounter}] must be an integer between 1 and {nrOfGuestSourcesOfBusinessesFromDb}. It's now {gsobId}");
                 }
 
                 var fbReportGuestSourceOfBusiness = new FbReportGuestSourceOfBusiness
@@ -141,7 +149,6 @@ namespace TwinPalmsKPI.Controllers
             }
 
             await _repository.SaveAsync();
-
             return Ok();
         }
 
