@@ -85,6 +85,15 @@ namespace TwinPalmsKPI.Controllers
             //GuestSourcesOfBusinessesFromDb = (List<GuestSourceOfBusiness>)await _repository.GuestSourceOfBusiness.GetAllGuestSourceOfBusinessesAsync(trackChanges: false);
             int nrOfGuestSourcesOfBusinessesFromDb = GuestSourcesOfBusinessesFromDb.Count();
 
+            // Validating if user exists in DB
+            string userIdFromInput = fbReport.UserId;
+            User user = await _repository.User.GetUserAsync(userIdFromInput, trackChanges: false);
+
+            if (user == null)
+            {
+                ModelState.AddModelError("NotFoundError", $"User with id {userIdFromInput} doesn't exist in the database");
+            }
+
             int weatherCounter = 0;
 
             foreach (var weatherId in fbReport.Weathers)
