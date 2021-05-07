@@ -65,7 +65,7 @@ namespace TwinPalmsKPI.Controllers
             return Ok(fbReportDto);
         }
 
-        // *********************************************************** POST **************************************
+        // **************************************************** POST CreateFbReport *************************************************
         /// <summary>
         /// Creates a new fbReport
         /// </summary>
@@ -76,37 +76,7 @@ namespace TwinPalmsKPI.Controllers
             var fbReportEntity = _mapper.Map<FbReport>(fbReport);
             _repository.FbReport.CreateFbReport(fbReportEntity);
 
-            // Validating if there is any weather in report
-            if (fbReport.Weathers == null)
-            {
-                ModelState.AddModelError("ArgumentOutOfRangeError", "At least one WeatherId is required.");
-            }
-            else // Validate weathers
-            {
-                List<Weather> weathersFromDb = (List<Weather>)await _repository.Weather.GetAllTypesOfWeatherAsync(trackChanges: false);
-                int nrOfWeathersFromDb = weathersFromDb.Count;
-
-                int weatherCounter = 0;
-
-                foreach (var weatherId in fbReport.Weathers)
-                {
-                    weatherCounter++;
-
-                    // Validating if inputted weatherId exists in DB
-                    if (weatherId < 1 || weatherId > nrOfWeathersFromDb)
-                    {
-                        ModelState.AddModelError("ArgumentOutOfRangeError", $"WeatherId[{weatherCounter}] must be an integer between 1 and {nrOfWeathersFromDb}. It's now {weatherId}");
-                    }
-
-                    var fbReportWeather = new WeatherFbReport
-                    {
-                        WeatherId = weatherId,
-                        FbReportId = fbReportEntity.Id
-                    };
-
-                    fbReportEntity.WeatherFbReports.Add(fbReportWeather);
-                }
-            }
+            await ValidateWeather(fbReport, fbReportEntity);
 
             List<GuestSourceOfBusiness> GuestSourcesOfBusinessesFromDb =
                 (List<GuestSourceOfBusiness>)await _repository.GuestSourceOfBusiness.GetAllGuestSourceOfBusinessesAsync(trackChanges: false);
@@ -119,7 +89,6 @@ namespace TwinPalmsKPI.Controllers
             int nrOfLocalEventsFromDb = LocalEventFromDb.Count;
 
             await Validations(fbReport, nrOfOutletsFromDb, nrOfLocalEventsFromDb);
-
 
             int gsobCounter = 0;
 
@@ -179,6 +148,41 @@ namespace TwinPalmsKPI.Controllers
             await _repository.SaveAsync();
             var fbReportToReturn = _mapper.Map<FbReportDto>(fbReportEntity);
             return CreatedAtRoute("FbReportById", new { id = fbReportToReturn.Id }, fbReportToReturn);
+        }
+
+        // ************************************************* ValidateWeather **************************************************************
+        private async Task ValidateWeather(FbReportForCreationDto fbReport, FbReport fbReportEntity)
+        {
+            // Validating if there is any weather in FbReport
+            if (fbReport.Weathers == null)
+            {
+                ModelState.AddModelError("ArgumentOutOfRangeError", "At least one WeatherId is required.");
+            }
+            else // If there is, validate weathers
+            {
+                List<Weather> weathersFromDb = (List<Weather>)await _repository.Weather.GetAllTypesOfWeatherAsync(trackChanges: false);
+                int nrOfWeathersFromDb = weathersFromDb.Count;
+                int weatherCounter = 0;
+
+                foreach (var weatherId in fbReport.Weathers)
+                {
+                    weatherCounter++;
+
+                    // Validating if inputted weatherId exists in DB
+                    if (weatherId < 1 || weatherId > nrOfWeathersFromDb)
+                    {
+                        ModelState.AddModelError("ArgumentOutOfRangeError", $"WeatherId[{weatherCounter}] must be an integer between 1 and {nrOfWeathersFromDb}. It's now {weatherId}");
+                    }
+
+                    var fbReportWeather = new WeatherFbReport
+                    {
+                        WeatherId = weatherId,
+                        FbReportId = fbReportEntity.Id
+                    };
+
+                    fbReportEntity.WeatherFbReports.Add(fbReportWeather);
+                }
+            }
         }
 
         // ******************************************************** Validations *************************************************
