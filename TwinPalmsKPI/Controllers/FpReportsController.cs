@@ -133,7 +133,7 @@ namespace TwinPalmsKPI.Controllers
             return CreatedAtRoute("FbReportById", new { id = fbReportToReturn.Id }, fbReportToReturn);
         }
 
-        // ************************************************ ValidateLocalEvents *********************************************************
+        // ************************************************ ValidateGsobs *********************************************************
         private void ValidateGsobs(FbReportForCreationDto fbReport, FbReport fbReportEntity, int nrOfGuestSourcesOfBusinessesFromDb)
         {
             int gsobCounter = 0;
