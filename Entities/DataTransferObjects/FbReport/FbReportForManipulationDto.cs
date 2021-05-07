@@ -8,7 +8,7 @@ namespace Entities.DataTransferObjects
 {
     public abstract class FbReportForManipulationDto
     {
-        // [Range(0, 10000, ErrorMessage = "Tables can't be lower than 0 or higher than 10 000")]
+        [Range(0, 10000, ErrorMessage = "Tables can't be lower than 0")]
         public int? Tables { get; set; }
 
         [Range(0, int.MaxValue, ErrorMessage = "Food can't be lower than 0")]
@@ -27,7 +27,6 @@ namespace Entities.DataTransferObjects
         public int? GuestsFromOutsideHotel { get; set; }
 
         [Required(ErrorMessage = "IsPublicHoliday is a required field (true/false)")]
-        [DataType(DataType.Text)]
         public bool IsPublicHoliday { get; set; }
 
         [StringLength(5000, ErrorMessage = "Notes can't contain more than 5000 characters")]
@@ -38,9 +37,8 @@ namespace Entities.DataTransferObjects
         [DataType(DataType.DateTime)]
         public DateTime Date { get; set; }
 
-
         [Required(ErrorMessage = "OutletId is a required field.")]
-        [Range(1, 1000, ErrorMessage = "OutletId is a required field and can't be lower than 1")]
+        [Range(1, 10000, ErrorMessage = "OutletId is a required field and can't be lower than 1 or higer than 10000")]
         public int OutletId { get; set; }
         
         [Required(ErrorMessage = "UserId is a required field.")]

@@ -77,13 +77,18 @@ namespace TwinPalmsKPI.Controllers
             _repository.FbReport.CreateFbReport(fbReportEntity);
 
             List<Weather> weathersFromDb = (List<Weather>)await _repository.Weather.GetAllTypesOfWeatherAsync(trackChanges: false);
-            // weathersFromDb = (List<Weather>)await _repository.Weather.GetAllTypesOfWeatherAsync(trackChanges: false);
             int nrOfWeathersFromDb = weathersFromDb.Count();
 
             List<GuestSourceOfBusiness> GuestSourcesOfBusinessesFromDb = 
                 (List<GuestSourceOfBusiness>)await _repository.GuestSourceOfBusiness.GetAllGuestSourceOfBusinessesAsync(trackChanges: false);
-            //GuestSourcesOfBusinessesFromDb = (List<GuestSourceOfBusiness>)await _repository.GuestSourceOfBusiness.GetAllGuestSourceOfBusinessesAsync(trackChanges: false);
             int nrOfGuestSourcesOfBusinessesFromDb = GuestSourcesOfBusinessesFromDb.Count();
+
+            List<Outlet> OutletsFromDb =
+                (List<Outlet>)await _repository.Outlet.GetAllOutletsAsync(trackChanges: false);
+            int nrOfOutletsFromDb = OutletsFromDb.Count();
+
+            List<LocalEvent> LocalEventFromDb = (List<LocalEvent>)await _repository.LocalEvent.GetAllLocalEventsAsync(trackChanges: false);
+            int nrOfLocalEventsFromDb = LocalEventFromDb.Count();
 
             // Validating if user exists in DB
             string userIdFromInput = fbReport.UserId;
@@ -92,6 +97,25 @@ namespace TwinPalmsKPI.Controllers
             if (user == null)
             {
                 ModelState.AddModelError("NotFoundError", $"User with id {userIdFromInput} doesn't exist in the database");
+            }
+
+            // Validating if Outlet exists in DB
+            if (fbReport.OutletId < 1 || fbReport.OutletId > nrOfOutletsFromDb)
+            {
+                ModelState.AddModelError("ArgumentOutOfRangeError", $"OutletId must be an integer between 1 and {nrOfOutletsFromDb}");
+            }
+
+            // Validating if LocalEvent exists in DB
+            if (fbReport.LocalEventId < 1 || fbReport.LocalEventId > nrOfLocalEventsFromDb)
+            {
+                ModelState.AddModelError("ArgumentOutOfRangeError", $"LocalEventId must be an integer between 1 and {nrOfLocalEventsFromDb}");
+            }
+
+
+            // Validating isPublicHoliday
+            if (fbReport.IsPublicHoliday.GetType() != typeof(bool))
+            {
+                ModelState.AddModelError("ArgumentTypeError", $"IsPublicHoliday must be a boolean");
             }
 
             int weatherCounter = 0;
@@ -103,7 +127,7 @@ namespace TwinPalmsKPI.Controllers
                 // Validating if inputted weatherId exists in DB
                 if (weatherId < 1 || weatherId > nrOfWeathersFromDb)
                 {
-                    ModelState.AddModelError("ArgumentOutOfRangeError", $"Weather[{weatherCounter}] must be an integer between 1 and {nrOfWeathersFromDb}");
+                    ModelState.AddModelError("ArgumentOutOfRangeError", $"WeatherId[{weatherCounter}] must be an integer between 1 and {nrOfWeathersFromDb}");
                 }
 
                 var fbReportWeather = new WeatherFbReport
@@ -121,7 +145,7 @@ namespace TwinPalmsKPI.Controllers
             {
                 gsobCounter++;
 
-                // Validating if inputted guestSourceOFBusiness exists in DB
+                // Validating if inputted guestSourceOFBusinessId exists in DB
                 if (gsobId < 1 || gsobId > nrOfGuestSourcesOfBusinessesFromDb)
                 {
                     ModelState.AddModelError("ArgumentOutOfRangeError", 
