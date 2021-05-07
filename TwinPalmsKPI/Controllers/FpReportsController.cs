@@ -165,7 +165,7 @@ namespace TwinPalmsKPI.Controllers
             // Validating if there is any weather in FbReport
             if (fbReport.Weathers == null || fbReport.Weathers.Count == 0)
             {
-                ModelState.AddModelError("ArgumentOutOfRangeError", "At least one WeatherId is required.");
+                ModelState.AddModelError("ArgumentError", "At least one WeatherId is required.");
             }
             else // If there is, validate weathers
             {
