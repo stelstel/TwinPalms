@@ -76,8 +76,27 @@ namespace TwinPalmsKPI.Controllers
             var fbReportEntity = _mapper.Map<FbReport>(fbReport);
             _repository.FbReport.CreateFbReport(fbReportEntity);
 
+            List<Weather> weathersFromDb = (List<Weather>)await _repository.Weather.GetAllTypesOfWeatherAsync(trackChanges: false);
+            // weathersFromDb = (List<Weather>)await _repository.Weather.GetAllTypesOfWeatherAsync(trackChanges: false);
+            int nrOfWeathersFromDb = weathersFromDb.Count();
+
+            List<GuestSourceOfBusiness> GuestSourcesOfBusinessesFromDb = 
+                (List<GuestSourceOfBusiness>)await _repository.GuestSourceOfBusiness.GetAllGuestSourceOfBusinessesAsync(trackChanges: false);
+            //GuestSourcesOfBusinessesFromDb = (List<GuestSourceOfBusiness>)await _repository.GuestSourceOfBusiness.GetAllGuestSourceOfBusinessesAsync(trackChanges: false);
+            int nrOfGuestSourcesOfBusinessesFromDb = GuestSourcesOfBusinessesFromDb.Count();
+
+            int weatherCounter = 0;
+
             foreach (var weatherId in fbReport.Weathers)
             {
+                weatherCounter++;
+
+                // Validating if inputted weatherId exists in DB
+                if (weatherId < 1 || weatherId > nrOfWeathersFromDb)
+                {
+                    ModelState.AddModelError("ArgumentOutOfRangeError", $"Weather[{weatherCounter}] must be an integer between 1 and {nrOfWeathersFromDb}");
+                }
+
                 var fbReportWeather = new WeatherFbReport
                 {
                     WeatherId = weatherId,
@@ -87,30 +106,36 @@ namespace TwinPalmsKPI.Controllers
                 fbReportEntity.WeatherFbReports.Add(fbReportWeather);
             }
 
-            foreach (var guestSourceOfBusinessId in fbReport.GuestSourceOfBusinesses)
+            int gsobCounter = 0;
+
+            foreach (var gsobId in fbReport.GuestSourceOfBusinesses)
             {
+                gsobCounter++;
+
+                // Validating if inputted guestSourceOFBusiness exists in DB
+                if (gsobId < 1 || gsobId > nrOfGuestSourcesOfBusinessesFromDb)
+                {
+                    ModelState.AddModelError("ArgumentOutOfRangeError", 
+                        $"GuestSourceOFBusiness[{gsobCounter}] must be an integer between 1 and {nrOfGuestSourcesOfBusinessesFromDb}");
+                }
+
                 var fbReportGuestSourceOfBusiness = new FbReportGuestSourceOfBusiness
                 {
-                    GuestSourceOfBusinessId = guestSourceOfBusinessId,
+                    GuestSourceOfBusinessId = gsobId,
                     FbReportId = fbReportEntity.Id
                 };
 
                 fbReportEntity.FbReportGuestSourceOfBusinesses.Add(fbReportGuestSourceOfBusiness);
             }
 
-            try
-            {
-                await _repository.SaveAsync();
-            }
-            catch (Exception e)
+            if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
- 
-            return Ok();
 
-            // TODO, maybe change back to this?
-            //return CreatedAtRoute("FbReportById", new { id = fbReportEntity.Id }, fbReportEntity); 
+            await _repository.SaveAsync();
+            
+            return Ok();
         }
 
         /// <summary>

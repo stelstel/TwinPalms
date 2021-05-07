@@ -18,6 +18,7 @@ namespace TwinPalmsKPI.ActionFilters
             _repository = repository;
             _logger = logger;
         }
+
         public async Task OnActionExecutionAsync(ActionExecutingContext context, ActionExecutionDelegate next)
 
         {
