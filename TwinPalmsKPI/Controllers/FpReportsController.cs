@@ -76,7 +76,7 @@ namespace TwinPalmsKPI.Controllers
             var fbReportEntity = _mapper.Map<FbReport>(fbReport);
             _repository.FbReport.CreateFbReport(fbReportEntity);
 
-            await ValidateWeather(fbReport, fbReportEntity);
+            await ValidateWeathers(fbReport, fbReportEntity);
 
             List<GuestSourceOfBusiness> GuestSourcesOfBusinessesFromDb =
                 (List<GuestSourceOfBusiness>)await _repository.GuestSourceOfBusiness.GetAllGuestSourceOfBusinessesAsync(trackChanges: false);
@@ -88,29 +88,12 @@ namespace TwinPalmsKPI.Controllers
             List<LocalEvent> LocalEventFromDb = (List<LocalEvent>)await _repository.LocalEvent.GetAllLocalEventsAsync(trackChanges: false);
             int nrOfLocalEventsFromDb = LocalEventFromDb.Count;
 
-            await Validations(fbReport, nrOfOutletsFromDb, nrOfLocalEventsFromDb);
-
-            int gsobCounter = 0;
-
-            foreach (var gsobId in fbReport.GuestSourceOfBusinesses)
+            if (fbReport.GuestSourceOfBusinesses != null && fbReport.GuestSourceOfBusinesses.Count > 0)
             {
-                gsobCounter++;
-
-                // Validating if inputted guestSourceOFBusinessId exists in DB
-                if (gsobId < 1 || gsobId > nrOfGuestSourcesOfBusinessesFromDb)
-                {
-                    ModelState.AddModelError("ArgumentOutOfRangeError",
-                        $"GuestSourceOFBusiness[{gsobCounter}] must be an integer between 1 and {nrOfGuestSourcesOfBusinessesFromDb}. It's now {gsobId}");
-                }
-
-                var fbReportGuestSourceOfBusiness = new FbReportGuestSourceOfBusiness
-                {
-                    GuestSourceOfBusinessId = gsobId,
-                    FbReportId = fbReportEntity.Id
-                };
-
-                fbReportEntity.FbReportGuestSourceOfBusinesses.Add(fbReportGuestSourceOfBusiness);
+                ValidateGsobs(fbReport, fbReportEntity, nrOfGuestSourcesOfBusinessesFromDb);
             }
+                
+            await Validations(fbReport, nrOfOutletsFromDb, nrOfLocalEventsFromDb);
 
             if (!ModelState.IsValid)
             {
@@ -150,11 +133,37 @@ namespace TwinPalmsKPI.Controllers
             return CreatedAtRoute("FbReportById", new { id = fbReportToReturn.Id }, fbReportToReturn);
         }
 
+        // ************************************************ ValidateLocalEvents *********************************************************
+        private void ValidateGsobs(FbReportForCreationDto fbReport, FbReport fbReportEntity, int nrOfGuestSourcesOfBusinessesFromDb)
+        {
+            int gsobCounter = 0;
+
+            foreach (var gsobId in fbReport.GuestSourceOfBusinesses)
+            {
+                gsobCounter++;
+
+                // Validating if inputted guestSourceOFBusinessId exists in DB
+                if (gsobId < 1 || gsobId > nrOfGuestSourcesOfBusinessesFromDb)
+                {
+                    ModelState.AddModelError("ArgumentOutOfRangeError",
+                        $"GuestSourceOFBusiness[{gsobCounter}] must be an integer between 1 and {nrOfGuestSourcesOfBusinessesFromDb}. It's now {gsobId}");
+                }
+
+                var fbReportGuestSourceOfBusiness = new FbReportGuestSourceOfBusiness
+                {
+                    GuestSourceOfBusinessId = gsobId,
+                    FbReportId = fbReportEntity.Id
+                };
+
+                fbReportEntity.FbReportGuestSourceOfBusinesses.Add(fbReportGuestSourceOfBusiness);
+            }
+        }
+
         // ************************************************* ValidateWeather **************************************************************
-        private async Task ValidateWeather(FbReportForCreationDto fbReport, FbReport fbReportEntity)
+        private async Task ValidateWeathers(FbReportForCreationDto fbReport, FbReport fbReportEntity)
         {
             // Validating if there is any weather in FbReport
-            if (fbReport.Weathers == null)
+            if (fbReport.Weathers == null || fbReport.Weathers.Count == 0)
             {
                 ModelState.AddModelError("ArgumentOutOfRangeError", "At least one WeatherId is required.");
             }
