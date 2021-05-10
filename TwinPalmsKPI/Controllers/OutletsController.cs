@@ -64,26 +64,28 @@ namespace TwinPalmsKPI.Controllers
         {
             List<Company> CompaniesFromDb = (List<Company>)await _repository.Company.GetAllCompaniesAsync(trackChanges: false);
 
-            Boolean companyOk = false;
+            // Validating Company
+            Boolean companyExists = false;
 
             foreach (var company in CompaniesFromDb)
             {
                 if (company.Id == outlet.CompanyId)
                 {
-                    companyOk = true;
+                    companyExists = true;
                 }
 
-                if (companyOk == true)
+                if (companyExists == true)
                 {
                     break;
                 }
             }
 
-            if (companyOk == false)
+            if (companyExists == false)
             {
                 ModelState.AddModelError("ArgumentOutOfRangeError", 
                     $"CompanyId must be an integer between 1 and {CompaniesFromDb.Count}. It's now {outlet.CompanyId}");
             }
+
 
             if (!ModelState.IsValid)
             {
