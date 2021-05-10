@@ -90,7 +90,7 @@ namespace TwinPalmsKPI.Controllers
                 GuestsFromOutsideHotel = o.GuestsFromOutsideHotel,
                 IsPublicHoliday = o.IsPublicHoliday,
                 EventNotes = o.EventNotes,
-                GSourceOfBusinessNotes = o.GSourceOfBusinessNotes
+                GSourceOfBusinessNotes = o.GSourceOfBusinessNotes,
                 OutletId = o.OutletId,
                 UserId = o.UserId,
                 LocalEventId = o.LocalEventId,
