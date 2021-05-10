@@ -9,5 +9,6 @@ namespace Entities.DataTransferObjects
 {
     public class UserForRegistrationDto : UserForManipulationDto
     {
+        
     }
 }

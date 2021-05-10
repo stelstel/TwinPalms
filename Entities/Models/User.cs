@@ -8,14 +8,14 @@ namespace Entities.Models
     {
         public User()
         {
-            UserRoles = new HashSet<UserRole>();
             OutletUsers = new HashSet<OutletUser>();
+            HotelUsers = new HashSet<HotelUser>();
         }
         public string FirstName { get; set; }
         public string LastName { get; set; }
         [JsonIgnore]
         public virtual ICollection<FbReport> FbReports { get; set; }
-        [JsonIgnore]
+        [JsonIgnore]    
         public virtual ICollection<HotelUser> HotelUsers { get; set; }
         [JsonIgnore]
         public virtual ICollection<OtherReport> OtherReports { get; set; }

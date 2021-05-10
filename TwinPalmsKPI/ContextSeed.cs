@@ -19,17 +19,20 @@ namespace TwinPalmsKPI
             var superAdmin = userManager.FindByEmailAsync("SUPERADMIN@TWINPALMS").Result;
             //var token = await userManager.GeneratePasswordResetTokenAsync(superAdmin);
             await userManager.AddPasswordAsync(superAdmin, "qwert12345");
+            await userManager.AddToRolesAsync(superAdmin, new string[] { "SuperAdmin", "Admin", "Basic" });
 
             var admin = userManager.FindByEmailAsync("ADMIN@TWINPALMS").Result;
             await userManager.AddPasswordAsync(admin, "qwert12345");
-            
+            await userManager.AddToRolesAsync(admin, new string[] { "Admin", "Basic" });
+
             var basic1 = userManager.FindByEmailAsync("BASIC2@TWINPALMS").Result;
             await userManager.AddPasswordAsync(basic1, "qwert12345 ");
+            await userManager.AddToRoleAsync(basic1, "Basic");
 
             var basic2 = userManager.FindByEmailAsync("BASIC1@TWINPALMS").Result;
             await userManager.AddPasswordAsync(basic2, "qwert12345");
-            
-           
+            await userManager.AddToRoleAsync(basic2, "Basic");
+
 
 
 

@@ -254,19 +254,19 @@
             Updates a roomsReport by ID
             </summary>
         </member>
-        <member name="M:TwinPalmsKPI.Controllers.RoomsReportController.GetReportsData(System.Int32,System.Int32[],System.DateTime,System.DateTime)">
+        <member name="M:TwinPalmsKPI.Controllers.RoomsReportController.GetRoomsReport(System.Int32,System.Int32[],System.DateTime,System.DateTime)">
             <summary>
             Gets a list of all roomsReports
-            </summary>
-        </member>
-        <member name="M:TwinPalmsKPI.Controllers.UsersController.GetUser(System.String)">
-            <summary>
-            Gets user by ID
             </summary>
         </member>
         <member name="M:TwinPalmsKPI.Controllers.UsersController.GetUsers">
             <summary>
             Gets a list of all users
+            </summary>
+        </member>
+        <member name="M:TwinPalmsKPI.Controllers.UsersController.GetUser(System.String)">
+            <summary>
+            Gets user by ID
             </summary>
         </member>
         <member name="M:TwinPalmsKPI.Controllers.UsersController.DeleteUser(System.Int32)">

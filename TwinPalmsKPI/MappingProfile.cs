@@ -1,14 +1,19 @@
 ﻿using AutoMapper;
 using Entities.DataTransferObjects;
 using Entities.Models;
+using Microsoft.AspNetCore.Identity;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace TwinPalmsKPI
 {
     public class MappingProfile : Profile
     {
+       
         public MappingProfile()
         {
+
+            
             CreateMap<Company, CompanyDto>();
             CreateMap<CompanyForCreationDto, Company>();
             CreateMap<CompanyForUpdateDto, Company>();
@@ -17,8 +22,12 @@ namespace TwinPalmsKPI
             CreateMap<HotelForCreationDto, Hotel>();
             CreateMap<HotelForUpdateDto, Hotel>();
 
-            CreateMap<User, UserDto>();
-            //CreateMap<IEnumerable<User>, UserDto>();
+
+
+            CreateMap<User, UserDto>()
+                .ForMember(dto => dto.Hotels, user => user.MapFrom(user => user.HotelUsers.Select(hu => hu.Hotel).ToList()))
+                .ForMember(dto => dto.Outlets, user => user.MapFrom(user => user.OutletUsers.Select(ou => ou.Outlet).ToList()))
+                .ForMember(dto => dto.Roles, user => user.MapFrom(user => user.UserRoles.Select(ur => ur.Role.Name).ToList()));
             CreateMap<UserForRegistrationDto, User>();
             CreateMap<UserForUpdateDto, User>();
             
@@ -36,8 +45,9 @@ namespace TwinPalmsKPI
             CreateMap<CruiseShipForUpdateDto, CruiseShip>();
             
             CreateMap<RoomsReport, RoomsReportDto>();
-            CreateMap<RoomsReportForCreationDto, FbReport>();
-            CreateMap<RoomsReportForUpdateDto, FbReport>();
+            //CreateMap<RoomsReportDto, RoomsReport>();
+            CreateMap<RoomsReportForCreationDto, RoomsReport>();
+            CreateMap<RoomsReportForUpdateDto, RoomsReport>();
                         
             CreateMap<FbReport, FbReportDto>();
             CreateMap<FbReportForCreationDto, FbReport>();

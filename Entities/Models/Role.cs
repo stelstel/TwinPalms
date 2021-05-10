@@ -10,7 +10,7 @@ namespace Entities.Models
 {
     public class Role : IdentityRole
     {
-        [JsonIgnore]
+        /*[JsonIgnore]*/
         public virtual ICollection<UserRole> UserRoles { get; set; }
     }
 }

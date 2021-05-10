@@ -2,6 +2,7 @@
 using Entities;
 using Entities.DataTransferObjects;
 using Entities.Models;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,6 +17,7 @@ namespace Repository
         public UserRepository(RepositoryContext repositoryContext)
             :base(repositoryContext)
         {
+
             _repositoryContext = repositoryContext;
         }
 
@@ -32,36 +34,41 @@ namespace Repository
             .SingleOrDefaultAsync();
 
 
-        // TODO IEnumerable<> ska inte vara dynamic
+        
         public async Task<IEnumerable<User>> GetUsersAsync(bool trackChanges)
         {
             /*return await (from user in _repositoryContext.Users
                           join userRoles in _repositoryContext.UserRoles on user.Id equals userRoles.UserId
                           join role in _repositoryContext.Roles on userRoles.RoleId equals role.Id
-
-                          select new User
+                          select new 
                           {
                               Id = user.Id,
+                              FirstName = user.FirstName,
+                              LastName = user.LastName,
                               UserName = user.UserName,
-                              UserRoles = 
+                              Email = user.Email,
+                              Hotels = user.HotelUsers.Select(ur => ur.Hotel).ToList(),
+                              Outlets = user.OutletUsers.Select(ur => ur.Outlet).ToList(),
+                              Roles = user.UserRoles.Select(ur => ur.Role.Name).ToList()
+                          }
 
-                          }).OrderBy(x => x.UserId).ToListAsync();*/
+                          ).OrderBy(x => x.Id).ToListAsync();*/
 
-            return await FindAll(trackChanges)
+            return (IEnumerable<User>)await FindAll(trackChanges)
+               
                     .Include(u => u.OutletUsers).ThenInclude(ou => ou.Outlet)
                     .Include(u => u.HotelUsers).ThenInclude(hu => hu.Hotel)
-                    //.Include(u => u.UserRoles).ThenInclude(ur => ur.Role)
+                    .Include(u => u.UserRoles).ThenInclude(ur => ur.Role)
                     .Select(u => new User
                     {
                         Id = u.Id,
                         FirstName = u.FirstName,
                         LastName = u.LastName,
                         UserName = u.UserName,
-
                         Email = u.Email,
-                        PhoneNumber = u.Email,
-                        OutletUsers = u.OutletUsers/*.Select(ou => ou.Outlet)*/.ToList(),
-                        HotelUsers = u.HotelUsers/*.Select(ou => ou.Outlet)*/.ToList()
+                        OutletUsers = u.OutletUsers.ToList(),
+                        HotelUsers = u.HotelUsers.ToList(),
+                        UserRoles = u.UserRoles.ToList()
 
                     })
                     .ToListAsync();

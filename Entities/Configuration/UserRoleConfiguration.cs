@@ -9,7 +9,18 @@ namespace Entities.Configuration
     {
         public void Configure(EntityTypeBuilder<UserRole> builder)
         {
-            builder.HasData(
+            builder.HasKey(p => new { p.UserId, p.RoleId });
+
+            builder.HasOne(d => d.Role)
+               .WithMany(p => p.UserRoles)
+               .HasForeignKey(d => d.RoleId);
+
+            builder.HasOne(d => d.User)
+                .WithMany(p => p.UserRoles)
+                .HasForeignKey(d => d.UserId);
+
+
+            /*builder.HasData(
                 new UserRole
                 {
                     UserId = "b0b22e53-3ad2-4a0a-9e58-aa0a70a5a157",
@@ -20,6 +31,7 @@ namespace Entities.Configuration
                     UserId = "35947f01-393b-442c-b815-d6d9f7d4b81e",
                     RoleId = "32be7cac-c2b5-40af-842b-d7a14891aed7"
 
+                // Admin user
                 }, new UserRole
                 {
                     UserId = "7c8a42a1-e82c-4e2a-b944-67aec243d2fb",
@@ -30,6 +42,7 @@ namespace Entities.Configuration
                     UserId = "7c8a42a1-e82c-4e2a-b944-67aec243d2fb",
                     RoleId = "32be7cac-c2b5-40af-842b-d7a14891aed7"
                 },
+                // SuperAdmin user
                 new UserRole
                 {
                     UserId = "68a89c2e-ac33-4e56-9b03-a9ef49d28995",
@@ -45,18 +58,9 @@ namespace Entities.Configuration
                     UserId = "68a89c2e-ac33-4e56-9b03-a9ef49d28995",
                     RoleId = "d83846e6-7a92-41d6-8c6e-9394df0b35f3"
                 }
-            );
+            );*/
 
 
-            builder.HasOne(ur => ur.Role)
-            .WithMany(r => r.UserRoles)
-            .HasForeignKey(ur => ur.RoleId)
-            .IsRequired();
-
-            builder.HasOne(ur => ur.User)
-                .WithMany(r => r.UserRoles)
-                .HasForeignKey(ur => ur.UserId)
-                .IsRequired();
         }
     }
 }

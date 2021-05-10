@@ -59,7 +59,7 @@ namespace TwinPalmsKPI.Extensions
                     o.Password.RequiredLength = 10; 
                     o.User.RequireUniqueEmail = true;
                 }); 
-            builder = new IdentityBuilder(builder.UserType, typeof(IdentityRole),
+            builder = new IdentityBuilder(builder.UserType, typeof(Role),
                 builder.Services); 
             builder.AddEntityFrameworkStores<RepositoryContext>().AddDefaultTokenProviders();
         }

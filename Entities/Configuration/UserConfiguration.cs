@@ -15,6 +15,12 @@ namespace Entities.Configuration
     {
         public void Configure(EntityTypeBuilder<User> builder)
         {
+
+            builder.HasMany(e => e.UserRoles)
+               .WithOne(e => e.User)
+               .HasForeignKey(ur => ur.UserId)
+               .IsRequired();
+
             builder.HasData(new User
             {
                 Id = "68a89c2e-ac33-4e56-9b03-a9ef49d28995",

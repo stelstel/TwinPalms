@@ -43,25 +43,16 @@ namespace TwinPalmsKPI.Controllers
         [ServiceFilter(typeof(ValidationFilterAttribute))]
         public async Task<IActionResult> RegisterUser([FromBody] UserForRegistrationDto userForRegistration)
         {
-            
 
+            var id = Guid.NewGuid().ToString();
             var user = _mapper.Map<User>(userForRegistration);
-            if (userForRegistration.Outlets.Count > 0)
-            {
-            foreach (int outletId in userForRegistration.Outlets)
-            {
-                var outletUser = new OutletUser
-                {
-                    OutletId = outletId, 
-                    UserId = user.Id
-                };
-                user.OutletUsers.Add(outletUser);
-            }
-            }
+            user.Id = id;
             
             var password = Password.GenerateRandomPassword();
-            var result = await _userManager.CreateAsync(user, password); 
-            //await _userManager.AddPasswordAsync(user, password);
+            await _userManager.AddPasswordAsync(user, password);
+            
+            var result = await _userManager.CreateAsync(user, password);
+            
             if (!result.Succeeded)
             {
                 foreach (var error in result.Errors)
@@ -71,16 +62,67 @@ namespace TwinPalmsKPI.Controllers
                 return BadRequest(ModelState);
             }
 
-            await _userManager.AddToRolesAsync(user, userForRegistration.Roles);
+            
+            var roles = new string[] { "Basic", "Admin", "SuperAdmin" };
+            await _userManager.AddToRolesAsync(user, roles);
+
+            if (userForRegistration.Role == "Admin")
+            {
+                await _userManager.RemoveFromRoleAsync(user, "SuperAdmin");
+                // TODO: add companies to admin user
+                /* if (userForRegistration.Companies.Count > 0)
+                 {
+                     foreach (int companyId in userForRegistration.Companies)
+                     {
+                         var companyUser = new CompanyUser
+                         {
+                             CompanyId = companyId,
+                             UserId = userId,
+                         }
+                     }
+                 }*/
+            }
+            else
+            {
+                await _userManager.RemoveFromRolesAsync(user, new string[] { "SuperAdmin", "Admin" });
+                if (userForRegistration.Outlets.Count > 0)
+                {
+                    foreach (int outletId in userForRegistration.Outlets)
+                    {
+                        var outletUser = new OutletUser
+                        {
+                            OutletId = outletId,
+                            UserId = user.Id
+                        };
+                        user.OutletUsers.Add(outletUser);
+                    }
+                }
+                if (userForRegistration.Hotels.Count > 0)
+                {
+                    foreach (int hotelId in userForRegistration.Hotels)
+                    {
+                        var hotelUser = new HotelUser
+                        {
+                            HotelId = hotelId,
+                            UserId = user.Id
+                        };
+                        user.HotelUsers.Add(hotelUser);
+                    }
+                }
+
+            }
+            
+
             
             // This can be used if we want to send the password directly by email
             // and use a token instead
             //var token = await _userManager.GeneratePasswordResetTokenAsync(user);
-            
+           
             var message = new Message(new string[] { user.Email }, "Welcome", "Your username is " + user.UserName + " and password is " + password);
             _emailSender.SendEmail(message);
 
             return StatusCode(201);
+            //return Ok();
         }
         [HttpPost("login")]
         [ServiceFilter(typeof(ValidationFilterAttribute))]
@@ -107,7 +149,7 @@ namespace TwinPalmsKPI.Controllers
 
             var token = await _userManager.GeneratePasswordResetTokenAsync(user);
 
-            var message = new Message(new string[] { user.Email }, "Reset password link", "Link to client side reset password"+token);
+            var message = new Message(new string[] { user.Email }, "Reset password link", "<h3>Reset Email</h3><a href'https://localhost:44306/api/authentication/reset_password?token='"+token+">Click link</a>");
             _emailSender.SendEmail(message);
 
             return Ok();
@@ -116,6 +158,7 @@ namespace TwinPalmsKPI.Controllers
         [HttpPost("reset-password")]
         public async Task<IActionResult> ResetPassword([FromBody] ResetPasswordDto resetPasswordInput, [FromQuery] string token)
         {
+            _logger.LogInfo("Token: " +token);
             if (!ModelState.IsValid)
                 return BadRequest();
 
