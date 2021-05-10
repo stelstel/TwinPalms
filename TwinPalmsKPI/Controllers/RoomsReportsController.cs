@@ -62,7 +62,29 @@ namespace TwinPalmsKPI.Controllers
         [ServiceFilter(typeof(ValidationFilterAttribute))]
         public async Task<IActionResult> CreateRoomsReport([FromBody] RoomsReportForCreationDto roomsReport)
         {
+
             var roomsReportEntity = _mapper.Map<RoomsReport>(roomsReport);
+            if (roomsReport.LocalEventId != null)
+            {
+
+                var localEvent = await _repository.LocalEvent.GetLocalEventAsync((int)roomsReport.LocalEventId, false);
+                
+                if (localEvent == null)
+                {
+                    return NotFound("Local event does not exist");
+                }
+            }
+            if (roomsReport.RoomTypeId > 0)
+            {
+
+                var roomType = await _repository.RoomType.GetRoomTypeAsync(roomsReport.RoomTypeId, false);
+
+                if (roomType == null)
+                {
+                    return NotFound("Room type does not exist");
+                }
+            }
+
             _repository.RoomsReport.CreateRoomsReport(roomsReportEntity);
             await _repository.SaveAsync();
             var roomsReportToReturn = _mapper.Map<RoomsReportDto>(roomsReportEntity);
@@ -102,22 +124,12 @@ namespace TwinPalmsKPI.Controllers
         /// </summary>
         // TODO Add Authorize
         [HttpGet()/*, Authorize(Roles = "Administrator, Manager")*/]
-        public async Task<IActionResult> GetReportsData(int hotelId, [FromQuery] int[] roomTypes, DateTime fromDate, DateTime toDate)
+        public async Task<IActionResult> GetRoomsReport(int hotelId, [FromQuery] int[] roomTypes, DateTime fromDate, DateTime toDate)
         {
             var roomsReports = await _repository.RoomsReport.GetAllRoomsReportsDataAsync(hotelId, roomTypes, fromDate, toDate, false);
-            //var roomsReportsDto = _mapper.Map<IEnumerable<RoomsReportDto>>(roomsReports);
-            var query = roomsReports.Select(x => new
-            {
-                Date = x.Date,
-                NewRoomNights = x.NewRoomNights,
-                TodaysRevenuePickup = x.TodaysRevenuePickup,
-                OtherRevenue = x.OtherRevenue,
-                IsPublicHoliday = x.IsPublicHoliday,
-                RoomTypeId = x.RoomTypeId,
-                HotelId = x.RoomType.HotelId,
-                LocalEvent = x.LocalEventId
-            }).ToArray();
-            return Ok(query);
+            var roomsReportsDto = _mapper.Map<IEnumerable<RoomsReportDto>>(roomsReports);
+            
+            return Ok(roomsReportsDto);
         }
     }
 }
