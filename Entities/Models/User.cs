@@ -11,6 +11,7 @@ namespace Entities.Models
             OutletUsers = new HashSet<OutletUser>();
             HotelUsers = new HashSet<HotelUser>();
         }
+
         public string FirstName { get; set; }
         public string LastName { get; set; }
         [JsonIgnore]
@@ -25,6 +26,6 @@ namespace Entities.Models
         public virtual ICollection<RoomsReport> RoomsReports { get; set; }
         [JsonIgnore]
         public virtual ICollection<UserRole> UserRoles { get; set; }
-        
+        public virtual ICollection<CompanyUser> CompanyUsers { get; set; }
     }
 }

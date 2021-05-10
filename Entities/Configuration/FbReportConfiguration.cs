@@ -34,7 +34,8 @@ namespace Entities.Configuration
                     Notes = "Horrible. A bunch of loud people from the U.S.",
                     Date = DateTime.Now,
                     OutletId = 1,
-                    UserId = "35947f01-393b-442c-b815-d6d9f7d4b81e"
+                    UserId = "35947f01-393b-442c-b815-d6d9f7d4b81e",
+                    LocalEventId = 2
                 },
                 new FbReport
                 {
@@ -49,7 +50,8 @@ namespace Entities.Configuration
                     Notes = "Typical day",
                     Date = DateTime.Now.AddMonths(-1),
                     OutletId = 1,
-                    UserId = "35947f01-393b-442c-b815-d6d9f7d4b81e"
+                    UserId = "35947f01-393b-442c-b815-d6d9f7d4b81e",
+                    LocalEventId = 3
                 },
                 new FbReport
                 {
@@ -64,7 +66,8 @@ namespace Entities.Configuration
                     Notes = "Lorem",
                     Date = DateTime.Now.AddMonths(-2),
                     OutletId = 1,
-                    UserId = "35947f01-393b-442c-b815-d6d9f7d4b81e"
+                    UserId = "35947f01-393b-442c-b815-d6d9f7d4b81e",
+                    LocalEventId = 4
                 },
                 new FbReport
                 {
@@ -109,6 +112,22 @@ namespace Entities.Configuration
                     IsPublicHoliday = false,
                     Notes = "Nice day. A lot of drunk Swedes",
                     Date = DateTime.Now.AddDays(-2).AddHours(-2).AddMinutes(-24),
+                    OutletId = 4,
+                    UserId = "35947f01-393b-442c-b815-d6d9f7d4b81e",
+                    LocalEventId = 1
+                },
+                new FbReport
+                {
+                    Id = 7,
+                    Tables = 20,
+                    Food = 21000,
+                    Beverage = 32000,
+                    OtherIncome = 8500,
+                    GuestsFromHotel = 24,
+                    GuestsFromOutsideHotel = 30,
+                    IsPublicHoliday = false,
+                    Notes = "busy night",
+                    Date = new DateTime(2021, 5, 09, 04, 00, 00), //closing time ex 4 am
                     OutletId = 4,
                     UserId = "35947f01-393b-442c-b815-d6d9f7d4b81e",
                     LocalEventId = 1

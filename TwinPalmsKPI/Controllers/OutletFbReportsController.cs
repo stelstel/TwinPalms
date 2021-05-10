@@ -10,6 +10,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Text;
+
 namespace TwinPalmsKPI.Controllers
 {
     //[Route("api/[controller]")]
@@ -26,91 +28,79 @@ namespace TwinPalmsKPI.Controllers
             _repository = repository;
             _logger = logger;
             _mapper = mapper;
-        }
+        }        
 
+        // ****************************************** GetOutletsFbReports ****************************************************
         /// <summary>
-        /// Gets a list of all Outlets
+        /// Gets a All FbReports by many Outlet Ids between two Dates
         /// </summary>
-        // TODO Add Authorize
-        //[HttpGet(Name = "GetOutlets")/*, Authorize(Roles = "Administrator, Manager")*/] 
-        //public async Task<IActionResult> GetOutlets()
-        //{
-        //    var outlets = await _repository.Outlet.GetAllOutletsAsync(trackChanges: false);
-        //    var outletsDto = _mapper.Map<IEnumerable<OutletDto>>(outlets);
-        //    return Ok(outletsDto);
-        //}
-
-        // {outletId}/fbReport ////////////////////////////////////////
-        // [HttpGet("{outletid}/fbReport", Name = "OutletById")] //////
-
-        /// <summary>
-        /// Gets a All FbReports by Outlet Id between two DateTimes
-        /// </summary>
-        [HttpGet("/outlet/{outletId}/fbReports", Name = "OutletFbReportsByIdAndDate")]
-        public async Task<IActionResult> GetOutletFbReport(int outletId, DateTime fromDate, DateTime toDate)
+        /// <remarks>
+        /// Gets all FbReports for many outlets between fromDate and toDate, including toDate
+        /// 
+        /// For example: to get the reports from only 2021-05-04
+        /// 
+        ///     fromDate = 2021-05-04
+        ///     toDate = 2021-05-04
+        ///     
+        /// </remarks>     
+        [HttpGet("/outlets/fbReports", Name = "OutletsFbReportsByIdAndDate")]
+        public async Task<IActionResult> GetOutletsFbReports( [FromQuery] int[] outletIds, DateTime fromDate, DateTime toDate)
         {
-            var outlet = await _repository.Outlet.GetOutletAsync(outletId, trackChanges: false);
-            
-            if (outlet == null)
+            //Reports filed before 5am are treated as fbreport for the day before.
+            // Request for toDate are reports including that date.
+            var fbrStart = fromDate.AddHours(5);
+            var fbrEnd = toDate.AddHours(5).AddDays(1);
+
+            StringBuilder sbOutletIds = new StringBuilder();
+
+            int outletIdCounter = 0;
+
+            foreach (var oi in outletIds)
             {
-                _logger.LogInfo($"Outlets with id {outletId} doesn't exist in the database.");
+                outletIdCounter++;
+
+                if (await _repository.FbReport.GetFbReportAsync(oi, false) == null)
+                {
+                    _logger.LogInfo($"Outlet with id {oi} doesn't exist in the database.");
+                    return NotFound();
+                }
+
+                sbOutletIds.Append($"{oi}");
+
+                if (outletIdCounter < outletIds.Count())
+                {
+                    sbOutletIds.Append($", ");
+                }
+            }
+
+            var outletFbReports = await _repository.FbReport.GetAllOutletFbReportsForOutlets(outletIds, fbrStart, fbrEnd, trackChanges: false);
+
+            if (outletFbReports.Count() == 0)
+            {
+                _logger.LogInfo($"No reports for Outlet with ids {sbOutletIds.ToString()} found in the database between dates {fromDate} and {toDate}.");
                 return NotFound();
             }
 
-            var outletFbReports = await _repository.FbReport.GetAllOutletFbReportsForOneOutlet(outletId, fromDate, toDate, trackChanges: false);
-            
-            if (outletFbReports == null)
+            var outletFbReportsToReturn = outletFbReports.Select(o => new
             {
-                _logger.LogInfo($"No reports for Outlet with id {outletId} found in the database between {fromDate} and {toDate}.");
-                return NotFound();
-            }
+                Tables = o.Tables,
+                Food = o.Food,
+                Beverage = o.Beverage,
+                OtherIncome = o.OtherIncome,
+                Date = o.Date,
+                GuestsFromHotel = o.GuestsFromHotel,
+                GuestsFromOutsideHotel = o.GuestsFromOutsideHotel,
+                IsPublicHoliday = o.IsPublicHoliday,
+                Notes = o.Notes,
+                OutletId = o.OutletId,
+                UserId = o.UserId,
+                LocalEventId = o.LocalEventId,
+                GuestSourceOfBusinesses = o.FbReportGuestSourceOfBusinesses.Select(f => f.GuestSourceOfBusiness).ToList(),
+                Weathers = o.WeatherFbReports.Select(w => w.Weather).ToList()
+            }).ToArray();
 
-            //var outletDto = _mapper.Map<OutletDto>(outlet);
-            //var outletFbReportsDto = _mapper.Map<FbReportDto>(outletFbReports);
-            return Ok(outletFbReports);
+            return Ok(outletFbReportsToReturn);
         }
-
-        /// <summary>
-        /// Creates a new Outlet
-        /// </summary>
-        //[HttpPost]
-        //[ServiceFilter(typeof(ValidationFilterAttribute))]
-        //public async Task<IActionResult> CreateOutlet([FromBody] OutletForCreationDto outlet)
-        //{
-        //    var outletEntity = _mapper.Map<Outlet>(outlet);
-        //    _repository.Outlet.CreateOutlet(outletEntity);
-        //    await _repository.SaveAsync();
-        //    var outletToReturn = _mapper.Map<OutletDto>(outletEntity);
-        //    return CreatedAtRoute("OutletById", new { id = outletToReturn.Id }, outletToReturn);
-        //}
-
-        /// <summary>
-        /// Deletes a Outlet by ID
-        /// </summary>
-        //[HttpDelete("{id}")]
-        //[ServiceFilter(typeof(ValidateOutletExistsAttribute))]
-        //public async Task<IActionResult> DeleteOutlet(int id)
-        //{
-        //    var outlet = HttpContext.Items["outlet"] as Outlet;
-        //    _repository.Outlet.DeleteOutlet(outlet);
-        //    await _repository.SaveAsync();
-        //    return NoContent();
-        //}
-
-        /// <summary>
-        /// Updates a Outlet by ID
-        /// </summary>
-        //[HttpPut("{id}")]
-        //[ServiceFilter(typeof(ValidationFilterAttribute))]
-        //[ServiceFilter(typeof(ValidateOutletExistsAttribute))]
-        //public async Task<IActionResult> UpdateOutlet(int id, [FromBody] OutletForUpdateDto outlet)
-        //{
-        //    var outletEntity = HttpContext.Items["outlet"] as Outlet;
-        //    _repository.Outlet.UpdateOutlet(outletEntity);
-        //    _mapper.Map(outlet, outletEntity);
-        //    await _repository.SaveAsync();
-        //    var outletToReturn = _mapper.Map<OutletDto>(outletEntity);
-        //    return CreatedAtRoute("OutletById", new { id = outletToReturn.Id }, outletToReturn);
-        //}
     }
 }
+
