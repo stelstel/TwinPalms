@@ -115,6 +115,22 @@ namespace Entities.Configuration
                     OutletId = 4,
                     UserId = "35947f01-393b-442c-b815-d6d9f7d4b81e",
                     LocalEventId = 1
+                },
+                new FbReport
+                {
+                    Id = 7,
+                    Tables = 20,
+                    Food = 21000,
+                    Beverage = 32000,
+                    OtherIncome = 8500,
+                    GuestsFromHotel = 24,
+                    GuestsFromOutsideHotel = 30,
+                    IsPublicHoliday = false,
+                    Notes = "busy night",
+                    Date = new DateTime(2021, 5, 09, 04, 00, 00), //closing time ex 4 am
+                    OutletId = 4,
+                    UserId = "35947f01-393b-442c-b815-d6d9f7d4b81e",
+                    LocalEventId = 1
                 }
             );
         }
