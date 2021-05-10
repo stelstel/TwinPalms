@@ -1,0 +1,10 @@
+{
+  "dependencies": {
+    "mssql1": {
+      "resourceId": "/subscriptions/[parameters('subscriptionId')]/resourceGroups/[parameters('resourceGroupName')]/providers/Microsoft.Sql/servers/twinpalms-db2-server/databases/TwinPalmsDB2",
+      "type": "mssql.azure",
+      "connectionId": "sqlConnection",
+      "secretStore": "AzureAppSettings"
+    }
+  }
+}

@@ -31,7 +31,8 @@ namespace TwinPalmsKPI
                         {
                             webBuilder.UseStartup<Startup>();
                             webBuilder.UseUrls("http://*:" + Environment.GetEnvironmentVariable("PORT"));
-                        });
+                            
+                      });
     }
 }
     
