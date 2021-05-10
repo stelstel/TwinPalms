@@ -20,8 +20,10 @@ namespace Entities.Models
         [MaxLength(60, ErrorMessage = "Maximum length for the Name is 60 characters.")]
         public string Name { get; set; }
 
+        // Navigation properties
         public virtual ICollection<CruiseCompany> CruiseCompanies { get; set; }
         public virtual ICollection<Hotel> Hotels { get; set; }
         public virtual ICollection<Outlet> Outlets { get; set; }
+        public virtual ICollection<CompanyUser> CompanyUsers { get; set; }
     }
 }
