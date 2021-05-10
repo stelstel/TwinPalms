@@ -35,8 +35,7 @@ namespace Repository
             .ToListAsync();
 
         public async Task<IEnumerable<FbReport>> GetAllOutletFbReportsForOutlets(int[] outletIds, DateTime fromDate, DateTime toDate, bool trackChanges) =>
-            await FindAll(trackChanges)
-            .Where(fbr => outletIds.Contains(fbr.OutletId) && fbr.Date >= fromDate && fbr.Date <= toDate)
+            await FindByCondition(fbr => outletIds.Contains(fbr.OutletId) && fbr.Date >= fromDate && fbr.Date <= toDate, trackChanges)
             .Include(fbr => fbr.FbReportGuestSourceOfBusinesses) // Include guestSourceOFBusiness junction table
                 .ThenInclude(gsb => gsb.GuestSourceOfBusiness)
             .Include(fbr => fbr.WeatherFbReports) // Include weather junction table
