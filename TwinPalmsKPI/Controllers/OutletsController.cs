@@ -62,6 +62,34 @@ namespace TwinPalmsKPI.Controllers
         [ServiceFilter(typeof(ValidationFilterAttribute))]
         public async Task<IActionResult> CreateOutlet([FromBody] OutletForCreationDto outlet)
         {
+            List<Company> CompaniesFromDb = (List<Company>)await _repository.Company.GetAllCompaniesAsync(trackChanges: false);
+
+            Boolean companyOk = false;
+
+            foreach (var company in CompaniesFromDb)
+            {
+                if (company.Id == outlet.CompanyId)
+                {
+                    companyOk = true;
+                }
+
+                if (companyOk == true)
+                {
+                    break;
+                }
+            }
+
+            if (companyOk == false)
+            {
+                ModelState.AddModelError("ArgumentOutOfRangeError", 
+                    $"CompanyId must be an integer between 1 and {CompaniesFromDb.Count}. It's now {outlet.CompanyId}");
+            }
+
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
             var outletEntity = _mapper.Map<Outlet>(outlet);
             _repository.Outlet.CreateOutlet(outletEntity);
             await _repository.SaveAsync();
