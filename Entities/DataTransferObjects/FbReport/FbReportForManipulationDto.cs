@@ -29,9 +29,13 @@ namespace Entities.DataTransferObjects
         [Required(ErrorMessage = "IsPublicHoliday is a required field (true/false)")]
         public bool IsPublicHoliday { get; set; }
 
-        [StringLength(5000, ErrorMessage = "Notes can't contain more than 5000 characters")]
+        [StringLength(5000, ErrorMessage = "EventNote can't contain more than 5000 characters")]
         [DataType(DataType.Text)]
-        public string Notes { get; set; }
+        public string EventNotes { get; set; }
+
+        [StringLength(5000, ErrorMessage = "GSourceOfBusinessNotes can't contain more than 5000 characters")]
+        [DataType(DataType.Text)]
+        public string GSourceOfBusinessNotes { get; set; }
 
         [Required(ErrorMessage = "Date is a required field.")]
         [DataType(DataType.DateTime)]

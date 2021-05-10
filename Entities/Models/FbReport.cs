@@ -23,7 +23,8 @@ namespace Entities.Models
         public int? GuestsFromHotel { get; set; }
         public int? GuestsFromOutsideHotel { get; set; }
         public bool IsPublicHoliday { get; set; }
-        public string Notes { get; set; }
+        public string EventNotes { get; set; }
+        public string GSourceOfBusinessNotes { get; set; }
         [Required]
         public DateTime Date { get; set; }
         [Required]

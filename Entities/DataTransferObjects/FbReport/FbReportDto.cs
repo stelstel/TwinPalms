@@ -17,7 +17,8 @@ namespace Entities.DataTransferObjects
         public int? GuestsFromHotel { get; set; }
         public int? GuestsFromOutsideHotel { get; set; }
         public bool IsPublicHoliday { get; set; }
-        public string Notes { get; set; }
+        public string EventNotes { get; set; }
+        public string GSourceOfBusinessNotes { get; set; }
         public DateTime Date { get; set; }
         public int OutletId { get; set; }
         public string UserId { get; set; }
