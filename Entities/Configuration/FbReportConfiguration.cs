@@ -131,7 +131,8 @@ namespace Entities.Configuration
                     GuestsFromHotel = 24,
                     GuestsFromOutsideHotel = 30,
                     IsPublicHoliday = false,
-                    Notes = "busy night",
+                    EventNotes = "busy night",
+                    GSourceOfBusinessNotes = "Lorem Ipsum GSOB",
                     Date = new DateTime(2021, 5, 09, 04, 00, 00), //closing time ex 4 am
                     OutletId = 4,
                     UserId = "35947f01-393b-442c-b815-d6d9f7d4b81e",
