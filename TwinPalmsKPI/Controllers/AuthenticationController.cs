@@ -20,18 +20,21 @@ namespace TwinPalmsKPI.Controllers
     public class AuthenticationController : ControllerBase
     {
         private readonly ILoggerManager _logger; 
+        private readonly IRepositoryManager _repository; 
         private readonly IMapper _mapper; 
         private readonly UserManager<User> _userManager;
         private readonly IAuthenticationManager _authManager;
         private readonly IEmailSender _emailSender;
 
         public AuthenticationController(
+            IRepositoryManager repository,
             ILoggerManager logger, 
             IMapper mapper, 
             UserManager<User> userManager, 
             IAuthenticationManager authManager,
             IEmailSender emailSender)
             {
+                _repository = repository;   
                 _logger = logger; 
                 _mapper = mapper; 
                 _userManager = userManager; 
@@ -69,55 +72,22 @@ namespace TwinPalmsKPI.Controllers
             if (userForRegistration.Role == "Admin")
             {
                 await _userManager.RemoveFromRoleAsync(user, "SuperAdmin");
-                // TODO: add companies to admin user
-                /* if (userForRegistration.Companies.Count > 0)
-                 {
-                     foreach (int companyId in userForRegistration.Companies)
-                     {
-                         var companyUser = new CompanyUser
-                         {
-                             CompanyId = companyId,
-                             UserId = userId,
-                         }
-                     }
-                 }*/
+                _repository.User.AddCompaniesAsync(user.Id, userForRegistration.Companies.ToArray(), true);
+                
             }
             else
             {
                 await _userManager.RemoveFromRolesAsync(user, new string[] { "SuperAdmin", "Admin" });
-                if (userForRegistration.Outlets.Count > 0)
-                {
-                    foreach (int outletId in userForRegistration.Outlets)
-                    {
-                        var outletUser = new OutletUser
-                        {
-                            OutletId = outletId,
-                            UserId = user.Id
-                        };
-                        user.OutletUsers.Add(outletUser);
-                    }
-                }
-                if (userForRegistration.Hotels.Count > 0)
-                {
-                    foreach (int hotelId in userForRegistration.Hotels)
-                    {
-                        var hotelUser = new HotelUser
-                        {
-                            HotelId = hotelId,
-                            UserId = user.Id
-                        };
-                        user.HotelUsers.Add(hotelUser);
-                    }
-                }
 
+                _repository.User.AddOutletsAndHotelsAsync(user.Id, userForRegistration.Outlets.ToArray(), userForRegistration.Hotels.ToArray(), true);
+                
             }
-            
 
-            
+
+
             // This can be used if we want to send the password directly by email
             // and use a token instead
             //var token = await _userManager.GeneratePasswordResetTokenAsync(user);
-           
             var message = new Message(new string[] { user.Email }, "Welcome", "Your username is " + user.UserName + " and password is " + password);
             _emailSender.SendEmail(message);
 

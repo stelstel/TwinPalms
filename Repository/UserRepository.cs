@@ -33,8 +33,10 @@ namespace Repository
             .Include(u => u.UserRoles).ThenInclude(ur => ur.Role)
             .SingleOrDefaultAsync();
 
+       /* private async Task<User> FindById(string id) =>
+            await _repositoryContext.FindAsync(id);*/
 
-        
+
         public async Task<IEnumerable<User>> GetUsersAsync(bool trackChanges)
         {
             /*return await (from user in _repositoryContext.Users
@@ -74,11 +76,32 @@ namespace Repository
                     .ToListAsync();
         }
 
-        /*public void AddOutletsAsync(string[] outletIds, string userId, bool trackChanges)
+        public async void AddOutletsAndHotelsAsync(string id, int[] outletIds, int[] hotelIds, bool trackChanges)
         {
-            throw new NotImplementedException();
-            var user = GetUserAsync(userId, true);
-           
-        }*/
+            var user = await FindByCondition(u => u.Id.Equals(id), trackChanges).FirstOrDefaultAsync();
+            foreach (var hotelId in hotelIds)
+            {
+                user.HotelUsers.Add(new HotelUser { HotelId = hotelId, UserId = user.Id });
+            }
+            foreach (int outletId in outletIds)
+            {  
+                user.OutletUsers.Add(new OutletUser {OutletId = outletId, UserId = user.Id});
+            }
+
+            await _repositoryContext.SaveChangesAsync();
+
+        }
+                
+        
+        public async void AddCompaniesAsync(string id,  int[] companyIds, bool trackChanges)
+        {
+            var user = await FindByCondition(u => u.Id.Equals(id), trackChanges).FirstOrDefaultAsync();
+            foreach (int companyId in companyIds)
+            {
+                user.CompanyUsers.Add(new CompanyUser { CompanyId = companyId, UserId = user.Id });
+            }
+            await _repositoryContext.SaveChangesAsync();
+
+        }
     }
 }
