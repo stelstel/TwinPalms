@@ -2,6 +2,7 @@
 using Entities.DataTransferObjects;
 using Entities.Models;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using System;
@@ -68,5 +69,6 @@ namespace TwinPalmsKPI
             ); 
             return tokenOptions;
         }
+       
     }
 }

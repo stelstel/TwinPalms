@@ -8,6 +8,7 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
     <DocumentationFile>TwinPalmsKPI.xml</DocumentationFile>
     <NoWarn>1701;1702;1591</NoWarn>
+    <OutputPath>wwwroot\</OutputPath>
   </PropertyGroup>
 
   <ItemGroup>
@@ -32,6 +33,13 @@
 
   <ItemGroup>
     <Folder Include="logs\" />
+    <Folder Include="wwwroot\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="TwinPalmsKPI.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
 
   <ProjectExtensions><VisualStudio><UserProperties appsettings_1json__JsonSchema="https://json.schemastore.org/behat.json" /></VisualStudio></ProjectExtensions>

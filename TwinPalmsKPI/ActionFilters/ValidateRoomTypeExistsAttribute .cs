@@ -8,12 +8,12 @@ using System.Threading.Tasks;
 
 namespace TwinPalmsKPI.ActionFilters
 {
-    public class ValidateCompanyExistsAttribute : IAsyncActionFilter
+    public class ValidateRoomTypeExistsAttribute : IAsyncActionFilter
     {
         private readonly ILoggerManager _logger;
         private readonly IRepositoryManager _repository;
 
-        public ValidateCompanyExistsAttribute(IRepositoryManager repository, ILoggerManager logger)
+        public ValidateRoomTypeExistsAttribute(IRepositoryManager repository, ILoggerManager logger)
         {
             _repository = repository;
             _logger = logger;
@@ -24,15 +24,15 @@ namespace TwinPalmsKPI.ActionFilters
         {
             var trackChanges = context.HttpContext.Request.Method.Equals("Put");
             var id = (int)context.ActionArguments["id"];
-            var company = await _repository.Company.GetCompanyAsync(id, trackChanges);
-            if (company == null)
+            var roomType = await _repository.RoomType.GetRoomTypeAsync(id, trackChanges);
+            if (roomType == null)
             {
-                _logger.LogInfo($"Company with id {id} doesn't exist in the database");
+                _logger.LogInfo($"RoomType with id {id} doesn't exist in the database");
                 context.Result = new NotFoundResult();
             }
             else
             {
-                context.HttpContext.Items.Add("company", company);
+                context.HttpContext.Items.Add("roomType", roomType);
                 await next();
             }
         }

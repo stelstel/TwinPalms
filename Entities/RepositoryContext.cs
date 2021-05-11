@@ -1,11 +1,13 @@
 ﻿using Entities.Configuration;
 using Entities.Models;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
 namespace Entities
 { 
-    public class RepositoryContext : IdentityDbContext<User>
+    public class RepositoryContext : IdentityDbContext<User, Role, string, IdentityUserClaim<string>, UserRole, IdentityUserLogin<string>,
+        IdentityRoleClaim<string>, IdentityUserToken<string>>
     {
         public RepositoryContext(DbContextOptions options)
             :base(options)
@@ -40,16 +42,15 @@ namespace Entities
             modelBuilder.ApplyConfiguration(new FbReportGuestSourceOfBusinessConfiguration());
             modelBuilder.ApplyConfiguration(new HotelUserConfiguration());
             modelBuilder.ApplyConfiguration(new OutletUserConfiguration());
+            modelBuilder.ApplyConfiguration(new CompanyUserConfiguration());
             modelBuilder.ApplyConfiguration(new WeatherFbReportConfiguration());
             modelBuilder.ApplyConfiguration(new WeatherOtherReportConfiguration());
             modelBuilder.ApplyConfiguration(new WeatherRoomsReportConfiguration());
             modelBuilder.ApplyConfiguration(new RoomTypeConfiguration());
             modelBuilder.ApplyConfiguration(new RoomsReportConfiguration());
         }
-
         public DbSet<Company> Companies { get; set; }
         public DbSet<Employee> Employees { get; set; }
-        //public virtual DbSet<User> AppUsers { get; set; }
         public virtual DbSet<GuestSourceOfBusiness> GuestSourceOfBusinesses { get; set; }
         public virtual DbSet<CruiseCompany> CruiseCompanies { get; set; }
         public virtual DbSet<CruiseShip> CruiseShips { get; set; }
@@ -60,6 +61,7 @@ namespace Entities
         public virtual DbSet<OtherReport> OtherReports { get; set; }
         public virtual DbSet<Outlet> Outlets { get; set; }
         public virtual DbSet<OutletUser> OutletUsers { get; set; }
+        public virtual DbSet<CompanyUser> CompanyUsers { get; set; }
         public virtual DbSet<RoomType> RoomTypes { get; set; }
         public virtual DbSet<RoomsReport> RoomsReports { get; set; }                
         public virtual DbSet<Weather> Weathers { get; set; }

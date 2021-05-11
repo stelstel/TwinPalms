@@ -4,17 +4,7 @@
 ## Get latest from https://github.com/github/gitignore/blob/master/VisualStudio.gitignore
 TwinPalmsKPI/logs/*
 TwinPalmsKPI/internal_logs/*
-nlog.config
-# User-specific files
-*.rsuser
-*.suo
-*.user
-*.userosscache
-*.sln.docstates
-
-# User-specific files (MonoDevelop/Xamarin Studio)
-*.userprefs
-
+TwinPalmsKPI/nlog.config
 # Build results
 [Dd]ebug/
 [Dd]ebugPublic/

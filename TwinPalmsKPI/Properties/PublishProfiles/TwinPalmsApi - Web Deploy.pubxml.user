@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+This file is used by the publish/package process of your Web project. You can customize the behavior of this process
+by editing this MSBuild file. In order to learn more about this please visit https://go.microsoft.com/fwlink/?LinkID=208121. 
+-->
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <TimeStampOfAssociatedLegacyPublishXmlFile />
+    <EncryptedPassword>AQAAANCMnd8BFdERjHoAwE/Cl+sBAAAA5+gN6HPq+0SF6v/qOzPwzQAAAAACAAAAAAAQZgAAAAEAACAAAABs2ePtYjNJAXzvVw8RFH3wiZ81sdjwDKJUUV25RW65DQAAAAAOgAAAAAIAACAAAAAd0Yl3CKAhrvEAYf3oAIEdEqWH8AdCqo4i1TJYjY4VhIAAAACo1jJyShb0lK+bIKnox2rx0gn4zvrmiJGKEFxQPqrkEQEGbW2diGWIBxP1a03iGsnItxhuGRsYvfpBa2JyOL7FUzntYS3/CNzm2IhP50dOsXKC24Q6EmdOZ92rS6KP911ynffjpPbKKnhiuoojkhobyKmIFtiqNUBEUrXAjsWaSUAAAAAFRFvnMU6tKhkHd6WMcUVknmXFq66yyjStIZftQA58/FjZSRKdYEXfgAwt+w4Zh+mVcdjEqqIapNH9lgRLw3lG</EncryptedPassword>
+    <History>True|2021-05-07T16:32:39.7874547Z;False|2021-05-07T18:14:21.4198124+02:00;True|2021-05-07T17:12:36.7701220+02:00;True|2021-05-07T16:02:22.9331920+02:00;True|2021-05-07T15:52:45.5722868+02:00;True|2021-05-07T15:39:52.7519799+02:00;False|2021-05-07T15:36:08.7198712+02:00;True|2021-05-07T13:42:10.3109983+02:00;True|2021-05-07T12:51:40.5788159+02:00;True|2021-05-07T12:48:18.2171564+02:00;</History>
+  </PropertyGroup>
+  <ItemGroup>
+    <DestinationConnectionStrings Include="sqlConnection">
+      <Value>Data Source=tcp:twinpalms-db2-server.database.windows.net,1433%3bInitial Catalog=TwinPalmsDB2%3bUser Id=twinpalmsadmin%40twinpalms-db2-server%3bPassword=qwer1234!</Value>
+    </DestinationConnectionStrings>
+  </ItemGroup>
+  <ItemGroup>
+    <EFMigrations Include="Entities.RepositoryContext">
+      <Value>Data Source=tcp:twinpalms-db2-server.database.windows.net,1433%3bInitial Catalog=TwinPalmsDB2%3bUser Id=twinpalmsadmin%40twinpalms-db2-server%3bPassword=qwer1234!</Value>
+    </EFMigrations>
+  </ItemGroup>
+</Project>

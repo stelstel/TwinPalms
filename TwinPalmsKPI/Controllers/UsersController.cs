@@ -10,6 +10,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 
 namespace TwinPalmsKPI.Controllers
 {
@@ -29,7 +30,23 @@ namespace TwinPalmsKPI.Controllers
             _mapper = mapper;
             _userManager = userManager;
         }
+        /// <summary>
+        /// Gets a list of all users
+        /// </summary>
+        [HttpGet(Name = "GetUsers")]
+        public async Task<IEnumerable<UserDto>> GetUsers()
+        {
 
+            var users = await _userManager.Users
+                 .Include(u => u.UserRoles).ThenInclude(ur => ur.Role)
+                 .Include(u => u.OutletUsers).ThenInclude(ou => ou.Outlet)
+                 .Include(u => u.HotelUsers).ThenInclude(hu => hu.Hotel).ToListAsync();
+            var userDtos = _mapper.Map<IEnumerable<UserDto>>(users);
+            
+            return userDtos;
+
+
+        }
         /// <summary>
         /// Gets user by ID
         /// </summary>
@@ -51,35 +68,21 @@ namespace TwinPalmsKPI.Controllers
         /// <summary>
         /// Gets a list of all users
         /// </summary>
-        [HttpGet(Name = "GetUsers")]
+        /*[HttpGet(Name = "GetUsers")]
         public async Task<IActionResult> GetUsers()
         {
+            var users = await _repository.User.GetUsersAsync(trackChanges: false);
+            foreach (var user in users)
+            {
+               await _userManager.GetRolesAsync(user);
+            }
             
 
-            var users = await _repository.User.GetUsersAsync(trackChanges: false);
-            _mapper.Map<IEnumerable<UserDto>>(users);
-            
-            var result = users.Select(async u => new UserDto
-            {
-                Id = u.Id,
-                FirstName = u.FirstName,
-                LastName = u.LastName,
-                UserName = u.UserName,
-                Email = u.Email,
-                Outlets = u.OutletUsers.Select(ou => ou.Outlet).ToList(),
-                Hotels = u.HotelUsers.Select(hu => hu.Hotel).ToList(),
-                Roles = await _userManager.GetRolesAsync(u)
-            });
-            
-            
-            /*foreach (var item in usersDto)
-            {
-                item.Outlets = users.Where(u => u.Id == item.Id).FirstOrDefault().OutletUsers.Select(ou => ou.Outlet).ToList();
-                item.Hotels = users.Where(u => u.Id == item.Id).FirstOrDefault().OutletUsers.Select(ou => ou.Outlet).ToList();
-                item.Roles = users.Where(u => u.Id == item.Id).FirstOrDefault().UserRoles.Select(ur => ur.Role).ToList();
-            }*/
-            return Ok(result); 
-        }
+            var userDtos = _mapper.Map<IEnumerable<UserDto>>(users);
+
+
+            return Ok(users); 
+        }*/
         /// <summary>
         /// Deletes user by ID
         /// </summary>

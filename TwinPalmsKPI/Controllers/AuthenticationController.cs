@@ -20,18 +20,21 @@ namespace TwinPalmsKPI.Controllers
     public class AuthenticationController : ControllerBase
     {
         private readonly ILoggerManager _logger; 
+        private readonly IRepositoryManager _repository; 
         private readonly IMapper _mapper; 
         private readonly UserManager<User> _userManager;
         private readonly IAuthenticationManager _authManager;
         private readonly IEmailSender _emailSender;
 
         public AuthenticationController(
+            IRepositoryManager repository,
             ILoggerManager logger, 
             IMapper mapper, 
             UserManager<User> userManager, 
             IAuthenticationManager authManager,
             IEmailSender emailSender)
             {
+                _repository = repository;   
                 _logger = logger; 
                 _mapper = mapper; 
                 _userManager = userManager; 
@@ -43,25 +46,16 @@ namespace TwinPalmsKPI.Controllers
         [ServiceFilter(typeof(ValidationFilterAttribute))]
         public async Task<IActionResult> RegisterUser([FromBody] UserForRegistrationDto userForRegistration)
         {
-            
 
+            var id = Guid.NewGuid().ToString();
             var user = _mapper.Map<User>(userForRegistration);
-            if (userForRegistration.Outlets.Count > 0)
-            {
-            foreach (int outletId in userForRegistration.Outlets)
-            {
-                var outletUser = new OutletUser
-                {
-                    OutletId = outletId, 
-                    UserId = user.Id
-                };
-                user.OutletUsers.Add(outletUser);
-            }
-            }
+            user.Id = id;
             
             var password = Password.GenerateRandomPassword();
-            var result = await _userManager.CreateAsync(user, password); 
-            //await _userManager.AddPasswordAsync(user, password);
+            await _userManager.AddPasswordAsync(user, password);
+            
+            var result = await _userManager.CreateAsync(user, password);
+            
             if (!result.Succeeded)
             {
                 foreach (var error in result.Errors)
@@ -71,16 +65,34 @@ namespace TwinPalmsKPI.Controllers
                 return BadRequest(ModelState);
             }
 
-            await _userManager.AddToRolesAsync(user, userForRegistration.Roles);
             
+            var roles = new string[] { "Basic", "Admin", "SuperAdmin" };
+            await _userManager.AddToRolesAsync(user, roles);
+
+            if (userForRegistration.Role == "Admin")
+            {
+                await _userManager.RemoveFromRoleAsync(user, "SuperAdmin");
+                _repository.User.AddCompaniesAsync(user.Id, userForRegistration.Companies.ToArray(), true);
+                
+            }
+            else
+            {
+                await _userManager.RemoveFromRolesAsync(user, new string[] { "SuperAdmin", "Admin" });
+
+                _repository.User.AddOutletsAndHotelsAsync(user.Id, userForRegistration.Outlets.ToArray(), userForRegistration.Hotels.ToArray(), true);
+                
+            }
+
+
+
             // This can be used if we want to send the password directly by email
             // and use a token instead
             //var token = await _userManager.GeneratePasswordResetTokenAsync(user);
-            
             var message = new Message(new string[] { user.Email }, "Welcome", "Your username is " + user.UserName + " and password is " + password);
             _emailSender.SendEmail(message);
 
             return StatusCode(201);
+            //return Ok();
         }
         [HttpPost("login")]
         [ServiceFilter(typeof(ValidationFilterAttribute))]
@@ -107,7 +119,7 @@ namespace TwinPalmsKPI.Controllers
 
             var token = await _userManager.GeneratePasswordResetTokenAsync(user);
 
-            var message = new Message(new string[] { user.Email }, "Reset password link", "Link to client side reset password"+token);
+            var message = new Message(new string[] { user.Email }, "Reset password link", "<h3>Reset Email</h3><a href'https://localhost:44306/api/authentication/reset_password?token='"+token+">Click link</a>");
             _emailSender.SendEmail(message);
 
             return Ok();
@@ -116,6 +128,7 @@ namespace TwinPalmsKPI.Controllers
         [HttpPost("reset-password")]
         public async Task<IActionResult> ResetPassword([FromBody] ResetPasswordDto resetPasswordInput, [FromQuery] string token)
         {
+            _logger.LogInfo("Token: " +token);
             if (!ModelState.IsValid)
                 return BadRequest();
 
