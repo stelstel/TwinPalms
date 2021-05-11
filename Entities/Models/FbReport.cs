@@ -24,6 +24,8 @@ namespace Entities.Models
         public int? GuestsFromOutsideHotel { get; set; }
         public bool IsPublicHoliday { get; set; }
         public string EventNotes { get; set; }
+        public string ImageId { get; set; }
+        public virtual Image Image { get; set; }
         public string GSourceOfBusinessNotes { get; set; }
         [Required]
         public DateTime Date { get; set; }

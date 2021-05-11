@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
@@ -53,9 +54,13 @@ namespace TwinPalmsKPI.Controllers
                 _logger.LogInfo($"FbReport with id {id} doesn't exist in the database.");
                 return NotFound();
             }
-
+                 
+            
             var fbReportDto = _mapper.Map<FbReportDto>(fbReport);
-
+            
+            // This is already in fbReportDto
+            //fbReportDto.ImageUrl = string.Format("data:image/jpg;base64,{0}", Convert.ToBase64String(fbReportDto.Image.Data));
+            
             // Adding weathers
             fbReportDto.Weathers = fbReport.WeatherFbReports.Select(fbwr => fbwr.Weather).ToList();
 
@@ -73,6 +78,19 @@ namespace TwinPalmsKPI.Controllers
         [ServiceFilter(typeof(ValidationFilterAttribute))]
         public async Task<IActionResult> CreateFbReport([FromBody] FbReportForCreationDto fbReport)
         {
+            var file = Request.Form.Files.FirstOrDefault();
+
+            var img = new Image();
+
+            MemoryStream ms = new MemoryStream();
+            file.CopyTo(ms);
+            img.Data = ms.ToArray();
+
+            ms.Close();
+            ms.Dispose();
+
+            fbReport.Image = img;
+
             var fbReportEntity = _mapper.Map<FbReport>(fbReport);
             _repository.FbReport.CreateFbReport(fbReportEntity);
 
