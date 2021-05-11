@@ -10,6 +10,7 @@ namespace Entities.Models
     {
         public int FbReportId { get; set; }
         public int GuestSourceOfBusinessId { get; set; }
+        public int GsobNrOfGuests { get; set; }
 
         // Navigation properties
         [JsonIgnore]

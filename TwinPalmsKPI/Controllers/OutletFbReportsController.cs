@@ -46,7 +46,7 @@ namespace TwinPalmsKPI.Controllers
         [HttpGet("/outlets/fbReports", Name = "OutletsFbReportsByIdAndDate")]
         public async Task<IActionResult> GetOutletsFbReports( [FromQuery] int[] outletIds, DateTime fromDate, DateTime toDate)
         {
-            //Reports filed before 5am are treated as fbreport for the day before.
+            // Reports filed before 5am are treated as fbreport for the day before.
             // Request for toDate are reports including that date.
             var fbrStart = fromDate.AddHours(5);
             var fbrEnd = toDate.AddHours(5).AddDays(1);
@@ -97,6 +97,7 @@ namespace TwinPalmsKPI.Controllers
                 UserId = o.UserId,
                 LocalEventId = o.LocalEventId,
                 GuestSourceOfBusinesses = o.FbReportGuestSourceOfBusinesses.Select(f => f.GuestSourceOfBusiness).ToList(),
+                GsobNrOfGuest = o.FbReportGuestSourceOfBusinesses.Select(f => f.GsobNrOfGuests).ToList(),
                 Weathers = o.WeatherFbReports.Select(w => w.Weather).ToList()
             }).ToArray();
 

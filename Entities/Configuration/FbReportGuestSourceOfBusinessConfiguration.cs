@@ -32,32 +32,38 @@ namespace Entities.Configuration
                 new FbReportGuestSourceOfBusiness
                 {
                     FbReportId = 1,
-                    GuestSourceOfBusinessId = 3
+                    GuestSourceOfBusinessId = 3,
+                    GsobNrOfGuests = 22
                 },
                 new FbReportGuestSourceOfBusiness
                 {
                     FbReportId = 1,
-                    GuestSourceOfBusinessId = 4
+                    GuestSourceOfBusinessId = 4,
+                    GsobNrOfGuests = 13
                 },
                 new FbReportGuestSourceOfBusiness
                 {
                     FbReportId = 2,
-                    GuestSourceOfBusinessId = 1
+                    GuestSourceOfBusinessId = 1,
+                    GsobNrOfGuests = 32
                 },
                 new FbReportGuestSourceOfBusiness
                 {
                     FbReportId = 2,
-                    GuestSourceOfBusinessId = 2
+                    GuestSourceOfBusinessId = 2,
+                    GsobNrOfGuests = 3
                 },
                 new FbReportGuestSourceOfBusiness
                 {
                     FbReportId = 3,
-                    GuestSourceOfBusinessId = 1
+                    GuestSourceOfBusinessId = 1,
+                    GsobNrOfGuests = 45
                 },
                 new FbReportGuestSourceOfBusiness
                 {
                     FbReportId = 3,
-                    GuestSourceOfBusinessId = 5
+                    GuestSourceOfBusinessId = 5,
+                    GsobNrOfGuests = 22
                 }
             );
         }
