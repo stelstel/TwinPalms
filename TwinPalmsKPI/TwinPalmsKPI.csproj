@@ -8,13 +8,13 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
     <DocumentationFile>TwinPalmsKPI.xml</DocumentationFile>
     <NoWarn>1701;1702;1591</NoWarn>
-    <OutputPath>wwwroot\</OutputPath>
   </PropertyGroup>
 
   <ItemGroup>
     <PackageReference Include="AutoMapper" Version="10.1.1" />
     <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="8.1.1" />
     <PackageReference Include="IdentityModel" Version="5.1.0" />
+    <PackageReference Include="Microsoft.AspNet.WebHelpers" Version="3.2.7" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="5.0.5" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="5.0.5">
       <PrivateAssets>all</PrivateAssets>
@@ -33,12 +33,12 @@
 
   <ItemGroup>
     <Folder Include="logs\" />
-    <Folder Include="wwwroot\" />
+    <Folder Include="Resources\Images\" />
   </ItemGroup>
 
   <ItemGroup>
     <None Update="TwinPalmsKPI.xml">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
     </None>
   </ItemGroup>
 
