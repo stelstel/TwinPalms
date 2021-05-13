@@ -18,14 +18,7 @@ namespace Entities.DataTransferObjects
         public int? GuestsFromOutsideHotel { get; set; }
         public bool IsPublicHoliday { get; set; }
         public string EventNotes { get; set; }
-        public Image Image { get; set; }
-        public string ImageUrl { 
-            get 
-            {
-                string imageBase64Data = Convert.ToBase64String(Image.Data);
-                return string.Format("data:image/jpg;base64,{0}", imageBase64Data);
-            } set { } 
-        }
+        public string ImagePath { get; set; }
         public string GSourceOfBusinessNotes { get; set; }
         public DateTime Date { get; set; }
         public int OutletId { get; set; }

@@ -65,7 +65,6 @@ namespace Entities
         public virtual DbSet<RoomType> RoomTypes { get; set; }
         public virtual DbSet<RoomsReport> RoomsReports { get; set; }                
         public virtual DbSet<Weather> Weathers { get; set; }
-        public virtual DbSet<Image> Images { get; set; }
         public virtual DbSet<WeatherFbReport> WeatherFbReports { get; set; }
         public virtual DbSet<WeatherOtherReport> WeatherOtherReports { get; set; }
         public virtual DbSet<WeatherRoomsReport> WeatherRoomsReports { get; set; }

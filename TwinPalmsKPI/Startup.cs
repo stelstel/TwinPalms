@@ -1,4 +1,3 @@
-using AutoMapper;
 using TwinPalmsKPI.ActionFilters;
 using TwinPalmsKPI.Extensions;
 using Contracts;
@@ -9,15 +8,12 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
 using NLog;
-using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Threading.Tasks;
 using EmailService;
-using Repository;
+using Microsoft.AspNetCore.Http.Features;
+using Microsoft.Extensions.FileProviders;
+using Microsoft.AspNetCore.Http;
 
 namespace TwinPalmsKPI
 {
@@ -69,6 +65,11 @@ namespace TwinPalmsKPI
             {
                 options.SuppressModelStateInvalidFilter = true;
             });
+            services.Configure<FormOptions>(o => {
+                o.ValueLengthLimit = int.MaxValue;
+                o.MultipartBodyLengthLimit = int.MaxValue;
+                o.MemoryBufferThreshold = int.MaxValue;
+            });
 
             services.AddControllers();
         }
@@ -86,6 +87,8 @@ namespace TwinPalmsKPI
                 app.UseHsts();
             }
 
+           
+
             app.UseSwagger();
             app.UseSwaggerUI(s =>
             {
@@ -93,6 +96,11 @@ namespace TwinPalmsKPI
             });
             app.ConfigureExceptionHandler(logger);
             app.UseStaticFiles();
+            app.UseStaticFiles(new StaticFileOptions()
+            {
+                FileProvider = new PhysicalFileProvider(Path.Combine(Directory.GetCurrentDirectory(), @"Resources")),
+                RequestPath = new PathString("/Resources")
+            });
 
             app.UseCors("CorsPolicy");
 

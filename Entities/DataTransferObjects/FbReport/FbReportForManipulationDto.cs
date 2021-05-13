@@ -1,6 +1,6 @@
-﻿using Entities.Models;
-using System;
+﻿using System;
 using System.Collections.Generic;
+using Microsoft.AspNetCore.Http;
 using System.ComponentModel.DataAnnotations;
 
 
@@ -32,8 +32,9 @@ namespace Entities.DataTransferObjects
         [StringLength(5000, ErrorMessage = "EventNote can't contain more than 5000 characters")]
         [DataType(DataType.Text)]
         public string EventNotes { get; set; }
+
         [Required]
-        public Image Image { get; set; }
+        public IFormFile File { get; set; }
 
         [StringLength(5000, ErrorMessage = "GSourceOfBusinessNotes can't contain more than 5000 characters")]
         [DataType(DataType.Text)]

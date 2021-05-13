@@ -49,7 +49,6 @@ namespace Repository
                 .ThenInclude(gsb => gsb.GuestSourceOfBusiness)
             .Include(fbr => fbr.WeatherFbReports) // Include weather junction table
                 .ThenInclude(w => w.Weather)
-            .Include(fbr => fbr.Image)
             .SingleOrDefaultAsync();
     }
 }

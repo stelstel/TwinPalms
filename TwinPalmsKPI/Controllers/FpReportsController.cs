@@ -4,11 +4,13 @@ using Entities.DataTransferObjects;
 using Entities.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Web.Helpers;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Net;
+using System.Net.Http.Headers;
 using System.Threading.Tasks;
 using TwinPalmsKPI.ActionFilters;
 
@@ -74,26 +76,26 @@ namespace TwinPalmsKPI.Controllers
         /// <summary>
         /// Creates a new fbReport
         /// </summary>
-        [HttpPost]
+        [HttpPost, DisableRequestSizeLimit]
+       
         [ServiceFilter(typeof(ValidationFilterAttribute))]
-        public async Task<IActionResult> CreateFbReport([FromBody] FbReportForCreationDto fbReport)
+        public async Task<IActionResult> CreateFbReport([FromForm] FbReportForCreationDto fbReport)
         {
-            var file = Request.Form.Files.FirstOrDefault();
-
-            var img = new Image();
-
-            MemoryStream ms = new MemoryStream();
-            file.CopyTo(ms);
-            img.Data = ms.ToArray();
-
-            ms.Close();
-            ms.Dispose();
-
-            fbReport.Image = img;
+            _logger.LogInfo(fbReport.ToString());
+            
+            /*var formCollection = await Request.ReadFormAsync();
+            var file = formCollection.Files[0];*/
+            //var file = HttpContext.Request.Form.Files[0];
+            var file = fbReport.File;
 
             var fbReportEntity = _mapper.Map<FbReport>(fbReport);
-            _repository.FbReport.CreateFbReport(fbReportEntity);
-
+            _logger.LogInfo("fbReportEntitiy: " + fbReportEntity.ToString());
+            
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+            
             await ValidateWeathers(fbReport, fbReportEntity);
 
             List<GuestSourceOfBusiness> GuestSourcesOfBusinessesFromDb =
@@ -110,18 +112,50 @@ namespace TwinPalmsKPI.Controllers
             {
                 ValidateGsobs(fbReport, fbReportEntity, nrOfGuestSourcesOfBusinessesFromDb);
             }
-                
+
             await Validations(fbReport, nrOfOutletsFromDb, nrOfLocalEventsFromDb);
 
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
 
             await _repository.SaveAsync();
-            return Ok();
-        }
+            
+            try
+            {
+                
 
+                var folderName = Path.Combine("Resources", "Images");
+                var pathToSave = Path.Combine(Directory.GetCurrentDirectory(), folderName);
+                if (file.Length > 0)
+                {
+                    var splitFileName = ContentDispositionHeaderValue.Parse(file.ContentDisposition).FileName.Trim('"').Split('.');
+                    var fileName = Guid.NewGuid() + "." + splitFileName[1];
+                    var fullPath = Path.Combine(pathToSave, fileName);
+                    var dbPath = Path.Combine(folderName, fileName);
+                    using (var stream = new FileStream(fullPath, FileMode.Create))
+                    {
+                        
+                        file.CopyTo(stream);
+                        fbReportEntity.ImagePath = dbPath;
+                        _logger.LogInfo("entity to be created: " + fbReportEntity.ImagePath);
+
+                        _repository.FbReport.CreateFbReport(fbReportEntity);
+                        
+
+
+                        return Ok("fbReport created");
+                        
+                    }
+                }
+                else 
+                    return BadRequest();
+
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"Internal server error: {ex}");
+            }
+
+
+        }
         /// <summary>
         /// Deletes a fbReport by ID
         /// </summary>
