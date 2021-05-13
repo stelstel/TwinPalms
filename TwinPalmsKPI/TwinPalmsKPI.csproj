@@ -8,7 +8,6 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
     <DocumentationFile>TwinPalmsKPI.xml</DocumentationFile>
     <NoWarn>1701;1702;1591</NoWarn>
-    <OutputPath>wwwroot\</OutputPath>
   </PropertyGroup>
 
   <ItemGroup>
