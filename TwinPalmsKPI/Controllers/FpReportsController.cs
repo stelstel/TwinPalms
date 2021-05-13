@@ -138,8 +138,9 @@ namespace TwinPalmsKPI.Controllers
                         _logger.LogInfo("entity to be created: " + fbReportEntity.ImagePath);
 
                         _repository.FbReport.CreateFbReport(fbReportEntity);
-                        
 
+                        // should not be necessary
+                        await _repository.SaveAsync();
 
                         return Ok("fbReport created");
                         
