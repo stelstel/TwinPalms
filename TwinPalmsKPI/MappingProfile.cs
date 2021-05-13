@@ -42,9 +42,10 @@ namespace TwinPalmsKPI
             CreateMap<RoomsReport, RoomsReportDto>();
             CreateMap<RoomsReportForCreationDto, RoomsReport>();
             CreateMap<RoomsReportForUpdateDto, RoomsReport>();
-                        
+
             CreateMap<FbReport, FbReportDto>();
             CreateMap<FbReportForCreationDto, FbReport>();
+                // .ForMember(fbr => fbr.FbReportGuestSourceOfBusinesses.Select(fbr => fbr.GsobNrOfGuests), fbr => fbr.MapFrom(dto => dto.GsobNrOfGuestsList.ToList()));
             CreateMap<FbReportForUpdateDto, FbReport>();
 
             CreateMap<OtherReport, OtherReportDto>();

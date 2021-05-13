@@ -27,6 +27,7 @@ namespace Entities.Configuration
                 .HasForeignKey(d => d.GuestSourceOfBusinessId)
                 .HasConstraintName("FK_FbReport_FbReportGuestSourceOfBusiness");
 
+            // Seed
             builder.HasData
             (
                 new FbReportGuestSourceOfBusiness

@@ -33,6 +33,7 @@ namespace Entities.Models
         public string UserId { get; set; }
         public int? LocalEventId { get; set; }
 
+        // public List<int> GsobNrOfGuestsList { get; set; }
 
         // Navigation properties
         public virtual Outlet Outlet { get; set; }

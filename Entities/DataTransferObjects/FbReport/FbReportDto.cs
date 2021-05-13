@@ -23,6 +23,7 @@ namespace Entities.DataTransferObjects
         public int OutletId { get; set; }
         public string UserId { get; set; }
         public int? LocalEventId { get; set; }
+        public ICollection<int> GsobNrOfGuestsList { get; set; }
 
         // Navigation properties
         public ICollection<GuestSourceOfBusiness> GuestSourceOfBusinesses { get; set; }
