@@ -50,7 +50,7 @@ namespace Entities
             modelBuilder.ApplyConfiguration(new RoomsReportConfiguration());
         }
         public DbSet<Company> Companies { get; set; }
-        public DbSet<Employee> Employees { get; set; }
+        // public DbSet<Employee> Employees { get; set; }
         public virtual DbSet<GuestSourceOfBusiness> GuestSourceOfBusinesses { get; set; }
         public virtual DbSet<CruiseCompany> CruiseCompanies { get; set; }
         public virtual DbSet<CruiseShip> CruiseShips { get; set; }

@@ -14,10 +14,13 @@ namespace Repository
     {
         public FbReportRepository(RepositoryContext repositoryContext) : base(repositoryContext)
         {
-
+            // repositoryContext.
         }
 
-        public void CreateFbReport(FbReport fbReport) => Create(fbReport);
+        public void CreateFbReport(FbReport fbReport)
+        {
+            Create(fbReport); 
+        }
 
         public void DeleteFbReport(FbReport fbReport)
         {

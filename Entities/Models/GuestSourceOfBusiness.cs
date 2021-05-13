@@ -15,9 +15,8 @@ namespace Entities.Models
         }
 
         public int Id { get; set; }
-
         public string SourceOfBusiness { get; set; }
-
+        
         // Navigation property
         [JsonIgnore]
         public virtual ICollection<FbReportGuestSourceOfBusiness> FbReportGuestSourceOfBusinesses { get; set; }

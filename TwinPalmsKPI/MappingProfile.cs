@@ -13,8 +13,6 @@ namespace TwinPalmsKPI
        
         public MappingProfile()
         {
-
-            
             CreateMap<Company, CompanyDto>();
             CreateMap<CompanyForCreationDto, Company>();
             CreateMap<CompanyForUpdateDto, Company>();
@@ -23,15 +21,12 @@ namespace TwinPalmsKPI
             CreateMap<HotelForCreationDto, Hotel>();
             CreateMap<HotelForUpdateDto, Hotel>();
 
-
-
             CreateMap<User, UserDto>()
                 .ForMember(dto => dto.Hotels, user => user.MapFrom(user => user.HotelUsers.Select(hu => hu.Hotel).ToList()))
                 .ForMember(dto => dto.Outlets, user => user.MapFrom(user => user.OutletUsers.Select(ou => ou.Outlet).ToList()))
                 .ForMember(dto => dto.Roles, user => user.MapFrom(user => user.UserRoles.Select(ur => ur.Role.Name).ToList()));
             CreateMap<UserForRegistrationDto, User>();
             CreateMap<UserForUpdateDto, User>();
-            
 
             CreateMap<Outlet, OutletDto>();
             CreateMap<OutletForCreationDto, Outlet>();
@@ -46,12 +41,12 @@ namespace TwinPalmsKPI
             CreateMap<CruiseShipForUpdateDto, CruiseShip>();
             
             CreateMap<RoomsReport, RoomsReportDto>();
-            //CreateMap<RoomsReportDto, RoomsReport>();
             CreateMap<RoomsReportForCreationDto, RoomsReport>();
             CreateMap<RoomsReportForUpdateDto, RoomsReport>();
-                        
+
             CreateMap<FbReport, FbReportDto>();
             CreateMap<FbReportForCreationDto, FbReport>();
+                // .ForMember(fbr => fbr.FbReportGuestSourceOfBusinesses.Select(fbr => fbr.GsobNrOfGuests), fbr => fbr.MapFrom(dto => dto.GsobNrOfGuestsList.ToList()));
             CreateMap<FbReportForUpdateDto, FbReport>();
 
             CreateMap<OtherReport, OtherReportDto>();

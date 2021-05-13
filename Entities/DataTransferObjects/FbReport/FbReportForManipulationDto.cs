@@ -55,6 +55,8 @@ namespace Entities.DataTransferObjects
         [Range(1, 10000, ErrorMessage = "LocalEventId can't be lower than 1 or higher than 10000")]
         public int? LocalEventId { get; set; }
 
+
+        public ICollection<int> GsobNrOfGuestsList { get; set; }
         public ICollection<int> Weathers { get; set; }
         public ICollection<int> GuestSourceOfBusinesses { get; set; }
     }
