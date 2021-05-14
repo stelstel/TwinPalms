@@ -4,12 +4,10 @@ using Entities.DataTransferObjects;
 using Entities.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Web.Helpers;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Net;
 using System.Net.Http.Headers;
 using System.Threading.Tasks;
 using TwinPalmsKPI.ActionFilters;
@@ -77,12 +75,26 @@ namespace TwinPalmsKPI.Controllers
         /// <summary>
         /// Creates a new fbReport
         /// </summary>
-        [HttpPost, DisableRequestSizeLimit]
-       
+        [HttpPost, DisableRequestSizeLimit] 
+        /*[Authorize(Roles = "Administrator, Manager")]*/
+
         [ServiceFilter(typeof(ValidationFilterAttribute))]
         public async Task<IActionResult> CreateFbReport([FromForm] FbReportForCreationDto fbReport)
         {
-            _logger.LogInfo(fbReport.ToString());
+            
+            if (fbReport.GuestSourceOfBusinesses.Count > 0)
+            {
+                _logger.LogInfo("we have gsobs");
+                foreach(var item in fbReport.GuestSourceOfBusinesses)
+                {
+                    _logger.LogInfo("gsobId: " + item.GuestSourceOfBusinessId);
+                    _logger.LogInfo("gsobNrOfGuests: " + item.GsobNrOfGuests);
+                }
+            }
+            else
+            {
+                _logger.LogInfo("there's no gsobs");
+            }
             
             /*var formCollection = await Request.ReadFormAsync();
             var file = formCollection.Files[0];*/
@@ -90,13 +102,44 @@ namespace TwinPalmsKPI.Controllers
             var file = fbReport.File;
 
             var fbReportEntity = _mapper.Map<FbReport>(fbReport);
-            _logger.LogInfo("fbReportEntitiy: " + fbReportEntity.ToString());
+           
             
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
-            
+            try
+            {
+
+
+                var folderName = Path.Combine("Resources", "Images");
+                var pathToSave = Path.Combine(Directory.GetCurrentDirectory(), folderName);
+                if (file.Length > 0)
+                {
+                    var splitFileName = ContentDispositionHeaderValue.Parse(file.ContentDisposition).FileName.Trim('"').Split('.');
+                    var fileName = Guid.NewGuid() + "." + splitFileName[1];
+                    var fullPath = Path.Combine(pathToSave, fileName);
+                    var dbPath = Path.Combine(folderName, fileName);
+                    using (var stream = new FileStream(fullPath, FileMode.Create))
+                    {
+
+                        file.CopyTo(stream);
+                        fbReportEntity.ImagePath = dbPath;
+                        _logger.LogInfo("entity to be created: " + fbReportEntity.ImagePath);
+
+                        _repository.FbReport.CreateFbReport(fbReportEntity);
+
+                    }
+                }
+                else
+                    return BadRequest();
+
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"Internal server error: {ex}");
+            }
+
             await ValidateWeathers(fbReport, fbReportEntity);
 
             List<GuestSourceOfBusiness> GuestSourcesOfBusinessesFromDb =
@@ -118,43 +161,8 @@ namespace TwinPalmsKPI.Controllers
 
 
             await _repository.SaveAsync();
-            
-            try
-            {
-                
 
-                var folderName = Path.Combine("Resources", "Images");
-                var pathToSave = Path.Combine(Directory.GetCurrentDirectory(), folderName);
-                if (file.Length > 0)
-                {
-                    var splitFileName = ContentDispositionHeaderValue.Parse(file.ContentDisposition).FileName.Trim('"').Split('.');
-                    var fileName = Guid.NewGuid() + "." + splitFileName[1];
-                    var fullPath = Path.Combine(pathToSave, fileName);
-                    var dbPath = Path.Combine(folderName, fileName);
-                    using (var stream = new FileStream(fullPath, FileMode.Create))
-                    {
-                        
-                        file.CopyTo(stream);
-                        fbReportEntity.ImagePath = dbPath;
-                        _logger.LogInfo("entity to be created: " + fbReportEntity.ImagePath);
-
-                        _repository.FbReport.CreateFbReport(fbReportEntity);
-
-                        // should not be necessary
-                        await _repository.SaveAsync();
-
-                        return Ok("fbReport created");
-                        
-                    }
-                }
-                else 
-                    return BadRequest();
-
-            }
-            catch (Exception ex)
-            {
-                return StatusCode(500, $"Internal server error: {ex}");
-            }
+            return Ok("fbReport created");
 
 
         }
@@ -192,21 +200,22 @@ namespace TwinPalmsKPI.Controllers
         {
             int gsobCounter = 0;
 
-            foreach (var gsobId in fbReport.GuestSourceOfBusinesses)
+            foreach (var gsob in fbReport.GuestSourceOfBusinesses)
             {
                 gsobCounter++;
 
                 // Validating if inputted guestSourceOFBusinessId exists in DB
-                if (gsobId < 1 || gsobId > nrOfGuestSourcesOfBusinessesFromDb)
+                if (gsob.GsobNrOfGuests < 1 || gsob.GsobNrOfGuests > nrOfGuestSourcesOfBusinessesFromDb)
                 {
                     ModelState.AddModelError("ArgumentOutOfRangeError",
-                        $"GuestSourceOFBusiness[{gsobCounter}] must be an integer between 1 and {nrOfGuestSourcesOfBusinessesFromDb}. It's now {gsobId}");
+                        $"GuestSourceOFBusiness[{gsobCounter}] must be an integer between 1 and {nrOfGuestSourcesOfBusinessesFromDb}. It's now {gsob.GuestSourceOfBusinessId}");
                 }
 
                 var fbReportGuestSourceOfBusiness = new FbReportGuestSourceOfBusiness
                 {
-                    GuestSourceOfBusinessId = gsobId,
-                    FbReportId = fbReportEntity.Id
+                    FbReportId = fbReportEntity.Id,
+                    GuestSourceOfBusinessId = gsob.GuestSourceOfBusinessId,
+                    GsobNrOfGuests = gsob.GsobNrOfGuests,
                 };
 
                 fbReportEntity.FbReportGuestSourceOfBusinesses.Add(fbReportGuestSourceOfBusiness);

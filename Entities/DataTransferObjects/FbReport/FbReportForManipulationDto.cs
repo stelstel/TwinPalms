@@ -56,8 +56,8 @@ namespace Entities.DataTransferObjects
         public int? LocalEventId { get; set; }
 
 
-        public ICollection<int> GsobNrOfGuestsList { get; set; }
+        
         public ICollection<int> Weathers { get; set; }
-        public ICollection<int> GuestSourceOfBusinesses { get; set; }
+        /*public ICollection<int> GuestSourceOfBusinesses { get; set; }*/
     }
 }
