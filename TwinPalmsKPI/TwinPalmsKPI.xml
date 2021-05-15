@@ -93,6 +93,23 @@
             <summary>
             Creates a new fbReport
             </summary>
+            <remarks>
+            For GuestSourceOfBusinesses:\
+            Only use one object item and add as many objects you need to in that object.
+            
+            Example:
+            
+            [ \
+                { \
+                    "GuestSourceOfBusinessId": 3, \
+                    "GsobNrOfGuests": 33 \
+                }, \
+                { \
+                    "GuestSourceOfBusinessId": 4, \
+                     "GsobNrOfGuests": 44 \
+                } \
+            ]
+            </remarks>
         </member>
         <member name="M:TwinPalmsKPI.Controllers.FbReportsController.DeleteFbReport(System.Int32)">
             <summary>
