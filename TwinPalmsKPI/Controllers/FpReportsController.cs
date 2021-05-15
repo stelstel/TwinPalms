@@ -9,6 +9,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Net.Http.Headers;
+using System.Text.Json;
 using System.Threading.Tasks;
 using TwinPalmsKPI.ActionFilters;
 
@@ -75,14 +76,41 @@ namespace TwinPalmsKPI.Controllers
         /// <summary>
         /// Creates a new fbReport
         /// </summary>
-        [HttpPost, DisableRequestSizeLimit] 
+        [HttpPost, DisableRequestSizeLimit]
         /*[Authorize(Roles = "Administrator, Manager")]*/
 
         [ServiceFilter(typeof(ValidationFilterAttribute))]
-        public async Task<IActionResult> CreateFbReport([FromForm] FbReportForCreationDto fbReport)
+        public async Task<IActionResult> CreateFbReport([FromForm]FbReportForCreationDto fbReport)
         {
-            
-            if (fbReport.GuestSourceOfBusinesses.Count > 0)
+
+          
+            var formCollection = await Request.ReadFormAsync();
+            foreach (var item in formCollection.ToList())
+
+            {
+                _logger.LogDebug($"Key: {item.Key}, Value: {item.Value}");
+            }
+            var serializeGsob = JsonSerializer.Serialize(formCollection["guestSourceOfBusinesses"]);
+            _logger.LogDebug($"serialized: {formCollection["guestSourceOfBusinesses"]}");
+            var guestSourceOfBusinesses = JsonSerializer.Deserialize<IEnumerable<GsobDto>>(formCollection["guestSourceOfBusinesses"]);
+
+            foreach (var item in guestSourceOfBusinesses)
+            {
+                _logger.LogDebug($"nr of guests: {item.GsobNrOfGuests}, gsob Id: {item.GuestSourceOfBusinessId}");
+            }
+
+            //var formCollection = await Request.ReadFormAsync();
+            //return Ok(formCollection);
+            if (!ModelState.IsValid)
+            {
+                foreach (var error in ModelState.Values.SelectMany(v => v.Errors))
+                {
+                    ModelState.TryAddModelError(error.ErrorMessage, error.ErrorMessage);
+                }
+                return BadRequest(ModelState);
+            }
+
+            if (/*fbReport.GuestSourceOfBusinesses.Count */ guestSourceOfBusinesses.Count() > 0)
             {
                 _logger.LogInfo("we have gsobs");
                 foreach(var item in fbReport.GuestSourceOfBusinesses)
@@ -102,11 +130,12 @@ namespace TwinPalmsKPI.Controllers
             var file = fbReport.File;
 
             var fbReportEntity = _mapper.Map<FbReport>(fbReport);
-           
+
             
             if (!ModelState.IsValid)
             {
-                return BadRequest(ModelState);
+                var errors = ModelState.Values.SelectMany(v => v.Errors);
+                return BadRequest(errors);
             }
             try
             {
@@ -128,6 +157,8 @@ namespace TwinPalmsKPI.Controllers
                         _logger.LogInfo("entity to be created: " + fbReportEntity.ImagePath);
 
                         _repository.FbReport.CreateFbReport(fbReportEntity);
+                        await _repository.SaveAsync();
+                        
 
                     }
                 }
@@ -152,14 +183,15 @@ namespace TwinPalmsKPI.Controllers
             List<LocalEvent> LocalEventFromDb = (List<LocalEvent>)await _repository.LocalEvent.GetAllLocalEventsAsync(trackChanges: false);
             int nrOfLocalEventsFromDb = LocalEventFromDb.Count;
 
-            if (fbReport.GuestSourceOfBusinesses != null && fbReport.GuestSourceOfBusinesses.Count > 0)
+            if (guestSourceOfBusinesses != null && guestSourceOfBusinesses.Count() > 0)
             {
-                ValidateGsobs(fbReport, fbReportEntity, nrOfGuestSourcesOfBusinessesFromDb);
+                ValidateGsobs(guestSourceOfBusinesses, fbReportEntity, nrOfGuestSourcesOfBusinessesFromDb);
             }
 
             await Validations(fbReport, nrOfOutletsFromDb, nrOfLocalEventsFromDb);
 
-
+            
+            
             await _repository.SaveAsync();
 
             return Ok("fbReport created");
@@ -196,12 +228,16 @@ namespace TwinPalmsKPI.Controllers
         }
 
         // ************************************************ ValidateGsobs *********************************************************
-        private void ValidateGsobs(FbReportForCreationDto fbReport, FbReport fbReportEntity, int nrOfGuestSourcesOfBusinessesFromDb)
+        private void ValidateGsobs(IEnumerable<GsobDto> guestSourceOfBusinesses, FbReport fbReportEntity, int nrOfGuestSourcesOfBusinessesFromDb)
         {
             int gsobCounter = 0;
+            
+            _logger.LogDebug("reportId " + fbReportEntity.Id);
 
-            foreach (var gsob in fbReport.GuestSourceOfBusinesses)
+            foreach (var gsob in guestSourceOfBusinesses)
             {
+                _logger.LogDebug("gsobId " + gsob.GuestSourceOfBusinessId);
+                _logger.LogDebug("gsobNrofguesst " + gsob.GsobNrOfGuests);
                 gsobCounter++;
 
                 // Validating if inputted guestSourceOFBusinessId exists in DB

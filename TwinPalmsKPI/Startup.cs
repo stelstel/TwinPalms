@@ -14,6 +14,7 @@ using EmailService;
 using Microsoft.AspNetCore.Http.Features;
 using Microsoft.Extensions.FileProviders;
 using Microsoft.AspNetCore.Http;
+using Newtonsoft.Json.Serialization;
 
 namespace TwinPalmsKPI
 {
@@ -72,6 +73,12 @@ namespace TwinPalmsKPI
             });
 
             services.AddControllers();
+                /*.AddNewtonsoftJson(o =>
+                {
+                    o.SerializerSettings.ContractResolver = new CamelCasePropertyNamesContractResolver();
+                });*/
+
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
