@@ -2,15 +2,16 @@
 using Contracts;
 using Entities.DataTransferObjects;
 using Entities.Models;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Web.Helpers;
+using Microsoft.Extensions.Hosting;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Net;
 using System.Net.Http.Headers;
+using System.Text.Json;
 using System.Threading.Tasks;
 using TwinPalmsKPI.ActionFilters;
 
@@ -23,12 +24,14 @@ namespace TwinPalmsKPI.Controllers
         private readonly IRepositoryManager _repository;
         private readonly ILoggerManager _logger;
         private readonly IMapper _mapper;
+        private readonly IWebHostEnvironment env;
 
-        public FbReportsController(IRepositoryManager repository, ILoggerManager logger, IMapper mapper)
+        public FbReportsController(IRepositoryManager repository, ILoggerManager logger, IMapper mapper, IWebHostEnvironment environment)
         {
             _repository = repository;
             _logger = logger;
             _mapper = mapper;
+            env = environment;
         }
 
         // ************************************* GET GetFbReports *****************************************
@@ -57,7 +60,6 @@ namespace TwinPalmsKPI.Controllers
                 _logger.LogInfo($"FbReport with id {id} doesn't exist in the database.");
                 return NotFound();
             }
-                 
             
             var fbReportDto = _mapper.Map<FbReportDto>(fbReport);
             
@@ -77,52 +79,89 @@ namespace TwinPalmsKPI.Controllers
         /// <summary>
         /// Creates a new fbReport
         /// </summary>
+        /// <remarks>
+        /// For GuestSourceOfBusinesses:\
+        /// Only use one object item and add as many objects you need to in that object.
+        /// 
+        /// Example:
+        /// 
+        /// [ \
+        ///     { \
+        ///         "GuestSourceOfBusinessId": 3, \
+        ///         "GsobNrOfGuests": 33 \
+        ///     }, \
+        ///     { \
+        ///         "GuestSourceOfBusinessId": 4, \
+        ///          "GsobNrOfGuests": 44 \
+        ///     } \
+        /// ]
+        /// </remarks>
         [HttpPost, DisableRequestSizeLimit]
-       
-        [ServiceFilter(typeof(ValidationFilterAttribute))]
-        public async Task<IActionResult> CreateFbReport([FromForm] FbReportForCreationDto fbReport)
-        {
-            _logger.LogInfo(fbReport.ToString());
-            
-            /*var formCollection = await Request.ReadFormAsync();
-            var file = formCollection.Files[0];*/
-            //var file = HttpContext.Request.Form.Files[0];
-            var file = fbReport.File;
+        /*[Authorize(Roles = "Administrator, Manager")]*/
 
+        [ServiceFilter(typeof(ValidationFilterAttribute))]
+        public async Task<IActionResult> CreateFbReport([FromForm]FbReportForCreationDto fbReport)
+        {
+            var formCollection = await Request.ReadFormAsync();
+
+            if (env.IsDevelopment())
+            { 
+                foreach (var item in formCollection.ToList())
+                {
+                    _logger.LogDebug($"Key: {item.Key}, Value: {item.Value}");
+                }
+            }
+
+            // var serializeGsob = JsonSerializer.Serialize(formCollection["guestSourceOfBusinesses"]); /////////////////////////////
+            _logger.LogDebug($"serialized: {formCollection["guestSourceOfBusinesses"]}");
+            var guestSourceOfBusinesses = JsonSerializer.Deserialize<IEnumerable<GsobDto>>(formCollection["guestSourceOfBusinesses"]);
+
+            if (env.IsDevelopment())
+            {
+                foreach (var item in guestSourceOfBusinesses)
+                {
+                    _logger.LogDebug($"nr of guests: {item.GsobNrOfGuests}, gsob Id: {item.GuestSourceOfBusinessId}");
+                }
+            }
+
+            if (!ModelState.IsValid)
+            {
+                foreach (var error in ModelState.Values.SelectMany(v => v.Errors))
+                {
+                    ModelState.TryAddModelError(error.ErrorMessage, error.ErrorMessage);
+                }
+
+                return BadRequest(ModelState);
+            }
+
+            if (env.IsDevelopment())
+            {
+                if (/*fbReport.GuestSourceOfBusinesses.Count */ guestSourceOfBusinesses.Count() > 0)
+                {
+                    _logger.LogInfo("We have gsobs");
+
+                    foreach (var item in fbReport.GuestSourceOfBusinesses)
+                    {
+                        _logger.LogInfo("gsobId: " + item.GuestSourceOfBusinessId);
+                        _logger.LogInfo("gsobNrOfGuests: " + item.GsobNrOfGuests);
+                    }
+                }
+                else
+                {
+                    _logger.LogInfo("There are no gsobs");
+                }
+            }
+            
+            var file = fbReport.File;
             var fbReportEntity = _mapper.Map<FbReport>(fbReport);
-            _logger.LogInfo("fbReportEntitiy: " + fbReportEntity.ToString());
             
             if (!ModelState.IsValid)
             {
-                return BadRequest(ModelState);
+                var errors = ModelState.Values.SelectMany(v => v.Errors);
+                return BadRequest(errors);
             }
-            
-            await ValidateWeathers(fbReport, fbReportEntity);
-
-            List<GuestSourceOfBusiness> GuestSourcesOfBusinessesFromDb =
-                (List<GuestSourceOfBusiness>)await _repository.GuestSourceOfBusiness.GetAllGuestSourceOfBusinessesAsync(trackChanges: false);
-            int nrOfGuestSourcesOfBusinessesFromDb = GuestSourcesOfBusinessesFromDb.Count;
-
-            List<Outlet> OutletsFromDb = (List<Outlet>)await _repository.Outlet.GetAllOutletsAsync(trackChanges: false);
-            int nrOfOutletsFromDb = OutletsFromDb.Count;
-
-            List<LocalEvent> LocalEventFromDb = (List<LocalEvent>)await _repository.LocalEvent.GetAllLocalEventsAsync(trackChanges: false);
-            int nrOfLocalEventsFromDb = LocalEventFromDb.Count;
-
-            if (fbReport.GuestSourceOfBusinesses != null && fbReport.GuestSourceOfBusinesses.Count > 0)
-            {
-                ValidateGsobs(fbReport, fbReportEntity, nrOfGuestSourcesOfBusinessesFromDb);
-            }
-
-            await Validations(fbReport, nrOfOutletsFromDb, nrOfLocalEventsFromDb);
-
-
-            await _repository.SaveAsync();
-            
             try
             {
-                
-
                 var folderName = Path.Combine("Resources", "Images");
                 var pathToSave = Path.Combine(Directory.GetCurrentDirectory(), folderName);
                 if (file.Length > 0)
@@ -133,31 +172,45 @@ namespace TwinPalmsKPI.Controllers
                     var dbPath = Path.Combine(folderName, fileName);
                     using (var stream = new FileStream(fullPath, FileMode.Create))
                     {
-                        
                         file.CopyTo(stream);
                         fbReportEntity.ImagePath = dbPath;
                         _logger.LogInfo("entity to be created: " + fbReportEntity.ImagePath);
-
                         _repository.FbReport.CreateFbReport(fbReportEntity);
-
-                        // should not be necessary
                         await _repository.SaveAsync();
-
-                        return Ok("fbReport created");
-                        
                     }
                 }
-                else 
+                else
+                {
                     return BadRequest();
-
+                }
             }
             catch (Exception ex)
             {
                 return StatusCode(500, $"Internal server error: {ex}");
             }
 
+            await ValidateWeathers(fbReport, fbReportEntity);
+            List<GuestSourceOfBusiness> GuestSourcesOfBusinessesFromDb =
+                (List<GuestSourceOfBusiness>)await _repository.GuestSourceOfBusiness.GetAllGuestSourceOfBusinessesAsync(trackChanges: false);
+            int nrOfGuestSourcesOfBusinessesFromDb = GuestSourcesOfBusinessesFromDb.Count;
 
+            List<Outlet> OutletsFromDb = (List<Outlet>)await _repository.Outlet.GetAllOutletsAsync(trackChanges: false);
+            int nrOfOutletsFromDb = OutletsFromDb.Count;
+
+            List<LocalEvent> LocalEventFromDb = (List<LocalEvent>)await _repository.LocalEvent.GetAllLocalEventsAsync(trackChanges: false);
+            int nrOfLocalEventsFromDb = LocalEventFromDb.Count;
+
+            if (guestSourceOfBusinesses != null && guestSourceOfBusinesses.Count() > 0)
+            {
+                ValidateGsobs(guestSourceOfBusinesses, fbReportEntity, nrOfGuestSourcesOfBusinessesFromDb);
+            }
+
+            await Validations(fbReport, nrOfOutletsFromDb, nrOfLocalEventsFromDb);
+            await _repository.SaveAsync();
+
+            return Ok("fbReport created");
         }
+
         /// <summary>
         /// Deletes a fbReport by ID
         /// </summary>
@@ -188,25 +241,30 @@ namespace TwinPalmsKPI.Controllers
         }
 
         // ************************************************ ValidateGsobs *********************************************************
-        private void ValidateGsobs(FbReportForCreationDto fbReport, FbReport fbReportEntity, int nrOfGuestSourcesOfBusinessesFromDb)
+        private void ValidateGsobs(IEnumerable<GsobDto> guestSourceOfBusinesses, FbReport fbReportEntity, int nrOfGuestSourcesOfBusinessesFromDb)
         {
             int gsobCounter = 0;
+            
+            _logger.LogDebug("reportId " + fbReportEntity.Id);
 
-            foreach (var gsobId in fbReport.GuestSourceOfBusinesses)
+            foreach (var gsob in guestSourceOfBusinesses)
             {
+                _logger.LogDebug("gsobId " + gsob.GuestSourceOfBusinessId);
+                _logger.LogDebug("gsobNrofguesst " + gsob.GsobNrOfGuests);
                 gsobCounter++;
 
                 // Validating if inputted guestSourceOFBusinessId exists in DB
-                if (gsobId < 1 || gsobId > nrOfGuestSourcesOfBusinessesFromDb)
+                if (gsob.GsobNrOfGuests < 1 || gsob.GsobNrOfGuests > nrOfGuestSourcesOfBusinessesFromDb)
                 {
                     ModelState.AddModelError("ArgumentOutOfRangeError",
-                        $"GuestSourceOFBusiness[{gsobCounter}] must be an integer between 1 and {nrOfGuestSourcesOfBusinessesFromDb}. It's now {gsobId}");
+                        $"GuestSourceOFBusiness[{gsobCounter}] must be an integer between 1 and {nrOfGuestSourcesOfBusinessesFromDb}. It's now {gsob.GuestSourceOfBusinessId}");
                 }
 
                 var fbReportGuestSourceOfBusiness = new FbReportGuestSourceOfBusiness
                 {
-                    GuestSourceOfBusinessId = gsobId,
-                    FbReportId = fbReportEntity.Id
+                    FbReportId = fbReportEntity.Id,
+                    GuestSourceOfBusinessId = gsob.GuestSourceOfBusinessId,
+                    GsobNrOfGuests = gsob.GsobNrOfGuests,
                 };
 
                 fbReportEntity.FbReportGuestSourceOfBusinesses.Add(fbReportGuestSourceOfBusiness);

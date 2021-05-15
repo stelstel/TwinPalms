@@ -26,7 +26,7 @@ namespace Entities.DataTransferObjects
         [Range(0, int.MaxValue, ErrorMessage = "GuestsFromOutsideHotel can't be lower than 0")]
         public int? GuestsFromOutsideHotel { get; set; }
 
-        [Required(ErrorMessage = "IsPublicHoliday is a required field (true/false)")]
+        /*[Required(ErrorMessage = "IsPublicHoliday is a required field (true/false)")]*/
         public bool IsPublicHoliday { get; set; }
 
         [StringLength(5000, ErrorMessage = "EventNote can't contain more than 5000 characters")]
@@ -40,15 +40,15 @@ namespace Entities.DataTransferObjects
         [DataType(DataType.Text)]
         public string GSourceOfBusinessNotes { get; set; }
 
-        [Required(ErrorMessage = "Date is a required field.")]
+        /*[Required(ErrorMessage = "Date is a required field.")]*/
         [DataType(DataType.DateTime)]
         public DateTime Date { get; set; }
 
-        [Required(ErrorMessage = "OutletId is a required field.")]
+        /*[Required(ErrorMessage = "OutletId is a required field.")]*/
         [Range(1, 10000, ErrorMessage = "OutletId is a required field and can't be lower than 1 or higer than 10000")]
         public int OutletId { get; set; }
         
-        [Required(ErrorMessage = "UserId is a required field.")]
+        /*[Required(ErrorMessage = "UserId is a required field.")]*/
         [StringLength(36, MinimumLength = 36, ErrorMessage = "UserId should contain exactly 36 characters")]
         public string UserId { get; set; }
 
@@ -56,8 +56,8 @@ namespace Entities.DataTransferObjects
         public int? LocalEventId { get; set; }
 
 
-        public ICollection<int> GsobNrOfGuestsList { get; set; }
+        
         public ICollection<int> Weathers { get; set; }
-        public ICollection<int> GuestSourceOfBusinesses { get; set; }
+        /*public ICollection<int> GuestSourceOfBusinesses { get; set; }*/
     }
 }
