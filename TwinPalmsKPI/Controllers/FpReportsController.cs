@@ -82,14 +82,13 @@ namespace TwinPalmsKPI.Controllers
         [ServiceFilter(typeof(ValidationFilterAttribute))]
         public async Task<IActionResult> CreateFbReport([FromForm]FbReportForCreationDto fbReport)
         {
-
-          
             var formCollection = await Request.ReadFormAsync();
-            foreach (var item in formCollection.ToList())
 
+            foreach (var item in formCollection.ToList())
             {
                 _logger.LogDebug($"Key: {item.Key}, Value: {item.Value}");
             }
+
             var serializeGsob = JsonSerializer.Serialize(formCollection["guestSourceOfBusinesses"]);
             _logger.LogDebug($"serialized: {formCollection["guestSourceOfBusinesses"]}");
             var guestSourceOfBusinesses = JsonSerializer.Deserialize<IEnumerable<GsobDto>>(formCollection["guestSourceOfBusinesses"]);
@@ -99,8 +98,6 @@ namespace TwinPalmsKPI.Controllers
                 _logger.LogDebug($"nr of guests: {item.GsobNrOfGuests}, gsob Id: {item.GuestSourceOfBusinessId}");
             }
 
-            //var formCollection = await Request.ReadFormAsync();
-            //return Ok(formCollection);
             if (!ModelState.IsValid)
             {
                 foreach (var error in ModelState.Values.SelectMany(v => v.Errors))
