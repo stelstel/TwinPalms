@@ -2,6 +2,7 @@
 using Contracts;
 using Entities.DataTransferObjects;
 using Entities.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -97,7 +98,7 @@ namespace TwinPalmsKPI.Controllers
         /// ]
         /// </remarks>
         [HttpPost, DisableRequestSizeLimit]
-        /*[Authorize(Roles = "Administrator, Manager")]*/
+        /*[Authorize(Roles = "Basic")]*/
 
         [ServiceFilter(typeof(ValidationFilterAttribute))]
         public async Task<IActionResult> CreateFbReport([FromForm]FbReportForCreationDto fbReport)
@@ -114,11 +115,14 @@ namespace TwinPalmsKPI.Controllers
 
             // var serializeGsob = JsonSerializer.Serialize(formCollection["guestSourceOfBusinesses"]); /////////////////////////////
             _logger.LogDebug($"serialized: {formCollection["guestSourceOfBusinesses"]}");
-            var guestSourceOfBusinesses = JsonSerializer.Deserialize<IEnumerable<GsobDto>>(formCollection["guestSourceOfBusinesses"]);
-
+            
+            var gsobsFromRequest = JsonSerializer.Deserialize<IEnumerable<GsobDto>>(formCollection["guestSourceOfBusinesses"]).ToList();
+            // Assign deserialized json gsobs to fbRerport
+            fbReport.GuestSourceOfBusinesses = gsobsFromRequest;
+            
             if (env.IsDevelopment())
             {
-                foreach (var item in guestSourceOfBusinesses)
+                foreach (var item in gsobsFromRequest)
                 {
                     _logger.LogDebug($"nr of guests: {item.GsobNrOfGuests}, gsob Id: {item.GuestSourceOfBusinessId}");
                 }
@@ -136,7 +140,7 @@ namespace TwinPalmsKPI.Controllers
 
             if (env.IsDevelopment())
             {
-                if (/*fbReport.GuestSourceOfBusinesses.Count */ guestSourceOfBusinesses.Count() > 0)
+                if (fbReport.GuestSourceOfBusinesses.Count > 0)
                 {
                     _logger.LogInfo("We have gsobs");
 
@@ -189,26 +193,30 @@ namespace TwinPalmsKPI.Controllers
                 return StatusCode(500, $"Internal server error: {ex}");
             }
 
+            /*********************************** Validate related models **************************************/
             await ValidateWeathers(fbReport, fbReportEntity);
-            List<GuestSourceOfBusiness> GuestSourcesOfBusinessesFromDb =
-                (List<GuestSourceOfBusiness>)await _repository.GuestSourceOfBusiness.GetAllGuestSourceOfBusinessesAsync(trackChanges: false);
-            int nrOfGuestSourcesOfBusinessesFromDb = GuestSourcesOfBusinessesFromDb.Count;
+           
+            var gsobsFromDb = 
+                await _repository.GuestSourceOfBusiness.GetAllGuestSourceOfBusinessesAsync(trackChanges: false);
+            int nrOfGsobsFromDb = gsobsFromDb.Count();
 
-            List<Outlet> OutletsFromDb = (List<Outlet>)await _repository.Outlet.GetAllOutletsAsync(trackChanges: false);
-            int nrOfOutletsFromDb = OutletsFromDb.Count;
+            var outletsFromDb = await _repository.Outlet.GetAllOutletsAsync(trackChanges: false);
+            int nrOfOutletsFromDb = outletsFromDb.Count();
 
-            List<LocalEvent> LocalEventFromDb = (List<LocalEvent>)await _repository.LocalEvent.GetAllLocalEventsAsync(trackChanges: false);
-            int nrOfLocalEventsFromDb = LocalEventFromDb.Count;
+            var localEventsFromDb = await _repository.LocalEvent.GetAllLocalEventsAsync(trackChanges: false);
+            int nrOfLocalEventsFromDb = localEventsFromDb.Count();
 
-            if (guestSourceOfBusinesses != null && guestSourceOfBusinesses.Count() > 0)
+            if (fbReport.GuestSourceOfBusinesses != null && fbReport.GuestSourceOfBusinesses.Count > 0)
             {
-                ValidateAndAddGsobs(guestSourceOfBusinesses, fbReportEntity, nrOfGuestSourcesOfBusinessesFromDb);
+                ValidateGsobs(fbReport.GuestSourceOfBusinesses, fbReportEntity, nrOfGsobsFromDb);
             }
 
             await Validations(fbReport, nrOfOutletsFromDb, nrOfLocalEventsFromDb);
+            
             await _repository.SaveAsync();
-
-            return Ok("fbReport created");
+            /*********************************************************************************************************/
+            
+            return Ok();
         }
 
         /// <summary>
