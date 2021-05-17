@@ -208,7 +208,7 @@ namespace TwinPalmsKPI.Controllers
 
             if (fbReport.GuestSourceOfBusinesses != null && fbReport.GuestSourceOfBusinesses.Count > 0)
             {
-                ValidateGsobs(fbReport.GuestSourceOfBusinesses, fbReportEntity, nrOfGsobsFromDb);
+                ValidateAndAddGsobs(fbReport.GuestSourceOfBusinesses, fbReportEntity, nrOfGsobsFromDb);
             }
 
             await Validations(fbReport, nrOfOutletsFromDb, nrOfLocalEventsFromDb);
