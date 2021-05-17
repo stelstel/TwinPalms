@@ -81,7 +81,7 @@ namespace TwinPalmsKPI.Controllers
         /// </summary>
         /// <remarks>
         /// For GuestSourceOfBusinesses:\
-        /// Only use one object item and add as many objects you need to in that object.
+        /// Only use one object item and add as many objects you need to inside that one object.
         /// 
         /// Example:
         /// 
@@ -202,7 +202,7 @@ namespace TwinPalmsKPI.Controllers
 
             if (guestSourceOfBusinesses != null && guestSourceOfBusinesses.Count() > 0)
             {
-                ValidateGsobs(guestSourceOfBusinesses, fbReportEntity, nrOfGuestSourcesOfBusinessesFromDb);
+                ValidateAndAddGsobs(guestSourceOfBusinesses, fbReportEntity, nrOfGuestSourcesOfBusinessesFromDb);
             }
 
             await Validations(fbReport, nrOfOutletsFromDb, nrOfLocalEventsFromDb);
@@ -240,17 +240,26 @@ namespace TwinPalmsKPI.Controllers
             return CreatedAtRoute("FbReportById", new { id = fbReportToReturn.Id }, fbReportToReturn);
         }
 
-        // ************************************************ ValidateGsobs *********************************************************
-        private void ValidateGsobs(IEnumerable<GsobDto> guestSourceOfBusinesses, FbReport fbReportEntity, int nrOfGuestSourcesOfBusinessesFromDb)
+        // ************************************************ ValidateAndAddGsobs *********************************************************
+        // Validating GuestSourceOfBusinesses and adds them to the fbReportEntity if the validation succeeds.
+        // If failure adds an error to ModelState
+        private void ValidateAndAddGsobs(IEnumerable<GsobDto> guestSourceOfBusinesses, FbReport fbReportEntity, int nrOfGuestSourcesOfBusinessesFromDb)
         {
             int gsobCounter = 0;
-            
-            _logger.LogDebug("reportId " + fbReportEntity.Id);
+
+            if (env.IsDevelopment())
+            {
+                _logger.LogDebug("reportId " + fbReportEntity.Id);
+            }
 
             foreach (var gsob in guestSourceOfBusinesses)
             {
-                _logger.LogDebug("gsobId " + gsob.GuestSourceOfBusinessId);
-                _logger.LogDebug("gsobNrofguesst " + gsob.GsobNrOfGuests);
+                if (env.IsDevelopment())
+                {
+                    _logger.LogDebug("gsobId " + gsob.GuestSourceOfBusinessId);
+                    _logger.LogDebug("gsobNrofguesst " + gsob.GsobNrOfGuests);
+                }
+
                 gsobCounter++;
 
                 // Validating if inputted guestSourceOFBusinessId exists in DB
@@ -274,7 +283,7 @@ namespace TwinPalmsKPI.Controllers
         // ************************************************* ValidateWeather **************************************************************
         private async Task ValidateWeathers(FbReportForCreationDto fbReport, FbReport fbReportEntity)
         {
-            // Validating if there is any weather in FbReport
+            // Validating if there are any weathers in FbReport
             if (fbReport.Weathers == null || fbReport.Weathers.Count == 0)
             {
                 ModelState.AddModelError("ArgumentError", "At least one WeatherId is required.");
@@ -292,7 +301,8 @@ namespace TwinPalmsKPI.Controllers
                     // Validating if inputted weatherId exists in DB
                     if (weatherId < 1 || weatherId > nrOfWeathersFromDb)
                     {
-                        ModelState.AddModelError("ArgumentOutOfRangeError", $"WeatherId[{weatherCounter}] must be an integer between 1 and {nrOfWeathersFromDb}. It's now {weatherId}");
+                        ModelState.AddModelError("ArgumentOutOfRangeError", 
+                            $"WeatherId[{weatherCounter}] must be an integer between 1 and {nrOfWeathersFromDb}. It's now {weatherId}");
                     }
 
                     var fbReportWeather = new WeatherFbReport
@@ -306,7 +316,7 @@ namespace TwinPalmsKPI.Controllers
             }
         }
 
-        // ******************************************************** Validations *************************************************
+        // ********************************************************** Validations ***************************************************
         private async Task Validations(FbReportForCreationDto fbReport, int nrOfOutletsFromDb, int nrOfLocalEventsFromDb)
         {
             // Validating if user exists in DB
