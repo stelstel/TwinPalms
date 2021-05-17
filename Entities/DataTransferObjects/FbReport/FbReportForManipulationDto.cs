@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using Microsoft.AspNetCore.Http;
 using System.ComponentModel.DataAnnotations;
-
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Entities.DataTransferObjects
 {
@@ -55,8 +55,10 @@ namespace Entities.DataTransferObjects
         [Range(1, 10000, ErrorMessage = "LocalEventId can't be lower than 1 or higher than 10000")]
         public int? LocalEventId { get; set; }
 
+        [Required, DatabaseGenerated(DatabaseGeneratedOption.Computed)]
+        public DateTime CreatedAt { get; set; }
 
-        
+
         public ICollection<int> Weathers { get; set; }
         /*public ICollection<int> GuestSourceOfBusinesses { get; set; }*/
     }

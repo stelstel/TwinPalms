@@ -33,8 +33,7 @@ namespace Entities.Models
         [Required]
         public string UserId { get; set; }
         public int? LocalEventId { get; set; }
-
-        // public List<int> GsobNrOfGuestsList { get; set; }
+        public DateTime CreatedAt { get; set; }
 
         // Navigation properties
         public virtual Outlet Outlet { get; set; }

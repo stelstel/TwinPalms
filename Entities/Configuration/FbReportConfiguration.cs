@@ -36,7 +36,8 @@ namespace Entities.Configuration
                     Date = DateTime.Now,
                     OutletId = 1,
                     UserId = "35947f01-393b-442c-b815-d6d9f7d4b81e",
-                    LocalEventId = 2
+                    LocalEventId = 2,
+                    CreatedAt = DateTime.Now
                 },
                 new FbReport
                 {
@@ -53,7 +54,8 @@ namespace Entities.Configuration
                     Date = DateTime.Now.AddMonths(-1),
                     OutletId = 1,
                     UserId = "35947f01-393b-442c-b815-d6d9f7d4b81e",
-                    LocalEventId = 3
+                    LocalEventId = 3,
+                    CreatedAt = DateTime.Now
                 },
                 new FbReport
                 {
@@ -70,7 +72,8 @@ namespace Entities.Configuration
                     Date = DateTime.Now.AddMonths(-2),
                     OutletId = 1,
                     UserId = "35947f01-393b-442c-b815-d6d9f7d4b81e",
-                    LocalEventId = 4
+                    LocalEventId = 4,
+                    CreatedAt = DateTime.Now
                 },
                 new FbReport
                 {
@@ -85,7 +88,8 @@ namespace Entities.Configuration
                     EventNotes = "The DJ was a little to drunk to do his job",
                     Date = DateTime.Now.AddMonths(-3),
                     OutletId = 1,
-                    UserId = "35947f01-393b-442c-b815-d6d9f7d4b81e"
+                    UserId = "35947f01-393b-442c-b815-d6d9f7d4b81e",
+                    CreatedAt = DateTime.Now
                 },
                 new FbReport
                 {
@@ -102,7 +106,8 @@ namespace Entities.Configuration
                     Date = DateTime.Now.AddDays(-1).AddHours(-1),
                     OutletId = 2,
                     UserId = "b0b22e53-3ad2-4a0a-9e58-aa0a70a5a157",
-                    LocalEventId = 2
+                    LocalEventId = 2,
+                    CreatedAt = DateTime.Now
                 },
                 new FbReport
                 {
@@ -119,7 +124,8 @@ namespace Entities.Configuration
                     Date = DateTime.Now.AddDays(-2).AddHours(-2).AddMinutes(-24),
                     OutletId = 4,
                     UserId = "35947f01-393b-442c-b815-d6d9f7d4b81e",
-                    LocalEventId = 1
+                    LocalEventId = 1,
+                    CreatedAt = DateTime.Now
                 },
                 new FbReport
                 {
@@ -136,7 +142,8 @@ namespace Entities.Configuration
                     Date = new DateTime(2021, 5, 09, 04, 00, 00), //closing time ex 4 am
                     OutletId = 4,
                     UserId = "35947f01-393b-442c-b815-d6d9f7d4b81e",
-                    LocalEventId = 1
+                    LocalEventId = 1,
+                    CreatedAt = DateTime.Now
                 }
             );
         }
