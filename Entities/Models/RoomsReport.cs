@@ -23,11 +23,12 @@ namespace Entities.Models
         public string LoggerId { get; set; }
         public int RoomTypeId { get; set; }
         public int? LocalEventId { get; set; }
-
+        public DateTime CreatedAt { get; set; } = DateTime.Now;
         // Navigation properties    
         public virtual User Logger { get; set; }
         public virtual RoomType RoomType { get; set; }
         public virtual LocalEvent LocalEvent { get; set; }
         public virtual ICollection<WeatherRoomsReport> WeatherRoomsReports { get; set; }
+
     }
 }

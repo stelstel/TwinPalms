@@ -12,6 +12,8 @@ using System.Linq;
 using System.Threading.Tasks;
 using EmailService;
 using Helpers;
+using System.Security.Claims;
+using Microsoft.AspNetCore.Authorization;
 
 namespace TwinPalmsKPI.Controllers
 {
@@ -119,7 +121,7 @@ namespace TwinPalmsKPI.Controllers
 
             var token = await _userManager.GeneratePasswordResetTokenAsync(user);
 
-            var message = new Message(new string[] { user.Email }, "Reset password link", "<h3>Reset Email</h3><a href'https://localhost:44306/api/authentication/reset_password?token='"+token+">Click link</a>");
+            var message = new Message(new string[] { user.Email }, "Reset password link", "<h3>Reset Email</h3><a href'https://localhost:5000/reset_password?token='"+token+">Click link</a>");
             _emailSender.SendEmail(message);
 
             return Ok();
@@ -140,6 +142,34 @@ namespace TwinPalmsKPI.Controllers
             if (!resetPassResult.Succeeded)
             {
                 foreach (var error in resetPassResult.Errors)
+                {
+                    ModelState.TryAddModelError(error.Code, error.Description);
+                }
+
+                return BadRequest(ModelState);
+            }
+
+            return Ok(201);
+        }
+
+        [HttpPost("change-password")]
+        [Authorize]
+        public async Task<IActionResult> ChangePassword([FromBody] ChangePasswordDto input)
+        {
+            return Ok(User.Identity);
+            if (!ModelState.IsValid)
+                return BadRequest();
+            
+            var user = await _userManager.FindByEmailAsync(User.FindFirst(ClaimTypes.Email).Value);
+            if (user == null)
+                return NotFound();
+            
+           var changePassword = await _userManager.ChangePasswordAsync(user, input.CurrentPassword, input.NewPassword);
+
+            
+            if (!changePassword.Succeeded)
+            {
+                foreach (var error in changePassword.Errors)
                 {
                     ModelState.TryAddModelError(error.Code, error.Description);
                 }
