@@ -1,9 +1,6 @@
 ﻿using Entities.Models;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Entities.DataTransferObjects
 {
@@ -24,7 +21,6 @@ namespace Entities.DataTransferObjects
         public int OutletId { get; set; }
         public string UserId { get; set; }
         public int? LocalEventId { get; set; }
-        public DateTime CreatedAt { get; set; }
 
         // Navigation properties
         public ICollection<GuestSourceOfBusiness> GuestSourceOfBusinesses { get; set; }

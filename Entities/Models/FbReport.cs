@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.Runtime.Serialization;
 using System.Text.Json.Serialization;
 
 #nullable disable
@@ -33,7 +34,10 @@ namespace Entities.Models
         [Required]
         public string UserId { get; set; }
         public int? LocalEventId { get; set; }
-        public DateTime CreatedAt { get; set; }
+
+        // timestamp
+        public DateTime CreatedAt { get; set; } = DateTime.Now; 
+
 
         // Navigation properties
         public virtual Outlet Outlet { get; set; }

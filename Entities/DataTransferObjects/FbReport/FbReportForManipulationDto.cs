@@ -1,8 +1,7 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Http;
+using System;
 using System.Collections.Generic;
-using Microsoft.AspNetCore.Http;
 using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Entities.DataTransferObjects
 {
@@ -26,7 +25,6 @@ namespace Entities.DataTransferObjects
         [Range(0, int.MaxValue, ErrorMessage = "GuestsFromOutsideHotel can't be lower than 0")]
         public int? GuestsFromOutsideHotel { get; set; }
 
-        /*[Required(ErrorMessage = "IsPublicHoliday is a required field (true/false)")]*/
         public bool IsPublicHoliday { get; set; }
 
         [StringLength(5000, ErrorMessage = "EventNote can't contain more than 5000 characters")]
@@ -55,11 +53,6 @@ namespace Entities.DataTransferObjects
         [Range(1, 10000, ErrorMessage = "LocalEventId can't be lower than 1 or higher than 10000")]
         public int? LocalEventId { get; set; }
 
-        [Required, DatabaseGenerated(DatabaseGeneratedOption.Computed)]
-        public DateTime CreatedAt { get; set; }
-
-
         public ICollection<int> Weathers { get; set; }
-        /*public ICollection<int> GuestSourceOfBusinesses { get; set; }*/
     }
 }
