@@ -16,5 +16,6 @@ namespace Entities.DataTransferObjects
         public IList<string> Roles { get; set; }
         public IEnumerable<Outlet> Outlets { get; set; }
         public IEnumerable<Hotel> Hotels { get; set; }
+        public IEnumerable<Company> Companies { get; set; }
     }
 }

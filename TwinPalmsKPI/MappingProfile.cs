@@ -24,7 +24,8 @@ namespace TwinPalmsKPI
             CreateMap<User, UserDto>()
                 .ForMember(dto => dto.Hotels, user => user.MapFrom(user => user.HotelUsers.Select(hu => hu.Hotel).ToList()))
                 .ForMember(dto => dto.Outlets, user => user.MapFrom(user => user.OutletUsers.Select(ou => ou.Outlet).ToList()))
-                .ForMember(dto => dto.Roles, user => user.MapFrom(user => user.UserRoles.Select(ur => ur.Role.Name).ToList()));
+                .ForMember(dto => dto.Roles, user => user.MapFrom(user => user.UserRoles.Select(ur => ur.Role.Name).ToList()))
+                .ForMember(dto => dto.Companies, user => user.MapFrom(user => user.CompanyUsers.Select(cu => cu.Company).ToList()));
             CreateMap<UserForRegistrationDto, User>();
             CreateMap<UserForUpdateDto, User>();
 

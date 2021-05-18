@@ -295,7 +295,7 @@
             Gets user by ID
             </summary>
         </member>
-        <member name="M:TwinPalmsKPI.Controllers.UsersController.DeleteUser(System.Int32)">
+        <member name="M:TwinPalmsKPI.Controllers.UsersController.DeleteUser(System.String)">
             <summary>
             Deletes user by ID
             </summary>

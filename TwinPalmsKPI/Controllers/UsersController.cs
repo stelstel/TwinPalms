@@ -21,39 +21,33 @@ namespace TwinPalmsKPI.Controllers
         private readonly IRepositoryManager _repository;
         private readonly ILoggerManager _logger;
         private readonly IMapper _mapper;
-        private readonly UserManager<User> _userManager;
+       
 
-        public UsersController(IRepositoryManager repository, ILoggerManager logger, IMapper mapper, UserManager<User> userManager)
+        public UsersController(IRepositoryManager repository, ILoggerManager logger, IMapper mapper )
         {
             _repository = repository;
             _logger = logger;
-            _mapper = mapper;
-            _userManager = userManager;
+            _mapper = mapper;           
         }
+
         /// <summary>
         /// Gets a list of all users
         /// </summary>
         [HttpGet(Name = "GetUsers")]
-        public async Task<IEnumerable<UserDto>> GetUsers()
+        public async Task<IActionResult> GetUsers()
         {
-
-            var users = await _userManager.Users
-                 .Include(u => u.UserRoles).ThenInclude(ur => ur.Role)
-                 .Include(u => u.OutletUsers).ThenInclude(ou => ou.Outlet)
-                 .Include(u => u.HotelUsers).ThenInclude(hu => hu.Hotel).ToListAsync();
+            var users = await _repository.User.GetUsersAsync(trackChanges: false);           
             var userDtos = _mapper.Map<IEnumerable<UserDto>>(users);
             
-            return userDtos;
-
-
+            return Ok(userDtos);
         }
+
         /// <summary>
         /// Gets user by ID
         /// </summary>
         [HttpGet("{id}", Name = "UserById")]
         public async Task<IActionResult> GetUser(string id)
-        {
-           
+        {          
             var userDb = await _repository.User.GetUserAsync(id, trackChanges: false);
             if (userDb == null)
             {
@@ -88,7 +82,7 @@ namespace TwinPalmsKPI.Controllers
         /// </summary>
         [HttpDelete("{id}")]
         [ServiceFilter(typeof(ValidateUserExistsAttribute))]
-        public async Task<IActionResult> DeleteUser(int id)
+        public async Task<IActionResult> DeleteUser(string id)
         {
             var user = HttpContext.Items["user"] as User;
 
