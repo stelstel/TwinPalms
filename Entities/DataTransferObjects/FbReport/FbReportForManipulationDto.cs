@@ -38,15 +38,15 @@ namespace Entities.DataTransferObjects
         [DataType(DataType.Text)]
         public string GSourceOfBusinessNotes { get; set; }
 
-        /*[Required(ErrorMessage = "Date is a required field.")]*/
+        [Required(ErrorMessage = "Date is a required field.")]
         [DataType(DataType.DateTime)]
         public DateTime Date { get; set; }
 
-        /*[Required(ErrorMessage = "OutletId is a required field.")]*/
+        [Required(ErrorMessage = "OutletId is a required field.")]
         [Range(1, 10000, ErrorMessage = "OutletId is a required field and can't be lower than 1 or higer than 10000")]
         public int OutletId { get; set; }
         
-        /*[Required(ErrorMessage = "UserId is a required field.")]*/
+        [Required(ErrorMessage = "UserId is a required field.")]
         [StringLength(36, MinimumLength = 36, ErrorMessage = "UserId should contain exactly 36 characters")]
         public string UserId { get; set; }
 
