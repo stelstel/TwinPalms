@@ -156,25 +156,29 @@ namespace TwinPalmsKPI.Controllers
         [Authorize]
         public async Task<IActionResult> ChangePassword([FromBody] ChangePasswordDto input)
         {
-            return Ok(User.Identity);
+            //return Ok(User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier).Value);
             if (!ModelState.IsValid)
                 return BadRequest();
+            if(User.Identity.IsAuthenticated)
+            {
+                var userId = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier).Value;
+                var user = await _userManager.FindByIdAsync(userId);
+                if (user == null)
+                    return NotFound();
             
-            var user = await _userManager.FindByEmailAsync(User.FindFirst(ClaimTypes.Email).Value);
-            if (user == null)
-                return NotFound();
-            
-           var changePassword = await _userManager.ChangePasswordAsync(user, input.CurrentPassword, input.NewPassword);
+               var changePassword = await _userManager.ChangePasswordAsync(user, input.CurrentPassword, input.NewPassword);
 
             
-            if (!changePassword.Succeeded)
-            {
-                foreach (var error in changePassword.Errors)
+                if (!changePassword.Succeeded)
                 {
-                    ModelState.TryAddModelError(error.Code, error.Description);
+                    foreach (var error in changePassword.Errors)
+                    {
+                        ModelState.TryAddModelError(error.Code, error.Description);
+                    }
+
+                    return BadRequest(ModelState);
                 }
 
-                return BadRequest(ModelState);
             }
 
             return Ok(201);
