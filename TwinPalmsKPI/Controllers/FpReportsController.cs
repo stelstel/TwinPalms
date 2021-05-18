@@ -117,6 +117,7 @@ namespace TwinPalmsKPI.Controllers
             _logger.LogDebug($"serialized: {formCollection["guestSourceOfBusinesses"]}");
             
             var gsobsFromRequest = JsonSerializer.Deserialize<IEnumerable<GsobDto>>(formCollection["guestSourceOfBusinesses"]).ToList();
+            
             // Assign deserialized json gsobs to fbRerport
             fbReport.GuestSourceOfBusinesses = gsobsFromRequest;
             
@@ -212,10 +213,15 @@ namespace TwinPalmsKPI.Controllers
             }
 
             await Validations(fbReport, nrOfOutletsFromDb, nrOfLocalEventsFromDb);
-            
-            await _repository.SaveAsync();
             /*********************************************************************************************************/
-            
+
+            if (!ModelState.IsValid)
+            {
+                var errors = ModelState.Values.SelectMany(v => v.Errors);
+                return BadRequest(errors);
+            }
+
+            await _repository.SaveAsync();
             return Ok();
         }
 
@@ -271,20 +277,30 @@ namespace TwinPalmsKPI.Controllers
                 gsobCounter++;
 
                 // Validating if inputted guestSourceOFBusinessId exists in DB
-                if (gsob.GsobNrOfGuests < 1 || gsob.GsobNrOfGuests > nrOfGuestSourcesOfBusinessesFromDb)
+                if (gsob.GuestSourceOfBusinessId < 1 || gsob.GuestSourceOfBusinessId > nrOfGuestSourcesOfBusinessesFromDb)
                 {
                     ModelState.AddModelError("ArgumentOutOfRangeError",
                         $"GuestSourceOFBusiness[{gsobCounter}] must be an integer between 1 and {nrOfGuestSourcesOfBusinessesFromDb}. It's now {gsob.GuestSourceOfBusinessId}");
                 }
 
-                var fbReportGuestSourceOfBusiness = new FbReportGuestSourceOfBusiness
-                {
-                    FbReportId = fbReportEntity.Id,
-                    GuestSourceOfBusinessId = gsob.GuestSourceOfBusinessId,
-                    GsobNrOfGuests = gsob.GsobNrOfGuests,
-                };
+                // Validating if inputted guestSourceOFBusinessId exists in DB
+                //if (gsob.GsobNrOfGuests < 1 || gsob.GsobNrOfGuests > nrOfGuestSourcesOfBusinessesFromDb)
+                //{
+                //    ModelState.AddModelError("ArgumentOutOfRangeError",
+                //        $"GuestSourceOFBusiness[{gsobCounter}] must be an integer between 1 and {nrOfGuestSourcesOfBusinessesFromDb}. It's now {gsob.GuestSourceOfBusinessId}");
+                //}
 
-                fbReportEntity.FbReportGuestSourceOfBusinesses.Add(fbReportGuestSourceOfBusiness);
+                if (ModelState.IsValid)
+                {
+                    var fbReportGuestSourceOfBusiness = new FbReportGuestSourceOfBusiness
+                    {
+                        FbReportId = fbReportEntity.Id,
+                        GuestSourceOfBusinessId = gsob.GuestSourceOfBusinessId,
+                        GsobNrOfGuests = gsob.GsobNrOfGuests,
+                    };
+
+                    fbReportEntity.FbReportGuestSourceOfBusinesses.Add(fbReportGuestSourceOfBusiness);
+                }
             }
         }
 
