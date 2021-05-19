@@ -1,6 +1,7 @@
 ﻿using Entities.Models;
 using System;
 using System.Collections.Generic;
+using System.Text.Json.Serialization;
 
 namespace Entities.DataTransferObjects
 {
@@ -14,7 +15,12 @@ namespace Entities.DataTransferObjects
         public string Email { get; set; }
         //public string PhoneNumber { get; set; }
         public IList<string> Roles { get; set; }
+
+        [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
         public IEnumerable<Outlet> Outlets { get; set; }
+        [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
         public IEnumerable<Hotel> Hotels { get; set; }
+        [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+        public IEnumerable<Company> Companies { get; set; }
     }
 }

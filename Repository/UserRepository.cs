@@ -31,6 +31,7 @@ namespace Repository
             await FindByCondition(u => u.Id.Equals(id), trackChanges)
             .Include(u => u.OutletUsers).ThenInclude(ou => ou.Outlet)
             .Include(u => u.UserRoles).ThenInclude(ur => ur.Role)
+            .Include(u => u.CompanyUsers).ThenInclude(cu => cu.Company)
             .SingleOrDefaultAsync();
 
        /* private async Task<User> FindById(string id) =>
@@ -56,23 +57,11 @@ namespace Repository
 
                           ).OrderBy(x => x.Id).ToListAsync();*/
 
-            return (IEnumerable<User>)await FindAll(trackChanges)
-               
+            return await FindAll(trackChanges)              
                     .Include(u => u.OutletUsers).ThenInclude(ou => ou.Outlet)
                     .Include(u => u.HotelUsers).ThenInclude(hu => hu.Hotel)
                     .Include(u => u.UserRoles).ThenInclude(ur => ur.Role)
-                    .Select(u => new User
-                    {
-                        Id = u.Id,
-                        FirstName = u.FirstName,
-                        LastName = u.LastName,
-                        UserName = u.UserName,
-                        Email = u.Email,
-                        OutletUsers = u.OutletUsers.ToList(),
-                        HotelUsers = u.HotelUsers.ToList(),
-                        UserRoles = u.UserRoles.ToList()
-
-                    })
+                    .Include(u => u.CompanyUsers).ThenInclude(cu => cu.Company)                    
                     .ToListAsync();
         }
 

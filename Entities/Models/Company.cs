@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Text.Json.Serialization;
 
 namespace Entities.Models
 {
@@ -21,9 +22,13 @@ namespace Entities.Models
         public string Name { get; set; }
 
         // Navigation properties
+        [JsonIgnore]
         public virtual ICollection<CruiseCompany> CruiseCompanies { get; set; }
+        [JsonIgnore]
         public virtual ICollection<Hotel> Hotels { get; set; }
+        [JsonIgnore]
         public virtual ICollection<Outlet> Outlets { get; set; }
+        [JsonIgnore]
         public virtual ICollection<CompanyUser> CompanyUsers { get; set; }
     }
 }
