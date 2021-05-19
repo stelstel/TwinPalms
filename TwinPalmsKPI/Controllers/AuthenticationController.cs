@@ -100,16 +100,57 @@ namespace TwinPalmsKPI.Controllers
         [ServiceFilter(typeof(ValidationFilterAttribute))]
         public async Task<IActionResult> Authenticate([FromBody] UserForAuthenticationDto user)
         {
-            if (!await _authManager.ValidateUser(user))
+            var _user = await _authManager.ValidateUser(user);
+            if (_user == null)
             {
-                _logger.LogWarning($"{nameof(Authenticate)}: Authentication failed. Wrong user name or password."); 
+                _logger.LogWarning($"{nameof(Authenticate)}: Authentication failed. Wrong user name or password.");
                 return Unauthorized();
             }
-            return Ok(new {
-                
-                Token = await _authManager.CreateToken() });
-        }
+            else
+            {
+                _logger.LogDebug("user firstname" + _user.FirstName);
+                var token = await _authManager.CreateToken();
 
+                //var userId = _user.Identity(FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier).Value;
+                var roles = _userManager.GetRolesAsync(_user).Result;
+                
+                    /*var claimsRoles = User.Claims.Where(claim => claim.Type == "Role")
+                .Select(claim => claim.Value).ToArray();*/
+
+                if (!roles.Contains("SuperAdmin"))
+                {
+                    if (roles.Contains("Admin"))
+                    {
+                        return Ok(new
+                        {
+                            Token = token,
+                            Companies = _repository.User.GetCompaniesAsync(_user.Id, false)
+
+                        });
+                    }
+                    else
+                    {
+                        return Ok(new
+                        {
+                            Token = token,
+                            Outlets = _repository.User.GetOutletsAsync(_user.Id, false)
+
+                        });
+                    }
+                }
+                else
+                {
+                    return Ok(new
+                    {
+                        Token = token,
+
+
+                    });
+                }
+
+
+            }
+        }
         [HttpPost("forgot-password")]
         public async Task<IActionResult> ForgotPassword([FromBody] ForgotPasswordDto forgotPasswordInput)
         {
@@ -121,7 +162,9 @@ namespace TwinPalmsKPI.Controllers
 
             var token = await _userManager.GeneratePasswordResetTokenAsync(user);
 
-            var message = new Message(new string[] { user.Email }, "Reset password link", "<h3>Reset Email</h3><a href'https://localhost:5000/reset_password?token='"+token+">Click link</a>");
+            var message = new Message(new string[] { user.Email }, "Reset password link", 
+                "<h3>Reset password</h3><a href'https://localhost:5000/reset_password?token='"+token+">" +
+                "Click on this link to reset your password</a>");
             _emailSender.SendEmail(message);
 
             return Ok();

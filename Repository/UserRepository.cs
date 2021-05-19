@@ -92,5 +92,21 @@ namespace Repository
             await _repositoryContext.SaveChangesAsync();
 
         }
+
+        public async Task<IEnumerable<int>> GetCompaniesAsync(string id, bool trackChanges)
+        {
+            var companies = await FindByCondition(u => u.Id.Equals(id), trackChanges)
+                .Select(user =>user.CompanyUsers.Select(c => c.CompanyId).ToArray())
+                .FirstOrDefaultAsync();
+            return companies;
+        }
+
+        public async Task<IEnumerable<int>> GetOutletsAsync(string id, bool trackChanges)
+        {
+            var outlets = await FindByCondition(u => u.Id.Equals(id), trackChanges)
+                .Select(user => user.OutletUsers.Select(c => c.OutletId).ToArray())
+                .FirstOrDefaultAsync();
+            return outlets;
+        }
     }
 }

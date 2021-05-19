@@ -25,10 +25,15 @@ namespace TwinPalmsKPI
         {
             _userManager = userManager; _configuration = configuration;
         }
-        public async Task<bool> ValidateUser(UserForAuthenticationDto userForAuth)
+        public async Task<User> ValidateUser(UserForAuthenticationDto userForAuth)
         {
-            _user = await _userManager.FindByNameAsync(userForAuth.UserName); 
-            return (_user != null && await _userManager.CheckPasswordAsync(_user, userForAuth.Password));
+            _user = await _userManager.FindByNameAsync(userForAuth.UserName);
+            if (_user != null && await _userManager.CheckPasswordAsync(_user, userForAuth.Password))
+            {
+                return _user;
+            }
+            else
+            return null;
         }
         public async Task<string> CreateToken()
         {
