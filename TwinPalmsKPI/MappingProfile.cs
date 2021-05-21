@@ -14,43 +14,46 @@ namespace TwinPalmsKPI
         public MappingProfile()
         {
             CreateMap<Company, CompanyDto>();
+            CreateMap<Company, CompanyUserDto>();
             CreateMap<CompanyForCreationDto, Company>();
             CreateMap<CompanyForUpdateDto, Company>();
 
             CreateMap<Hotel, HotelDto>();
+            CreateMap<Hotel, HotelUserDto>();
             CreateMap<HotelForCreationDto, Hotel>();
             CreateMap<HotelForUpdateDto, Hotel>();
 
-            CreateMap<User, UserDto>()
+            CreateMap<Outlet, OutletDto>();       
+            CreateMap<Outlet, OutletUserDto>();
+            CreateMap<OutletForCreationDto, Outlet>();
+            CreateMap<OutletForUpdateDto, Outlet>();
+
+            CreateMap<User, UserDto>()              
                 .ForMember(dto => dto.Roles, user => user.MapFrom(user => user.UserRoles.Select(ur => ur.Role.Name).ToList()))
-            
+
                 // Properties are mapped differently depending on the users role.
                 .ForMember(dto => dto.Companies, opt =>
-                    { 
+                    {
                         // Only for any kind of admin users
                         opt.PreCondition(src => src.UserRoles.Any(ur => ur.Role.Name.EndsWith("Admin")));
                         opt.MapFrom(user => user.CompanyUsers.Select(cu => cu.Company).ToList());
                     })
                 .ForMember(dto => dto.Hotels, opt =>
-                    { 
+                    {
                         // Only for basic users
                         opt.PreCondition(src => !src.UserRoles.Any(ur => ur.Role.Name.EndsWith("Admin")));
-                        opt.MapFrom(user => user.HotelUsers.Select(hu => hu.Hotel).ToList());
+                        
+                        opt.MapFrom(user => user.HotelUsers.Select(hu => hu.Hotel).ToList());                       
                     })
                 .ForMember(dto => dto.Outlets, opt =>
-                    { 
+                    {
                         // Only for basic users
                         opt.PreCondition(src => !src.UserRoles.Any(ur => ur.Role.Name.EndsWith("Admin")));
                         opt.MapFrom(user => user.OutletUsers.Select(ou => ou.Outlet).ToList());
-                    });
-                
+                    });                                   
             CreateMap<UserForRegistrationDto, User>();
             CreateMap<UserForUpdateDto, User>();
-
-            CreateMap<Outlet, OutletDto>();
-            CreateMap<OutletForCreationDto, Outlet>();
-            CreateMap<OutletForUpdateDto, Outlet>();
-                        
+                                 
             CreateMap<CruiseCompany, CruiseCompanyDto>();
             CreateMap<CruiseCompanyForCreationDto, CruiseCompany>();
             CreateMap<CruiseCompanyForUpdateDto, CruiseCompany>();

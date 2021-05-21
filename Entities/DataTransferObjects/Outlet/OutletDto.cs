@@ -3,13 +3,14 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
 namespace Entities.DataTransferObjects
 {
     public class OutletDto
     {
-        // TODO
+        // TODO Unused. Delete? (Anette)
         //public Outlet()
         //{
         //    FbReports = new HashSet<FbReport>();
@@ -19,9 +20,13 @@ namespace Entities.DataTransferObjects
         public int Id { get; set; }
         public string Name { get; set; }
         public int CompanyId { get; set; }
-
+        
+        //TODO: Delete members in Dtos that are not used? (Anette)
+        [JsonIgnore]
         public virtual Company Company { get; set; }
+        [JsonIgnore]
         public virtual ICollection<FbReport> FbReports { get; set; }
+        [JsonIgnore]       
         public virtual ICollection<OutletUser> OutletUsers { get; set; }
     }
 }

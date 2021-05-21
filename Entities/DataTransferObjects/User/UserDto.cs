@@ -17,10 +17,10 @@ namespace Entities.DataTransferObjects
         public IList<string> Roles { get; set; }
 
         [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
-        public IEnumerable<Outlet> Outlets { get; set; }
+        public IEnumerable<OutletUserDto> Outlets { get; set; }
         [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
-        public IEnumerable<Hotel> Hotels { get; set; }
+        public IEnumerable<HotelUserDto> Hotels { get; set; }
         [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
-        public IEnumerable<Company> Companies { get; set; }
+        public IEnumerable<CompanyUserDto> Companies { get; set; }
     }
 }
