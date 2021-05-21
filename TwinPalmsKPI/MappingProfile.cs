@@ -41,8 +41,7 @@ namespace TwinPalmsKPI
                 .ForMember(dto => dto.Hotels, opt =>
                     {
                         // Only for basic users
-                        opt.PreCondition(src => !src.UserRoles.Any(ur => ur.Role.Name.EndsWith("Admin")));
-                        
+                        opt.PreCondition(src => !src.UserRoles.Any(ur => ur.Role.Name.EndsWith("Admin")));                        
                         opt.MapFrom(user => user.HotelUsers.Select(hu => hu.Hotel).ToList());                       
                     })
                 .ForMember(dto => dto.Outlets, opt =>

@@ -48,6 +48,7 @@ namespace Repository
                 return _cruiseCompanyRepository;
             }
         }
+
         public ICruiseShipRepository CruiseShip
         {
             get
@@ -69,6 +70,7 @@ namespace Repository
                 return _outletRepository;
             }
         }
+
         public IHotelRepository Hotel
         {
             get
@@ -77,17 +79,6 @@ namespace Repository
                     _hotelRepository = new HotelRepository(_repositoryContext);
 
                 return _hotelRepository;
-            }
-        }
-
-        public IUserRepository Employee
-        {
-            get
-            {
-                if (_userRepository == null)
-                    _userRepository = new UserRepository(_repositoryContext);
-
-                return _userRepository;
             }
         }
 
@@ -101,8 +92,6 @@ namespace Repository
                 return _fbReportRepository;
             }
         }
-
-        
 
         public ILocalEventRepository LocalEvent
         {
