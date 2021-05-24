@@ -40,16 +40,6 @@ namespace Entities.Configuration
                 {
                     UserId = "7c8a42a1-e82c-4e2a-b944-67aec243d2fb",
                     CompanyId = 3
-                },
-                new CompanyUser
-                {
-                    UserId = "68a89c2e-ac33-4e56-9b03-a9ef49d28995",
-                    CompanyId = 1
-                },
-                new CompanyUser
-                {
-                    UserId = "68a89c2e-ac33-4e56-9b03-a9ef49d28995",
-                    CompanyId = 2
                 }
             );
         }
