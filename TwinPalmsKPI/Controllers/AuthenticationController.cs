@@ -56,8 +56,7 @@ namespace TwinPalmsKPI.Controllers
             var password = Password.GenerateRandomPassword();
             await _userManager.AddPasswordAsync(user, password);
             
-            var result = await _userManager.CreateAsync(user, password);
-            
+            var result = await _userManager.CreateAsync(user, password);            
             if (!result.Succeeded)
             {
                 foreach (var error in result.Errors)
@@ -66,11 +65,9 @@ namespace TwinPalmsKPI.Controllers
                 }
                 return BadRequest(ModelState);
             }
-
-            
+           
             var roles = new string[] { "Basic", "Admin", "SuperAdmin" };
             await _userManager.AddToRolesAsync(user, roles);
-
             if (userForRegistration.Role == "Admin")
             {
                 await _userManager.RemoveFromRoleAsync(user, "SuperAdmin");
@@ -85,8 +82,6 @@ namespace TwinPalmsKPI.Controllers
                 
             }
 
-
-
             // This can be used if we want to send the password directly by email
             // and use a token instead
             //var token = await _userManager.GeneratePasswordResetTokenAsync(user);
@@ -96,6 +91,7 @@ namespace TwinPalmsKPI.Controllers
             return StatusCode(201);
             //return Ok();
         }
+
         [HttpPost("login")]
         [ServiceFilter(typeof(ValidationFilterAttribute))]
         public async Task<IActionResult> Authenticate([FromBody] UserForAuthenticationDto user)
@@ -110,52 +106,54 @@ namespace TwinPalmsKPI.Controllers
             {
                 _logger.LogDebug("user firstname" + _user.FirstName);
                 var token = await _authManager.CreateToken();
+                var userDb = await _repository.User.GetUserAsync(_user.Id, trackChanges: false);
+                var authUser = _mapper.Map<UserDto>(userDb);
+                authUser.Token = token;
 
-                //var userId = _user.Identity(FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier).Value;
-                var roles = _userManager.GetRolesAsync(_user).Result;
-                
-                    /*var claimsRoles = User.Claims.Where(claim => claim.Type == "Role")
-                .Select(claim => claim.Value).ToArray();*/
-
-                if (!roles.Contains("SuperAdmin"))
-                {
-                    if (roles.Contains("Admin"))
-                    {
-                        return Ok(new
-                        {
-                            Token = token,
-                            Companies = _repository.User.GetCompaniesAsync(_user.Id, false)
-
-                        });
-                    }
-                    else
-                    {
-                        return Ok(new
-                        {
-                            Token = token,
-                            Outlets = _repository.User.GetOutletsAsync(_user.Id, false)
-
-                        });
-                    }
-                }
-                else
-                {
-                    return Ok(new
-                    {
-                        Token = token,
-
-
-                    });
-                }
-
-
+                return Ok(authUser);
             }
         }
+                ////var userId = _user.Identity(FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier).Value;
+                //var roles = _userManager.GetRolesAsync(_user).Result;
+
+                //    /*var claimsRoles = User.Claims.Where(claim => claim.Type == "Role")
+                //.Select(claim => claim.Value).ToArray();*/
+
+                //if (!roles.Contains("SuperAdmin"))
+                //{
+                //    if (roles.Contains("Admin"))
+                //    {
+                //        return Ok(new
+                //        {
+                //            Token = token,
+                //            Companies = _repository.User.GetCompaniesAsync(_user.Id, false)
+
+                //        });
+                //    }
+                //    else
+                //    {
+                //        return Ok(new
+                //        {
+                //            Token = token,
+                //            Outlets = _repository.User.GetOutletsAsync(_user.Id, false)
+
+                //        });
+                //    }
+                //}
+                //else
+                //{
+                //    return Ok(new
+                //    {
+                //        Token = token,
+                //    });
+                //}
+            //}
+        //}
+
         [HttpPost("forgot-password")]
         public async Task<IActionResult> ForgotPassword([FromBody] ForgotPasswordDto forgotPasswordInput)
         {
             
-
             var user = await _userManager.FindByEmailAsync(forgotPasswordInput.Email);
             if (user == null)
                 return NotFound();
@@ -188,10 +186,8 @@ namespace TwinPalmsKPI.Controllers
                 {
                     ModelState.TryAddModelError(error.Code, error.Description);
                 }
-
                 return BadRequest(ModelState);
             }
-
             return Ok(201);
         }
 
@@ -206,24 +202,22 @@ namespace TwinPalmsKPI.Controllers
             {
                 var userId = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier).Value;
                 var user = await _userManager.FindByIdAsync(userId);
+
                 if (user == null)
                     return NotFound();
             
                var changePassword = await _userManager.ChangePasswordAsync(user, input.CurrentPassword, input.NewPassword);
-
-            
+           
                 if (!changePassword.Succeeded)
                 {
                     foreach (var error in changePassword.Errors)
                     {
                         ModelState.TryAddModelError(error.Code, error.Description);
                     }
-
                     return BadRequest(ModelState);
                 }
 
             }
-
             return Ok(201);
         }
     }

@@ -21,22 +21,20 @@ namespace Repository
             _repositoryContext = repositoryContext;
         }
 
-
         public void DeleteUser(User user) => Delete(user);
 
-        public void UpdateUser(User user) => Update(user);
-        
+        public void UpdateUser(User user) => Update(user);        
 
         public async Task<User> GetUserAsync(string id, bool trackChanges) =>
             await FindByCondition(u => u.Id.Equals(id), trackChanges)
             .Include(u => u.OutletUsers).ThenInclude(ou => ou.Outlet)
+            .Include(u => u.HotelUsers).ThenInclude(hu => hu.Hotel)
             .Include(u => u.UserRoles).ThenInclude(ur => ur.Role)
             .Include(u => u.CompanyUsers).ThenInclude(cu => cu.Company)
             .SingleOrDefaultAsync();
 
        /* private async Task<User> FindById(string id) =>
             await _repositoryContext.FindAsync(id);*/
-
 
         public async Task<IEnumerable<User>> GetUsersAsync(bool trackChanges)
         {
@@ -76,12 +74,9 @@ namespace Repository
             {  
                 user.OutletUsers.Add(new OutletUser {OutletId = outletId, UserId = user.Id});
             }
-
             await _repositoryContext.SaveChangesAsync();
-
         }
-                
-        
+                        
         public async void AddCompaniesAsync(string id,  int[] companyIds, bool trackChanges)
         {
             var user = await FindByCondition(u => u.Id.Equals(id), trackChanges).FirstOrDefaultAsync();
@@ -90,7 +85,6 @@ namespace Repository
                 user.CompanyUsers.Add(new CompanyUser { CompanyId = companyId, UserId = user.Id });
             }
             await _repositoryContext.SaveChangesAsync();
-
         }
 
         public async Task<IEnumerable<int>> GetCompaniesAsync(string id, bool trackChanges)

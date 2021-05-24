@@ -22,5 +22,7 @@ namespace Entities.DataTransferObjects
         public IEnumerable<HotelUserDto> Hotels { get; set; }
         [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
         public IEnumerable<CompanyUserDto> Companies { get; set; }
+        [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+        public string Token { get; set; }
     }
 }
