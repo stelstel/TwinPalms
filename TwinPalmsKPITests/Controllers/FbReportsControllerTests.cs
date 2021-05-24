@@ -37,9 +37,9 @@ namespace TwinPalmsKPI.Controllers.Tests
         */
 
         [TestMethod()]
-        public void CreateFbReportTest()
+        public void CreateFbReportEntityTest()
         {
-            // Arrange *****************
+            // Arrange ********************************
             int beverage = 10;
             DateTime date = new DateTime(2021, 05, 05);
             int food = 100;
@@ -52,7 +52,7 @@ namespace TwinPalmsKPI.Controllers.Tests
             int fbReportid = 1;
 
 
-            // Act *********************
+            // Act ************************************
             FbReport fbRep = new FbReport();
             fbRep.Beverage = beverage;
             fbRep.Date = date;
@@ -85,22 +85,22 @@ namespace TwinPalmsKPI.Controllers.Tests
             fbRep.WeatherFbReports = wfbReports;
 
 
-            // Assert **********************************
-            Assert.AreEqual(beverage, fbRep.Beverage);
-            Assert.AreEqual(date, fbRep.Date);
-            Assert.AreEqual(food, fbRep.Food);
-            Assert.AreEqual(isPublicHoliday, fbRep.IsPublicHoliday);
-            Assert.AreEqual(otherIncome, fbRep.OtherIncome);
-            Assert.AreEqual(outletId, fbRep.OutletId);
-            Assert.AreEqual(tables, fbRep.Tables);
-            Assert.AreEqual(userId, fbRep.UserId);
+            // Assert ********************************************
+            Assert.AreEqual(beverage,           fbRep.Beverage);
+            Assert.AreEqual(date,               fbRep.Date);
+            Assert.AreEqual(food,               fbRep.Food);
+            Assert.AreEqual(isPublicHoliday,    fbRep.IsPublicHoliday);
+            Assert.AreEqual(otherIncome,        fbRep.OtherIncome);
+            Assert.AreEqual(outletId,           fbRep.OutletId);
+            Assert.AreEqual(tables,             fbRep.Tables);
+            Assert.AreEqual(userId,             fbRep.UserId);
 
             for (int i = 0; i < wfbReports.Count(); i++)
             {
-                Assert.AreEqual(weatherIds[i], fbRep.WeatherFbReports.ElementAt(i).WeatherId);
-                Assert.AreEqual(fbReportid, fbRep.WeatherFbReports.ElementAt(i).FbReportId);
+                Assert.AreEqual(weatherIds[i],  fbRep.WeatherFbReports.ElementAt(i).WeatherId);
+                Assert.AreEqual(fbReportid,     fbRep.WeatherFbReports.ElementAt(i).FbReportId);
             }
-    }
+        }
 
         /*
         [TestMethod()]
