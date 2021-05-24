@@ -32,7 +32,7 @@ namespace TwinPalmsKPI.Controllers
 
         // ****************************************** GetOutletsFbReports ****************************************************
         /// <summary>
-        /// Gets a All FbReports by many Outlet Ids between two Dates
+        /// Gets All FbReports by many Outlet Ids between two Dates
         /// </summary>
         /// <remarks>
         /// Gets all FbReports for many outlets between fromDate and toDate, including toDate
