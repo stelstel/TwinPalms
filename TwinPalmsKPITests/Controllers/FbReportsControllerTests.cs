@@ -82,14 +82,25 @@ namespace TwinPalmsKPI.Controllers.Tests
                 }
             );
 
+            fbRep.WeatherFbReports = wfbReports;
+
 
             // Assert **********************************
             Assert.AreEqual(beverage, fbRep.Beverage);
+            Assert.AreEqual(date, fbRep.Date);
+            Assert.AreEqual(food, fbRep.Food);
+            Assert.AreEqual(isPublicHoliday, fbRep.IsPublicHoliday);
+            Assert.AreEqual(otherIncome, fbRep.OtherIncome);
+            Assert.AreEqual(outletId, fbRep.OutletId);
+            Assert.AreEqual(tables, fbRep.Tables);
+            Assert.AreEqual(userId, fbRep.UserId);
 
-
-
-            //Assert.Fail();
-        }
+            for (int i = 0; i < wfbReports.Count(); i++)
+            {
+                Assert.AreEqual(weatherIds[i], fbRep.WeatherFbReports.ElementAt(i).WeatherId);
+                Assert.AreEqual(fbReportid, fbRep.WeatherFbReports.ElementAt(i).FbReportId);
+            }
+    }
 
         /*
         [TestMethod()]
