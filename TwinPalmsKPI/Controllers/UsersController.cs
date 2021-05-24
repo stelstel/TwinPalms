@@ -77,6 +77,7 @@ namespace TwinPalmsKPI.Controllers
 
             return Ok(users); 
         }*/
+
         /// <summary>
         /// Deletes user by ID
         /// </summary>
@@ -91,6 +92,7 @@ namespace TwinPalmsKPI.Controllers
 
             return NoContent();
         }
+
         /// <summary>
         /// Updates user by ID
         /// </summary>
