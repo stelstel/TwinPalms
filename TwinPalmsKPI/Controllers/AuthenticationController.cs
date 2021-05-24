@@ -112,7 +112,7 @@ namespace TwinPalmsKPI.Controllers
 
                 return Ok(authUser);
             }
-        }
+        }       //TODO older login response below- delete? (Anette)
                 ////var userId = _user.Identity(FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier).Value;
                 //var roles = _userManager.GetRolesAsync(_user).Result;
 
