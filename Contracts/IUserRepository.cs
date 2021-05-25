@@ -10,6 +10,7 @@ namespace Contracts
     {
         Task<IEnumerable<User>> GetUsersAsync(bool trackChanges);
         Task<User> GetUserAsync(string id, bool trackChanges);
+        Task<User> GetUserAsync(string id, bool trackChanges, IList<string> userRoles);
         void AddOutletsAndHotelsAsync(string id,  int[] outletIds, int[] hotelIds, bool trackChanges);
         void AddCompaniesAsync(string id,  int[] companyIds, bool trackChanges);
         Task<IEnumerable<int>> GetCompaniesAsync(string id, bool trackChanges);

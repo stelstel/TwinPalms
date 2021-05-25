@@ -96,24 +96,29 @@ namespace TwinPalmsKPI.Controllers
         [ServiceFilter(typeof(ValidationFilterAttribute))]
         public async Task<IActionResult> Authenticate([FromBody] UserForAuthenticationDto user)
         {
-            var _user = await _authManager.ValidateUser(user);
-            if (_user == null)
+            bool valid = await _authManager.ValidateUser(user);
+            if (!valid)
             {
                 _logger.LogWarning($"{nameof(Authenticate)}: Authentication failed. Wrong user name or password.");
                 return Unauthorized();
             }
             else
             {
-                _logger.LogDebug("user firstname" + _user.FirstName);
+                //_logger.LogDebug("user firstname" + _user.FirstName);
                 var token = await _authManager.CreateToken();
-                var userDb = await _repository.User.GetUserAsync(_user.Id, trackChanges: false);
-                var authUser = _mapper.Map<UserDto>(userDb);
+
+                User _user = await _userManager.FindByNameAsync(user.UserName);
+                IList<string> roles = _userManager.GetRolesAsync(_user).Result;
+                User userDb = await _repository.User.GetUserAsync(_user.Id, trackChanges: false, roles);
+                              
+                var authUser = _mapper.Map<UserForLoginDto>(userDb);
                 authUser.Token = token;
 
                 return Ok(authUser);
             }
         }       //TODO older login response below- delete? (Anette)
-                ////var userId = _user.Identity(FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier).Value;
+                
+        ////var userId = _user.Identity(FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier).Value;
                 //var roles = _userManager.GetRolesAsync(_user).Result;
 
                 //    /*var claimsRoles = User.Claims.Where(claim => claim.Type == "Role")

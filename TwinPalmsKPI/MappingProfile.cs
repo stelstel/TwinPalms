@@ -32,12 +32,14 @@ namespace TwinPalmsKPI
                 .ForMember(dto => dto.Roles, user => user.MapFrom(user => user.UserRoles.Select(ur => ur.Role.Name).ToList()))
 
                 // Properties are mapped differently depending on the users role.
+                
                 .ForMember(dto => dto.Companies, opt =>
-                    {
-                        // Only for any kind of admin users
-                        opt.PreCondition(src => src.UserRoles.Any(ur => ur.Role.Name.EndsWith("Admin")));
-                        opt.MapFrom(user => user.CompanyUsers.Select(cu => cu.Company).ToList());
-                    })
+                {
+                    // Only for admin users                    
+                    opt.Condition(src => src.UserRoles.Any(ur => ur.Role.Name.Contains("Admin")) && !src.UserRoles.Any(ur => ur.Role.Name.Contains("SuperAdmin")));
+                    opt.MapFrom(user => user.CompanyUsers.Select(cu => cu.Company).ToList());
+                })
+                
                 .ForMember(dto => dto.Hotels, opt =>
                     {
                         // Only for basic users
@@ -51,6 +53,28 @@ namespace TwinPalmsKPI
                         opt.MapFrom(user => user.OutletUsers.Select(ou => ou.Outlet).ToList());
                     });                                   
             CreateMap<UserForRegistrationDto, User>();
+            CreateMap<User, UserForLoginDto>()
+
+                //Preconditions so destination not displays empty arrays due to source members containing null             
+                .ForMember(dto => dto.Companies, opt =>
+                { 
+                
+                    opt.PreCondition(src => src.CompanyUsers != null && src.CompanyUsers.Count > 0);
+                    opt.MapFrom(user => user.CompanyUsers.Select(cu => cu.Company).ToList());
+                    
+                })
+                .ForMember(dto => dto.Hotels, opt =>
+                {
+                    opt.PreCondition(src => src.HotelUsers != null && src.HotelUsers.Count > 0);
+                    opt.MapFrom(user => user.HotelUsers.Select(hu => hu.Hotel).ToList());
+                })
+                .ForMember(dto => dto.Outlets, opt =>
+                {
+                    opt.PreCondition(src => src.OutletUsers != null && src.OutletUsers.Count > 0);
+                    opt.MapFrom(user => user.OutletUsers.Select(ou => ou.Outlet).ToList());
+                });
+
+
             CreateMap<UserForUpdateDto, User>();
                                  
             CreateMap<CruiseCompany, CruiseCompanyDto>();

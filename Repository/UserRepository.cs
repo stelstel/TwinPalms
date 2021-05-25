@@ -17,7 +17,6 @@ namespace Repository
         public UserRepository(RepositoryContext repositoryContext)
             :base(repositoryContext)
         {
-
             _repositoryContext = repositoryContext;
         }
 
@@ -27,14 +26,36 @@ namespace Repository
 
         public async Task<User> GetUserAsync(string id, bool trackChanges) =>
             await FindByCondition(u => u.Id.Equals(id), trackChanges)
-            .Include(u => u.OutletUsers).ThenInclude(ou => ou.Outlet)
-            .Include(u => u.HotelUsers).ThenInclude(hu => hu.Hotel)
             .Include(u => u.UserRoles).ThenInclude(ur => ur.Role)
+            .Include(u => u.OutletUsers).ThenInclude(ou => ou.Outlet)
+            .Include(u => u.HotelUsers).ThenInclude(hu => hu.Hotel)           
             .Include(u => u.CompanyUsers).ThenInclude(cu => cu.Company)
             .SingleOrDefaultAsync();
 
-       /* private async Task<User> FindById(string id) =>
-            await _repositoryContext.FindAsync(id);*/
+        public async Task<User> GetUserAsync(string id, bool trackChanges, IList<string> userRoles)
+        {            
+            if (!userRoles.Any(ur => ur.Contains("SuperAdmin")))        
+            {
+                if (userRoles.Any(ur => ur.Contains("Admin")))
+                {
+                    return await FindByCondition(u => u.Id.Equals(id), trackChanges)
+                                      .Include(u => u.CompanyUsers).ThenInclude(cu => cu.Company)
+                                      .SingleOrDefaultAsync();
+                }
+                else
+                {
+                    return await FindByCondition(u => u.Id.Equals(id), trackChanges)
+                        .Include(u => u.OutletUsers).ThenInclude(ou => ou.Outlet)
+                        .Include(u => u.HotelUsers).ThenInclude(hu => hu.Hotel)
+                        .SingleOrDefaultAsync();
+                }
+            }           
+            else return await FindByCondition(u => u.Id.Equals(id), trackChanges)                                    
+                                    .SingleOrDefaultAsync();
+        }
+
+        /* private async Task<User> FindById(string id) =>
+             await _repositoryContext.FindAsync(id);*/
 
         public async Task<IEnumerable<User>> GetUsersAsync(bool trackChanges)
         {
