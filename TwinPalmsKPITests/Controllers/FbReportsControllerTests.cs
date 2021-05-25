@@ -37,7 +37,7 @@ namespace TwinPalmsKPI.Controllers.Tests
         */
 
         [TestMethod()]
-        public void CreateFbReportEntityTest()
+        public void CreateFbReportModelTest()
         {
             // Arrange ********************************
             int beverage = 10;
