@@ -88,7 +88,7 @@ namespace TwinPalmsKPI.Controllers
             if (fbReportsFromDb.Find(fbr => fbr.LocalEventId == id) != null)
             {
                 ModelState.AddModelError("InvalidOperationError",
-                        $"The local event with id = {id} is refernced by more than 0 FbReports and can not be deleted. " +
+                        $"The local event with id = {id} is referenced by more than 0 FbReports and can not be deleted. " +
                         $"Instead, update the local event and set Active to false to avoid future references. " +
                         $"PUT /api/LocalEvent/{id}. " +
                         $"With event: {localEvent.Event}");
