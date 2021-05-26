@@ -79,6 +79,26 @@ namespace TwinPalmsKPI.Controllers
         public async Task<IActionResult> DeleteLocalEvent(int id)
         {
             var localEvent = HttpContext.Items["localEvent"] as LocalEvent;
+
+            List<FbReport> fbReportsFromDb = (List<FbReport>)await _repository.FbReport.GetAllFbReportsAsync(trackChanges: false);
+
+            //fbReportsFromDb.Find(fbr => fbr.LocalEventId == id)
+
+
+            if (fbReportsFromDb.Find(fbr => fbr.LocalEventId == id) != null)
+            {
+                ModelState.AddModelError("InvalidOperationError",
+                        $"The local event with id = {id} is referenced by more than 0 FbReports and can not be deleted. " +
+                        $"Instead, update the local event and set Active to false to avoid future references. " +
+                        $"PUT /api/LocalEvent/{id}. " +
+                        $"With event: {localEvent.Event}");
+            }
+
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
             _repository.LocalEvent.DeleteLocalEvent(localEvent);
             await _repository.SaveAsync();
             return NoContent();

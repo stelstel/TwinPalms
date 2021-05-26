@@ -283,13 +283,6 @@ namespace TwinPalmsKPI.Controllers
                         $"GuestSourceOFBusiness[{gsobCounter}] must be an integer between 1 and {nrOfGuestSourcesOfBusinessesFromDb}. It's now {gsob.GuestSourceOfBusinessId}");
                 }
 
-                // Validating if inputted guestSourceOFBusinessId exists in DB
-                //if (gsob.GsobNrOfGuests < 1 || gsob.GsobNrOfGuests > nrOfGuestSourcesOfBusinessesFromDb)
-                //{
-                //    ModelState.AddModelError("ArgumentOutOfRangeError",
-                //        $"GuestSourceOFBusiness[{gsobCounter}] must be an integer between 1 and {nrOfGuestSourcesOfBusinessesFromDb}. It's now {gsob.GuestSourceOfBusinessId}");
-                //}
-
                 if (ModelState.IsValid)
                 {
                     var fbReportGuestSourceOfBusiness = new FbReportGuestSourceOfBusiness

@@ -15,22 +15,26 @@ namespace Entities.Configuration
                 new LocalEvent
                 {
                     Id = 1,
-                    Event = "Resident DJ"
+                    Event = "Resident DJ",
+                    Active = true
                 },
                 new LocalEvent
                 {
                     Id = 2,
-                    Event = "Guest DJ"
+                    Event = "Guest DJ",
+                    Active = true
                 },
                 new LocalEvent
                 {
                     Id = 3,
-                    Event = "International DJ"
+                    Event = "International DJ",
+                    Active = true
                 },
                 new LocalEvent
                 {
                     Id = 4,
-                    Event = "Themed event"
+                    Event = "Themed event",
+                    Active = true
                 }
             );
         }
