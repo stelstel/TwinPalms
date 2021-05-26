@@ -1,6 +1,7 @@
 ﻿using Entities.Models;
 using System;
 using System.Collections.Generic;
+using System.Text.Json.Serialization;
 
 namespace Entities.DataTransferObjects
 {
@@ -23,7 +24,9 @@ namespace Entities.DataTransferObjects
         public int? LocalEventId { get; set; }
 
         // Navigation properties
+        [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
         public ICollection<GuestSourceOfBusiness> GuestSourceOfBusinesses { get; set; }
+        [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
         public ICollection<Weather> Weathers { get; set; }
 
 
