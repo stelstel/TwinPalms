@@ -46,12 +46,18 @@ namespace TwinPalmsKPI.Controllers
 
         [HttpPost]  
         [ServiceFilter(typeof(ValidationFilterAttribute))]
-        public async Task<IActionResult> RegisterUser([FromBody] UserForRegistrationDto userForRegistration)
+        public async Task<IActionResult> Authenticate([FromBody] UserForRegistrationDto userForRegistration)
         {
-
-            var id = Guid.NewGuid().ToString();
+           
+              
             var user = _mapper.Map<User>(userForRegistration);
-            user.Id = id;
+            _logger.LogDebug("id  " + user.Id);
+            foreach (var companyId in userForRegistration.Companies)
+            {
+                _logger.LogDebug("company " + companyId);
+
+            }
+    
             
             var password = Password.GenerateRandomPassword();
             await _userManager.AddPasswordAsync(user, password);
@@ -66,27 +72,34 @@ namespace TwinPalmsKPI.Controllers
                 return BadRequest(ModelState);
             }
            
+            var _user = await _userManager.FindByNameAsync(user.UserName);
+
+            
             var roles = new string[] { "Basic", "Admin", "SuperAdmin" };
+           
             await _userManager.AddToRolesAsync(user, roles);
-            if (userForRegistration.Role == "Admin")
+           
+            if (userForRegistration.Role == "Basic")
             {
-                await _userManager.RemoveFromRoleAsync(user, "SuperAdmin");
-                _repository.User.AddCompaniesAsync(user.Id, userForRegistration.Companies.ToArray(), true);
-                
+                await _userManager.RemoveFromRolesAsync(user, new string[] { "SuperAdmin", "Admin" });
+                _repository.User.AddUserConnectionsAsync(user.Id, userForRegistration.Outlets.ToArray(), userForRegistration.Hotels.ToArray(), trackChanges: true);
+
             }
             else
             {
-                await _userManager.RemoveFromRolesAsync(user, new string[] { "SuperAdmin", "Admin" });
-
-                _repository.User.AddOutletsAndHotelsAsync(user.Id, userForRegistration.Outlets.ToArray(), userForRegistration.Hotels.ToArray(), true);
-                
+                _logger.LogDebug("savin CompanyUsers ......");
+                await _userManager.RemoveFromRoleAsync(user, "SuperAdmin");
+                _repository.User.AddUserConnectionsAsync(user.Id, userForRegistration.Companies.ToArray(), trackChanges: true);
             }
 
             // This can be used if we want to send the password directly by email
             // and use a token instead
             //var token = await _userManager.GeneratePasswordResetTokenAsync(user);
-            var message = new Message(new string[] { user.Email }, "Welcome", "Your username is " + user.UserName + " and password is " + password);
-            _emailSender.SendEmail(message);
+           /* var emailAddress = !string.IsNullOrWhiteSpace(userForRegistration.NotificationEmail) ? userForRegistration.NotificationEmail
+                : user.Email;
+        
+            var message = new Message(new string[] { emailAddress }, "Welcome", "Your username is " + user.UserName + " and password is " + password);
+            _emailSender.SendEmail(message);*/
 
             return StatusCode(201);
             //return Ok();
@@ -165,26 +178,26 @@ namespace TwinPalmsKPI.Controllers
 
             var token = await _userManager.GeneratePasswordResetTokenAsync(user);
 
-            var message = new Message(new string[] { user.Email }, "Reset password link", 
-                "<h3>Reset password</h3><a href'https://localhost:5000/reset_password?token='"+token+">" +
-                "Click on this link to reset your password</a>");
+            var message = new Message(new string[] { user.Email }, "Reset password link",
+$"<h3>Reset password</h3><a href=https://localhost:3000/reset-password?token={token}>Click on this link to reset your password</a>");
             _emailSender.SendEmail(message);
 
             return Ok();
         }
 
         [HttpPost("reset-password")]
-        public async Task<IActionResult> ResetPassword([FromBody] ResetPasswordDto resetPasswordInput, [FromQuery] string token)
+        public async Task<IActionResult> ResetPassword([FromBody] ResetPasswordDto input, [FromQuery] string token)
         {
-            _logger.LogInfo("Token: " +token);
+            
             if (!ModelState.IsValid)
                 return BadRequest();
-
-            var user = await _userManager.FindByEmailAsync(resetPasswordInput.Email);
+            var email = input.Email;
+            _logger.LogDebug("Enail: " + email);
+            var user = await _userManager.FindByEmailAsync(email);
             if (user == null)
-                return NotFound();
+                return NotFound(email);
 
-            var resetPassResult = await _userManager.ResetPasswordAsync(user, token, resetPasswordInput.Password);
+            var resetPassResult = await _userManager.ResetPasswordAsync(user, token, input.Password);
             if (!resetPassResult.Succeeded)
             {
                 foreach (var error in resetPassResult.Errors)

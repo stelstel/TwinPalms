@@ -105,7 +105,7 @@ namespace TwinPalmsKPI.Controllers
         {
             var formCollection = await Request.ReadFormAsync();
 
-            if (env.IsDevelopment())
+            if (env.IsDevelopment())    
             { 
                 foreach (var item in formCollection.ToList())
                 {
