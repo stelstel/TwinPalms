@@ -95,9 +95,8 @@ namespace TwinPalmsKPI.Controllers
         [HttpPost("login")]
         [ServiceFilter(typeof(ValidationFilterAttribute))]
         public async Task<IActionResult> Authenticate([FromBody] UserForAuthenticationDto user)
-        {
-            bool valid = await _authManager.ValidateUser(user);
-            if (!valid)
+        {            
+            if (!await _authManager.ValidateUser(user))
             {
                 _logger.LogWarning($"{nameof(Authenticate)}: Authentication failed. Wrong user name or password.");
                 return Unauthorized();
