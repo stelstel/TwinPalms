@@ -71,8 +71,9 @@ namespace TwinPalmsKPI.Controllers
                 }
                 return BadRequest(ModelState);
             }
-           
-            var _user = await _userManager.FindByNameAsync(user.UserName);
+
+            //var _user = await _userManager.FindByNameAsync(user.UserName);
+            var _user = await _repository.User.GetUserAsync(user.Id, trackChanges: true);
 
             
             var roles = new string[] { "Basic", "Admin", "SuperAdmin" };
@@ -82,15 +83,31 @@ namespace TwinPalmsKPI.Controllers
             if (userForRegistration.Role == "Basic")
             {
                 await _userManager.RemoveFromRolesAsync(user, new string[] { "SuperAdmin", "Admin" });
-                _repository.User.AddUserConnectionsAsync(user.Id, userForRegistration.Outlets.ToArray(), userForRegistration.Hotels.ToArray(), trackChanges: true);
-
+                //_repository.User.AddUserConnectionsAsync(user.Id, userForRegistration.Outlets.ToArray(), userForRegistration.Hotels.ToArray(), trackChanges: true);
+                foreach (var hotelId in userForRegistration.Hotels)
+                {
+                    _user.HotelUsers.Add(new HotelUser { HotelId = hotelId, UserId = user.Id });
+                }
+                foreach (int outletId in userForRegistration.Outlets)
+                {
+                    _user.OutletUsers.Add(new OutletUser { OutletId = outletId, UserId = user.Id });
+                }
             }
             else
             {
-                _logger.LogDebug("savin CompanyUsers ......");
+                //_logger.LogDebug("savin CompanyUsers ......");
                 await _userManager.RemoveFromRoleAsync(user, "SuperAdmin");
-                _repository.User.AddUserConnectionsAsync(user.Id, userForRegistration.Companies.ToArray(), trackChanges: true);
+                 /*var resp = await _repository.User.AddUserConnectionsAsync(user.Id, userForRegistration.Companies.ToArray(), trackChanges: true);
+                 _logger.LogDebug("resp " + resp);*/
+
+                foreach (int companyId in userForRegistration.Companies)
+                {
+
+                    user.CompanyUsers.Add(new CompanyUser { CompanyId = companyId, UserId = user.Id });
+
+                }
             }
+            await _repository.SaveAsync();
 
             // This can be used if we want to send the password directly by email
             // and use a token instead

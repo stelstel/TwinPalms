@@ -12,7 +12,7 @@ namespace Contracts
         Task<User> GetUserAsync(string id, bool trackChanges);
         Task<User> GetUserAsync(string id, bool trackChanges, IList<string> userRoles);
         void AddUserConnectionsAsync(string id,  int[] outletIds, int[] hotelIds, bool trackChanges);
-        void AddUserConnectionsAsync(string id,  int[] companyIds, bool trackChanges);
+        Task<int> AddUserConnectionsAsync(string id,  int[] companyIds, bool trackChanges);
         Task<IEnumerable<int>> GetCompaniesAsync(string id, bool trackChanges);
         Task<IEnumerable<int>> GetOutletsAsync(string id, bool trackChanges);
        

@@ -14,10 +14,12 @@ namespace Repository
     public class UserRepository : RepositoryBase<User>, IUserRepository
     {
         private readonly RepositoryContext _repositoryContext;
+        
         public UserRepository(RepositoryContext repositoryContext)
             :base(repositoryContext)
         {
             _repositoryContext = repositoryContext;
+            
         }
 
         public void DeleteUser(User user) => Delete(user);
@@ -87,27 +89,28 @@ namespace Repository
         public async void AddUserConnectionsAsync(string id, int[] outletIds, int[] hotelIds, bool trackChanges)
         {
            var user = await FindByCondition(u => u.Id.Equals(id), trackChanges).FirstOrDefaultAsync();
-                foreach (var hotelId in hotelIds)
-                {
-                    user.HotelUsers.Add(new HotelUser { HotelId = hotelId, UserId = user.Id });
-                }
-                foreach (int outletId in outletIds)
-                {  
-                    user.OutletUsers.Add(new OutletUser {OutletId = outletId, UserId = user.Id});
-                }
+                    foreach (var hotelId in hotelIds)
+                    {
+                        user.HotelUsers.Add(new HotelUser { HotelId = hotelId, UserId = user.Id });
+                    }
+                    foreach (int outletId in outletIds)
+                    {  
+                        user.OutletUsers.Add(new OutletUser {OutletId = outletId, UserId = user.Id});
+                    }
                 await _repositoryContext.SaveChangesAsync();
         }
 
-        public async void AddUserConnectionsAsync(string id, int[] companies, bool trackChanges)
+        public async Task<int> AddUserConnectionsAsync(string id, int[] companies, bool trackChanges)
         {
             var user = await FindByCondition(u => u.Id.Equals(id), trackChanges).FirstOrDefaultAsync();
 
             foreach (int companyId in companies)
             {
+               
                 user.CompanyUsers.Add(new CompanyUser { CompanyId = companyId, UserId = user.Id });
 
             }
-            await _repositoryContext.SaveChangesAsync();
+            return await _repositoryContext.SaveChangesAsync();
         }
 
         public async Task<IEnumerable<int>> GetCompaniesAsync(string id, bool trackChanges)
