@@ -1,4 +1,6 @@
-﻿using Newtonsoft.Json.Linq;
+﻿using Entities.Models;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -26,9 +28,7 @@ namespace APITestProject1
             "Walk in",
             "Other"
         };
-
-        
-
+  
         public SobControllerIntegrationTests(TestingWebAppFactory<Startup> factory)
         {
             _client = factory.CreateClient();
@@ -64,6 +64,32 @@ namespace APITestProject1
 
             Assert.NotEqual(99, responseIds[0]);
             Assert.NotEqual("abcde", responseSobs[0]);
+        }
+
+        [Fact]
+        // testing GET api/GuestSourceOfBusiness
+        public async Task create_1_sob()
+        {
+            GuestSourceOfBusiness gsob = new GuestSourceOfBusiness();
+
+            gsob.SourceOfBusiness = "Test1234";
+
+            string gsobJson = JsonConvert.SerializeObject(gsob);
+
+            // Wrap our JSON inside a StringContent which then can be used by the HttpClient class
+            var httpContent = new StringContent(gsobJson, Encoding.UTF8, "application/json");
+            
+            //var httpContent = new StringContent(gsobJson);
+
+            var response = await _client.PostAsync("api/GuestSourceOfBusiness", httpContent);
+
+            /*
+             * {
+  "sourceOfBusiness": "string"
+}
+            /api/GuestSourceOfBusiness
+             */
+
         }
     }
 }
