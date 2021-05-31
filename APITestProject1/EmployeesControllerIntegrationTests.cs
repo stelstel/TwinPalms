@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json.Linq;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
@@ -22,14 +23,19 @@ namespace APITestProject1
         public async Task Index_WhenCalled_ReturnsApplicationForm()
         {
             _client.BaseAddress = new Uri("https://localhost:44306/");
-            var response = await _client.GetAsync("api/Companies");
+            var response = await _client.GetAsync("api/GuestSourceOfBusiness");
 
             response.EnsureSuccessStatusCode();
 
-            var responseString = await response.Content.ReadAsStringAsync();
+            var responseString = JArray.Parse(await response.Content.ReadAsStringAsync());
 
-            Assert.Contains("Mark", responseString);
-            Assert.Contains("Evelin", responseString);
+            var responseID = responseString[0]["id"];
+            var responseSob = responseString[0]["sourceOfBusiness"];
+
+            //var temp = responseString.ElementAt(0).ElementAt(0);
+
+            Assert.Equal(1, responseID);
+            Assert.Equal("Hotel Website", responseSob);
         }
     }
 }
