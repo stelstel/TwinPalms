@@ -4,8 +4,10 @@
 ## Get latest from https://github.com/github/gitignore/blob/master/VisualStudio.gitignore
 TwinPalmsKPI/logs/*
 TwinPalmsKPI/internal_logs/internallog.txt
+./TwinPalmsKPI/internal_logs/internallog.txt
 TwinPalmsKPI/Resources/Images
 TwinPalmsKPI/nlog.config
+./TwinPalmsKPI/nlog.config
 # Build results
 [Dd]ebug/
 [Dd]ebugPublic/
