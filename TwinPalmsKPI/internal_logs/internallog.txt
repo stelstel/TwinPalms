@@ -10719,3 +10719,13 @@
 2021-06-01 17:41:55.6645 Trace  Scanning Property LineEnding 'Default' NLog.Targets
 2021-06-01 17:41:55.6645 Trace File Target[logfile] has 2 layouts
 2021-06-01 17:41:55.6645 Trace FileTarget(Name=logfile): Using appenderFactory: NLog.Internal.FileAppenders.RetryingMultiProcessFileAppender+Factory
+2021-06-01 18:02:02.7571 Debug Targets for LoggerService.LoggerManager by level:
+2021-06-01 18:02:02.7582 Debug Trace =>
+2021-06-01 18:02:02.7582 Debug Debug => logfile
+2021-06-01 18:02:02.7582 Debug Info => logfile
+2021-06-01 18:02:02.7582 Debug Warn => logfile
+2021-06-01 18:02:02.7582 Debug Error => logfile
+2021-06-01 18:02:02.7582 Debug Fatal => logfile
+2021-06-01 18:02:02.7874 Debug FileTarget(Name=logfile): Preparing for new file 'C:\Users\anett\source\repos\TwinPalmsKPI_Github\TwinPalmsKPI\logs\2021-06-01_logfile.txt'
+2021-06-01 18:02:02.7962 Debug Creating file appender: C:\Users\anett\source\repos\TwinPalmsKPI_Github\TwinPalmsKPI\logs\2021-06-01_logfile.txt
+2021-06-01 18:02:02.7962 Trace Opening C:\Users\anett\source\repos\TwinPalmsKPI_Github\TwinPalmsKPI\logs\2021-06-01_logfile.txt with allowFileSharedWriting=False
