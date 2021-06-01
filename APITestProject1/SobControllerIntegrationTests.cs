@@ -1,4 +1,5 @@
 ﻿using Entities.Models;
+using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System;
@@ -15,6 +16,7 @@ namespace APITestProject1
     public class SobControllerIntegrationTests : IClassFixture<TestingWebAppFactory<Startup>>
     {
         private readonly HttpClient _client;
+        // private string dbName = "InMemoryGsobTest";
 
         public SobControllerIntegrationTests(TestingWebAppFactory<Startup> factory)
         {
@@ -89,6 +91,33 @@ namespace APITestProject1
 
             // Assert
             Assert.Equal(gsob.SourceOfBusiness, responseGsob.SourceOfBusiness);
+        }
+
+        [Fact]
+        //*************************** testing DELETE /api/GuestSourceOfBusiness/{id} **********************************
+        public async Task delete_1_gsob()
+        {
+            // Arrange ********************************
+            List<int> responseIds = new List<int>();
+            var response = await _client.GetAsync("api/GuestSourceOfBusiness");
+            var responseString = JArray.Parse(await response.Content.ReadAsStringAsync());
+            int startNrOfGsobs = responseString.Count;
+
+            for (int i = 0; i < startNrOfGsobs; i++)
+            {
+                responseIds.Add((int)responseString[i]["id"]);
+            }
+
+            int highestId = responseIds.Max();
+
+            // Act ****************************************
+            var postResponse = await _client.DeleteAsync ($"api/GuestSourceOfBusiness/{highestId}");
+            var responseAfter = await _client.GetAsync("api/GuestSourceOfBusiness");
+            var responseStringAfter = JArray.Parse(await responseAfter.Content.ReadAsStringAsync());
+            int endNrOfGsobs = responseStringAfter.Count;
+
+            // Assert
+            Assert.Equal(startNrOfGsobs - 1, endNrOfGsobs);
         }
     }
 }
