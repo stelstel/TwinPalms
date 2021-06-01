@@ -28,7 +28,7 @@ public class TestingWebAppFactory<T> : WebApplicationFactory<Startup>
 
             services.AddDbContext<RepositoryContext>(options =>
             {
-                options.UseInMemoryDatabase("InMemoryEmployeeTest");
+                options.UseInMemoryDatabase("InMemoryGsobTest");
                 options.UseInternalServiceProvider(serviceProvider);
             });
 

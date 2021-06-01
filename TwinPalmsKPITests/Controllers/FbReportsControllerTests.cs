@@ -12,30 +12,6 @@ namespace TwinPalmsKPI.Controllers.Tests
     [TestClass()]
     public class FbReportsControllerTests
     {
-        /*
-        [TestMethod()]
-        public void FbReportsControllerTest()
-        {
-            Assert.Fail();
-        }
-        */
-
-        /*
-        [TestMethod()]
-        public void GetFbReportsTest()
-        {
-            Assert.Fail();
-        }
-        */
-
-        /*
-        [TestMethod()]
-        public void GetFbReportTest()
-        {
-            Assert.Fail();
-        }
-        */
-
         [TestMethod()]
         public void CreateFbReportModelTest()
         {

@@ -16,47 +16,48 @@ namespace APITestProject1
     {
         private readonly HttpClient _client;
 
-        private List<string> sobs = new List<string>{
-            "Hotel Website",
-            "Hungry Hub",
-            "Facebook referral",
-            "Google search",
-            "Instagram referral",
-            "Hotel referral",
-            "Other Hotel referral",
-            "Agent referral",
-            "Walk in",
-            "Other"
-        };
-  
         public SobControllerIntegrationTests(TestingWebAppFactory<Startup> factory)
         {
             _client = factory.CreateClient();
             _client.BaseAddress = new Uri("https://localhost:44306/");
         }
-
+  
         [Fact]
-        // testing GET api/GuestSourceOfBusiness
+        //*************************************** testing GET api/GuestSourceOfBusiness ***********************************************
         public async Task get_all_seeded_sobs()
         {
-            var response = await _client.GetAsync("api/GuestSourceOfBusiness");
+            // Arrange ********************************
+            List<string> sobs = new List<string>{
+                "Hotel Website",
+                "Hungry Hub",
+                "Facebook referral",
+                "Google search",
+                "Instagram referral",
+                "Hotel referral",
+                "Other Hotel referral",
+                "Agent referral",
+                "Walk in",
+                "Other"
+            };
 
-            response.EnsureSuccessStatusCode();
-
-            var responseString = JArray.Parse(await response.Content.ReadAsStringAsync());
-            int responseStrLength = responseString.Count;
             List<int> responseIds = new List<int>();
             List<string> responseSobs = new List<string>();
-            
+
+
+            // Arrange *********************************************
+            var response = await _client.GetAsync("api/GuestSourceOfBusiness");
+            response.EnsureSuccessStatusCode();
+            var responseString = JArray.Parse(await response.Content.ReadAsStringAsync());
+            int responseStrLength = responseString.Count;
+                        
             for (int i = 0; i < responseStrLength; i++)
-            //for (int i = 0; i < 3; i++)
             {
                 responseIds.Add((int)responseString[i]["id"]);
                 responseSobs.Add((string)responseString[i]["sourceOfBusiness"]);
             }
 
+            // Assert
             for (int i = 0; i < responseStrLength; i++)
-            //for (int i = 0; i < 3; i++)
             {
                 Assert.Equal( i+1, responseIds[i]);
                 Assert.Equal(sobs[i], responseSobs[i]);
@@ -67,29 +68,27 @@ namespace APITestProject1
         }
 
         [Fact]
-        // testing GET api/GuestSourceOfBusiness
-        public async Task create_1_sob()
+        //*************************** testing POST api/GuestSourceOfBusiness **********************************
+        public async Task create_and_read_1_gsob()
         {
+            // Arrange ********************************
+            int gsobId = 11;
             GuestSourceOfBusiness gsob = new GuestSourceOfBusiness();
-
             gsob.SourceOfBusiness = "Test1234";
-
             string gsobJson = JsonConvert.SerializeObject(gsob);
 
             // Wrap our JSON inside a StringContent which then can be used by the HttpClient class
             var httpContent = new StringContent(gsobJson, Encoding.UTF8, "application/json");
-            
-            //var httpContent = new StringContent(gsobJson);
 
-            var response = await _client.PostAsync("api/GuestSourceOfBusiness", httpContent);
+            // Act ****************************************
+            var postResponse = await _client.PostAsync("api/GuestSourceOfBusiness", httpContent);
+            postResponse.EnsureSuccessStatusCode();
+            HttpResponseMessage getResponse = await _client.GetAsync($"/api/GuestSourceOfBusiness/{gsobId}");
+            string getResponseBody = await getResponse.Content.ReadAsStringAsync();
+            GuestSourceOfBusiness responseGsob = JsonConvert.DeserializeObject<GuestSourceOfBusiness>(getResponseBody);
 
-            /*
-             * {
-  "sourceOfBusiness": "string"
-}
-            /api/GuestSourceOfBusiness
-             */
-
+            // Assert
+            Assert.Equal(gsob.SourceOfBusiness, responseGsob.SourceOfBusiness);
         }
     }
 }
