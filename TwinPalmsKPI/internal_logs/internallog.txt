@@ -10729,3 +10729,4 @@
 2021-06-01 18:02:02.7874 Debug FileTarget(Name=logfile): Preparing for new file 'C:\Users\anett\source\repos\TwinPalmsKPI_Github\TwinPalmsKPI\logs\2021-06-01_logfile.txt'
 2021-06-01 18:02:02.7962 Debug Creating file appender: C:\Users\anett\source\repos\TwinPalmsKPI_Github\TwinPalmsKPI\logs\2021-06-01_logfile.txt
 2021-06-01 18:02:02.7962 Trace Opening C:\Users\anett\source\repos\TwinPalmsKPI_Github\TwinPalmsKPI\logs\2021-06-01_logfile.txt with allowFileSharedWriting=False
+2021-06-01 18:05:11.8392 Trace Opening C:\Users\anett\source\repos\TwinPalmsKPI_Github\TwinPalmsKPI\logs\2021-06-01_logfile.txt with allowFileSharedWriting=False
