@@ -31,7 +31,7 @@ namespace Entities.DataTransferObjects
         [DataType(DataType.Text)]
         public string EventNotes { get; set; }
 
-        [Required]
+        /*[Required]*/
         public IFormFile File { get; set; }
 
         [StringLength(5000, ErrorMessage = "GSourceOfBusinessNotes can't contain more than 5000 characters")]
