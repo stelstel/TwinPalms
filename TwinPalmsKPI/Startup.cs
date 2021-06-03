@@ -77,8 +77,6 @@ namespace TwinPalmsKPI
                 {
                     o.SerializerSettings.ContractResolver = new CamelCasePropertyNamesContractResolver();
                 });*/
-
-
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -94,18 +92,32 @@ namespace TwinPalmsKPI
                 app.UseHsts();
             }
 
-           
-
             app.UseSwagger();
+
             app.UseSwaggerUI(s =>
             {
                 s.SwaggerEndpoint("/swagger/v1/swagger.json", "TwinPalmsKPI API v1");
             });
+
             app.ConfigureExceptionHandler(logger);
             app.UseStaticFiles();
+
+            PhysicalFileProvider fileProvider = new PhysicalFileProvider(Directory.GetCurrentDirectory());
+
+            if (Directory.Exists(Path.Combine(Directory.GetCurrentDirectory(), @"Resources")))
+            {
+                // Normal path
+                fileProvider = new PhysicalFileProvider(Path.Combine(Directory.GetCurrentDirectory(), @"Resources"));
+            }
+            else
+            {
+                // Local path used for testing
+                fileProvider = new PhysicalFileProvider(Path.Combine("C:\\Users\\elev\\Source\\Repos\\TwinPalmsKPI\\TwinPalmsKPI\\", @"Resources"));
+            }
+
             app.UseStaticFiles(new StaticFileOptions()
             {
-                FileProvider = new PhysicalFileProvider(Path.Combine(Directory.GetCurrentDirectory(), @"Resources")),
+                FileProvider = fileProvider,
                 RequestPath = new PathString("/Resources")
             });
 
