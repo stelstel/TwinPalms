@@ -16,7 +16,9 @@ namespace Entities.DataTransferObjects
         public string LastName { get; set; }
         [Required(ErrorMessage = "Username is required")]
         public string UserName { get; set; }
+        [Required(ErrorMessage = "Email address is required")]
         public string Email { get; set; }
+        public string NotificationEmail { get; set; }
         public string PhoneNumber { get; set; }
         public string Role { get; set; }
         public ICollection<int> Outlets { get; set; }

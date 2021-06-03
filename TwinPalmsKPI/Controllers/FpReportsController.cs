@@ -105,7 +105,7 @@ namespace TwinPalmsKPI.Controllers
         {
             var formCollection = await Request.ReadFormAsync();
 
-            if (env.IsDevelopment())
+            if (env.IsDevelopment())    
             { 
                 foreach (var item in formCollection.ToList())
                 {
@@ -181,7 +181,7 @@ namespace TwinPalmsKPI.Controllers
                         fbReportEntity.ImagePath = dbPath;
                         _logger.LogInfo("entity to be created: " + fbReportEntity.ImagePath);
                         _repository.FbReport.CreateFbReport(fbReportEntity);
-                        await _repository.SaveAsync();
+                        //await _repository.SaveAsync(); TODO: May we delete? This caused fbreports to be saved before validation- wrongful reports gets saved.
                     }
                 }
                 else

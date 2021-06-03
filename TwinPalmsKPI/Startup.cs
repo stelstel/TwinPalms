@@ -99,7 +99,7 @@ namespace TwinPalmsKPI
             app.UseSwagger();
             app.UseSwaggerUI(s =>
             {
-                s.SwaggerEndpoint("/swagger/v1/swagger.json", "Redwood API v1");
+                s.SwaggerEndpoint("/swagger/v1/swagger.json", "TwinPalmsKPI API v1");
             });
             app.ConfigureExceptionHandler(logger);
             app.UseStaticFiles();
