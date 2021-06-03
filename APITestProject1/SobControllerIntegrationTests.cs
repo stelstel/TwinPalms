@@ -1,4 +1,5 @@
-﻿using Entities.Models;
+﻿using Contracts;
+using Entities.Models;
 using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
@@ -16,7 +17,6 @@ namespace APITestProject1
     public class SobControllerIntegrationTests : IClassFixture<TestingWebAppFactory<Startup>>
     {
         private readonly HttpClient _client;
-        // private string dbName = "InMemoryGsobTest";
 
         public SobControllerIntegrationTests(TestingWebAppFactory<Startup> factory)
         {
@@ -46,7 +46,7 @@ namespace APITestProject1
             List<string> responseSobs = new List<string>();
 
 
-            // Arrange *********************************************
+            // Act *********************************************
             var response = await _client.GetAsync("api/GuestSourceOfBusiness");
             response.EnsureSuccessStatusCode();
             var responseString = JArray.Parse(await response.Content.ReadAsStringAsync());
@@ -58,7 +58,8 @@ namespace APITestProject1
                 responseSobs.Add((string)responseString[i]["sourceOfBusiness"]);
             }
 
-            // Assert
+
+            // Assert ***********************************************
             for (int i = 0; i < responseStrLength; i++)
             {
                 Assert.Equal( i+1, responseIds[i]);
@@ -70,11 +71,10 @@ namespace APITestProject1
         }
 
         [Fact]
-        //*************************** testing POST api/GuestSourceOfBusiness **********************************
+        //*************************** testing POST api/GuestSourceOfBusiness and GET api/GuestSourceOfBusiness/{Id}**********************************
         public async Task create_and_read_1_gsob()
         {
             // Arrange ********************************
-            int gsobId = 11;
             GuestSourceOfBusiness gsob = new GuestSourceOfBusiness();
             gsob.SourceOfBusiness = "Test1234";
             string gsobJson = JsonConvert.SerializeObject(gsob);
@@ -82,15 +82,25 @@ namespace APITestProject1
             // Wrap our JSON inside a StringContent which then can be used by the HttpClient class
             var httpContent = new StringContent(gsobJson, Encoding.UTF8, "application/json");
 
-            // Act ****************************************
-            var postResponse = await _client.PostAsync("api/GuestSourceOfBusiness", httpContent);
-            postResponse.EnsureSuccessStatusCode();
-            HttpResponseMessage getResponse = await _client.GetAsync($"/api/GuestSourceOfBusiness/{gsobId}");
-            string getResponseBody = await getResponse.Content.ReadAsStringAsync();
-            GuestSourceOfBusiness responseGsob = JsonConvert.DeserializeObject<GuestSourceOfBusiness>(getResponseBody);
 
-            // Assert
-            Assert.Equal(gsob.SourceOfBusiness, responseGsob.SourceOfBusiness);
+            // Act ****************************************
+            var postResponse = await _client.PostAsync("api/GuestSourceOfBusiness", httpContent); // Posting gsob
+            postResponse.EnsureSuccessStatusCode();
+            var postResponseString = JObject.Parse(await postResponse.Content.ReadAsStringAsync());
+            int gsobId = (int)postResponseString.GetValue("id");
+
+            HttpResponseMessage getResponse = await _client.GetAsync($"/api/GuestSourceOfBusiness/{gsobId}"); // Getting gsob
+            string getResponseBody = await getResponse.Content.ReadAsStringAsync();
+
+            GuestSourceOfBusiness getResponseGsob = JsonConvert.DeserializeObject<GuestSourceOfBusiness>(getResponseBody);
+
+
+            // Assert ****************************************************************
+            Assert.Equal(gsob.SourceOfBusiness, getResponseGsob.SourceOfBusiness);
+
+
+            // Restoring DB
+            await _client.DeleteAsync($"api/GuestSourceOfBusiness/{gsobId}");
         }
 
         [Fact]
@@ -103,12 +113,32 @@ namespace APITestProject1
             var responseString = JArray.Parse(await response.Content.ReadAsStringAsync());
             int startNrOfGsobs = responseString.Count;
 
+
+
+            // Debug
+            //int tempX = 0;
+            //string tempY = "";
+
+            //foreach (var rs in responseString)
+            //{
+            //    tempX = (int)rs["id"];
+            //    tempY = (string)rs["sourceOfBusiness"];
+            //}
+
             for (int i = 0; i < startNrOfGsobs; i++)
             {
                 responseIds.Add((int)responseString[i]["id"]);
             }
 
             int highestId = responseIds.Max();
+            var gsobHighestId = responseString.Where(rs => (int)rs["id"] == highestId).First();
+
+            GuestSourceOfBusiness gsobThatWillBeDeleted = new GuestSourceOfBusiness
+            {
+                Id = (int)gsobHighestId["id"],
+                SourceOfBusiness = (string)gsobHighestId["sourceOfBusiness"]
+            }; 
+
 
             // Act ****************************************
             var postResponse = await _client.DeleteAsync ($"api/GuestSourceOfBusiness/{highestId}");
@@ -116,8 +146,34 @@ namespace APITestProject1
             var responseStringAfter = JArray.Parse(await responseAfter.Content.ReadAsStringAsync());
             int endNrOfGsobs = responseStringAfter.Count;
 
-            // Assert
+            // Debug
+            //foreach (var rsa in responseStringAfter)
+            //{
+            //    tempX = (int)rsa["id"];
+            //    tempY = (string)rsa["sourceOfBusiness"];
+            //}
+
+
+            // Assert ****************************************
             Assert.Equal(startNrOfGsobs - 1, endNrOfGsobs);
+
+
+            // Restoring DB
+            string gsobJson = JsonConvert.SerializeObject(gsobThatWillBeDeleted);
+            var httpContent = new StringContent(gsobJson, Encoding.UTF8, "application/json");
+
+            await _client.PostAsync("api/GuestSourceOfBusiness", httpContent);
+
+
+            // Debug
+            //var responseRestore = await _client.GetAsync("api/GuestSourceOfBusiness");
+            //var responseStringRestore = JArray.Parse(await responseRestore.Content.ReadAsStringAsync());
+
+            //foreach (var rsr in responseStringRestore)
+            //{
+            //    tempX = (int)rsr["id"];
+            //    tempY = (string)rsr["sourceOfBusiness"];
+            //}
         }
     }
 }
