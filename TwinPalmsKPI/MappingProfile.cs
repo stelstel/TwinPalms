@@ -52,7 +52,9 @@ namespace TwinPalmsKPI
                         opt.PreCondition(src => !src.UserRoles.Any(ur => ur.Role.Name.EndsWith("Admin")));
                         opt.MapFrom(user => user.OutletUsers.Select(ou => ou.Outlet).ToList());
                     });                                   
+            
             CreateMap<UserForRegistrationDto, User>();
+            
             CreateMap<User, UserForLoginDto>()
 
                 //Preconditions so destination not displays empty arrays due to source members containing null             

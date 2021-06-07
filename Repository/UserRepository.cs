@@ -42,6 +42,7 @@ namespace Repository
                 {
                     return await FindByCondition(u => u.Id.Equals(id), trackChanges)
                                       .Include(u => u.CompanyUsers).ThenInclude(cu => cu.Company)
+                                      .ThenInclude(c => c.Outlets)
                                       .SingleOrDefaultAsync();
                 }
                 else

@@ -33,7 +33,7 @@ namespace TwinPalmsKPI.Controllers
         /// Gets a list of all companies
         /// </summary>
         // TODO Add Authorize
-        [HttpGet(Name = "GetCompanies"), Authorize(Roles = "SuperAdmin")] 
+        [HttpGet(Name = "GetCompanies")/*, Authorize(Roles = "SuperAdmin")*/] 
         public async Task<IActionResult> GetCompanies()
         {
             var companies = await _repository.Company.GetAllCompaniesAsync(trackChanges: false);

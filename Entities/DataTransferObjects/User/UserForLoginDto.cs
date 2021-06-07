@@ -13,11 +13,11 @@ namespace Entities.DataTransferObjects
         public string LastName { get; set; }                  
 
         [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
-        public IEnumerable<OutletUserDto> Outlets { get; set; }
+        public IEnumerable<OutletDto> Outlets { get; set; }
         [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
-        public IEnumerable<HotelUserDto> Hotels { get; set; }
+        public IEnumerable<HotelDto> Hotels { get; set; }
         [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
-        public IEnumerable<CompanyUserDto> Companies { get; set; }
+        public IEnumerable<CompanyDto> Companies { get; set; }
         [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
         public string Token { get; set; }
     }
