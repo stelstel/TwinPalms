@@ -43,7 +43,7 @@ namespace APITestProject1
             string expGSourceOfBusinessNotes;
             int expOutletId;
             string expUserId;
-            int expLocalEventId;
+            int? expLocalEventId;
             List<int> outletIds = new List<int> { 1, 2, 4 };
             DateTime fromDate = new DateTime(2021, 01, 01);
             DateTime toDate = new DateTime(2022, 01, 01);
@@ -66,18 +66,23 @@ namespace APITestProject1
             Assert.Equal(expectedNrOfReports, actualNrOfReports);
 
 
-            // Check 1
-            var report1 = responseString[0]; // Getting 1 report from report array
+            // Check 1 ---
+            var report0 = responseString[0]; // Getting 1 report from the report array
 
             GuestSourceOfBusiness gsob1 = new GuestSourceOfBusiness { Id = 3, SourceOfBusiness = "Facebook referral" };
             GuestSourceOfBusiness gsob2 = new GuestSourceOfBusiness { Id = 4, SourceOfBusiness = "Google search" };
+
+            expGsobs.Clear();
             expGsobs.Add(gsob1);
             expGsobs.Add(gsob2);
 
+            expGsobNrOfGuests.Clear();
             expGsobNrOfGuests.Add(22);
             expGsobNrOfGuests.Add(13);
 
             Weather weather1 = new Weather { Id = 6, TypeOfWeather = "Stormy" };
+
+            expWeathers.Clear();
             expWeathers.Add(weather1);
         
             CheckFbReport
@@ -97,15 +102,99 @@ namespace APITestProject1
                 expGsobs,
                 expGsobNrOfGuests,
                 expWeathers,
+                report0
+            );
+
+            // Check 2 ---
+            var report1 = responseString[1]; // Getting 1 report from the report array
+
+            expGsobs.Clear();
+            expGsobNrOfGuests.Clear();
+            expWeathers.Clear();
+
+            CheckFbReport
+            (
+                expectedTables = 10,
+                expFood = 88000,
+                expBeverage = 91000,
+                expOtherIncome = 17400,
+                expGuestsFromHotel = 29,
+                expguestsFromOutsideHotel = 21,
+                expIsPublicHoliday = true,
+                expEventNotes = "Umpa Umpa DJ",
+                expGSourceOfBusinessNotes = "Hectic day. A lot of fat Germans. Since the didn't speak english " +
+                "we were unable to find out how they got to know of the Umpa Umpa Madness Night",
+                expOutletId = 2,
+                expUserId = "b0b22e53-3ad2-4a0a-9e58-aa0a70a5a157",
+                expLocalEventId = 2,
+                expGsobs,
+                expGsobNrOfGuests,
+                expWeathers,
                 report1
             );
+
+            // Check 3 ---
+            var report2 = responseString[2];
+
+            expGsobs.Clear();
+            expGsobNrOfGuests.Clear();
+            expWeathers.Clear();
+
+            CheckFbReport
+            (
+                expectedTables = 20,
+                expFood = 21000,
+                expBeverage = 32000,
+                expOtherIncome = 8500,
+                expGuestsFromHotel = 24,
+                expguestsFromOutsideHotel = 30,
+                expIsPublicHoliday = false,
+                expEventNotes = "The samba night was a success especially with the Italians",
+                expGSourceOfBusinessNotes = "Most of the guest had been handed leaflets down town",
+                expOutletId = 4,
+                expUserId = "35947f01-393b-442c-b815-d6d9f7d4b81e",
+                expLocalEventId = 1,
+                expGsobs,
+                expGsobNrOfGuests,
+                expWeathers,
+                report2
+            );
+
+            // Check 4 ---
+            var report6 = responseString[6]; // Getting 1 report from the report array
+
+            expGsobs.Clear();
+            expGsobNrOfGuests.Clear();
+            expWeathers.Clear();
+
+            CheckFbReport
+            (
+                expectedTables = 16,
+                expFood = 27000,
+                expBeverage = 28000,
+                expOtherIncome = 51000,
+                expGuestsFromHotel = 11,
+                expguestsFromOutsideHotel = 44,
+                expIsPublicHoliday = false,
+                expEventNotes = "The DJ was a little to drunk to do his job",
+                expGSourceOfBusinessNotes = null,
+                expOutletId = 1,
+                expUserId = "35947f01-393b-442c-b815-d6d9f7d4b81e",
+                expLocalEventId = null,
+                expGsobs,
+                expGsobNrOfGuests,
+                expWeathers,
+                report6
+            );
+
+            
         }
 
         // *************************************** CheckFbReport *************************************************************
         private static void CheckFbReport(
             int expectedTables, int expFood, int expBeverage, int expOtherIncome, 
             int expGuestsFromHotel, int expGuestsFromOutsideHotel, bool expIsPublicHoliday, string expEventNotes,
-            string expGSourceOfBusinessNotes, int expOutletId,  string expUserId, int expLocalEventId, List<GuestSourceOfBusiness> expGsobs,
+            string expGSourceOfBusinessNotes, int expOutletId,  string expUserId, int? expLocalEventId, List<GuestSourceOfBusiness> expGsobs,
             List<int> expGsobNrOfGuests, List<Weather> expWeathers,
             JToken report
         )
@@ -120,7 +209,7 @@ namespace APITestProject1
             string actEventNotes = (string)report["eventNotes"];
             int actOutletId = (int)report["outletId"];
             string actUserId = (string)report["userId"];
-            int actLocalEventId = (int)report["localEventId"];
+            int? actLocalEventId = (int?)report["localEventId"];
             string actGSourceOfBusinessNotes = (string)report["gSourceOfBusinessNotes"];
 
             // Getting actual GuestSourceOfBusinesses
