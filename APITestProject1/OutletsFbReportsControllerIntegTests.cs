@@ -16,39 +16,31 @@ namespace APITestProject1
     {
         private readonly HttpClient _client;
         private ILoggerManager logger = new LoggerManager();
-
-        private List<GuestSourceOfBusiness> gsobs = new List<GuestSourceOfBusiness>()
-            {
-                new GuestSourceOfBusiness() { Id = 1, SourceOfBusiness = "Hotel Website"},
-                new GuestSourceOfBusiness() { Id = 2, SourceOfBusiness = "Hungry Hub"},
-                new GuestSourceOfBusiness() { Id = 3, SourceOfBusiness = "Facebook referral"},
-                new GuestSourceOfBusiness() { Id = 4, SourceOfBusiness = "Google search"},
-                new GuestSourceOfBusiness() { Id = 5, SourceOfBusiness = "Instagram referral"},
-                new GuestSourceOfBusiness() { Id = 6, SourceOfBusiness = "Hotel referral"},
-                new GuestSourceOfBusiness() { Id = 7, SourceOfBusiness = "Other Hotel referral"},
-                new GuestSourceOfBusiness() { Id = 8, SourceOfBusiness = "Agent referral"},
-                new GuestSourceOfBusiness() { Id = 9, SourceOfBusiness = "Walk in"},
-                new GuestSourceOfBusiness() { Id = 10, SourceOfBusiness = "Other"},
-            };
-
-    /*
-     1	Hotel Website
-    2	Hungry Hub
-    3	Facebook referral
-    4	Google search
-    5	Instagram referral
-    6	Hotel referral
-    7	Other Hotel referral
-    8	Agent referral
-    9	Walk in
-    10	Other
-     */
-
-    public OutletsFbReportsControllerIntegTests(TestingWebAppFactory<Startup> factory)
+        private List<GuestSourceOfBusiness> gsobs = new List<GuestSourceOfBusiness>();
+        private List<Weather> weathers = new List<Weather>();
+        
+        public OutletsFbReportsControllerIntegTests(TestingWebAppFactory<Startup> factory)
         {
             _client = factory.CreateClient();
             _client.BaseAddress = new Uri("https://localhost:44306/");
 
+            gsobs.Add(new GuestSourceOfBusiness() { Id = 1, SourceOfBusiness = "Hotel Website" });
+            gsobs.Add(new GuestSourceOfBusiness() { Id = 2, SourceOfBusiness = "Hungry Hub" });
+            gsobs.Add(new GuestSourceOfBusiness() { Id = 3, SourceOfBusiness = "Facebook referral" });
+            gsobs.Add(new GuestSourceOfBusiness() { Id = 4, SourceOfBusiness = "Google search" });
+            gsobs.Add(new GuestSourceOfBusiness() { Id = 5, SourceOfBusiness = "Instagram referral" });
+            gsobs.Add(new GuestSourceOfBusiness() { Id = 6, SourceOfBusiness = "Hotel referral" });
+            gsobs.Add(new GuestSourceOfBusiness() { Id = 7, SourceOfBusiness = "Other Hotel referral" });
+            gsobs.Add(new GuestSourceOfBusiness() { Id = 8, SourceOfBusiness = "Agent referral" });
+            gsobs.Add(new GuestSourceOfBusiness() { Id = 9, SourceOfBusiness = "Walk in" });
+            gsobs.Add(new GuestSourceOfBusiness() { Id = 10, SourceOfBusiness = "Other" });
+
+            weathers.Add(new Weather(){ Id = 1, TypeOfWeather = "Sunny/Clear" });
+            weathers.Add(new Weather(){ Id = 2, TypeOfWeather = "Partially Cloudy" });
+            weathers.Add(new Weather(){ Id = 3, TypeOfWeather = "Overcast" });
+            weathers.Add(new Weather(){ Id = 4, TypeOfWeather = "Rain" });
+            weathers.Add(new Weather(){ Id = 5, TypeOfWeather = "Showers" });
+            weathers.Add(new Weather(){ Id = 6, TypeOfWeather = "Stormy" });
         }
 
         [Fact]
@@ -105,7 +97,7 @@ namespace APITestProject1
             expGsobNrOfGuests.Add(22);
             expGsobNrOfGuests.Add(13);
 
-            Weather weather1 = new Weather { Id = 6, TypeOfWeather = "Stormy" };
+            Weather weather1 = new Weather { Id = 6, TypeOfWeather = weathers[5].TypeOfWeather };
 
             expWeathers.Clear();
             expWeathers.Add(weather1);
@@ -226,7 +218,7 @@ namespace APITestProject1
             expGsobNrOfGuests.Add(32);
             expGsobNrOfGuests.Add(3);
 
-            Weather weather41 = new Weather { Id = 5, TypeOfWeather = "Showers" };
+            Weather weather41 = new Weather { Id = 5, TypeOfWeather = weathers[4].TypeOfWeather };
 
             expWeathers.Clear();
             expWeathers.Add(weather41);
@@ -265,10 +257,10 @@ namespace APITestProject1
             expGsobNrOfGuests.Add(45);
             expGsobNrOfGuests.Add(22);
 
-            Weather weather51 = new Weather { Id = 1, TypeOfWeather = "Sunny/Clear" };
-            Weather weather52 = new Weather { Id = 2, TypeOfWeather = "Partially Cloudy" };
-            Weather weather53 = new Weather { Id = 5, TypeOfWeather = "Showers" };
-            Weather weather54 = new Weather { Id = 6, TypeOfWeather = "Stormy" };
+            Weather weather51 = new Weather { Id = 1, TypeOfWeather = weathers[0].TypeOfWeather };
+            Weather weather52 = new Weather { Id = 2, TypeOfWeather = weathers[1].TypeOfWeather };
+            Weather weather53 = new Weather { Id = 5, TypeOfWeather = weathers[4].TypeOfWeather };
+            Weather weather54 = new Weather { Id = 6, TypeOfWeather = weathers[5].TypeOfWeather };
 
             expWeathers.Clear();
             expWeathers.Add(weather51);
