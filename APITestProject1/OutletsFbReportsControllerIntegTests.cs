@@ -24,7 +24,6 @@ namespace APITestProject1
         {
             _client = factory.CreateClient();
             _client.BaseAddress = new Uri("https://localhost:44306/");
-
         }
 
         [Fact]
@@ -48,15 +47,50 @@ namespace APITestProject1
             List<int> outletIds = new List<int> { 1, 2, 4 };
             DateTime fromDate = new DateTime(2021, 01, 01);
             DateTime toDate = new DateTime(2022, 01, 01);
+            List<GuestSourceOfBusiness> expGsobs = new List<GuestSourceOfBusiness>();
+            List<int> expGsobNrOfGuests = new List<int>();
             string URL = $"outlets/fbReports?outletIds={outletIds.ElementAt(0)}&outletIds={outletIds.ElementAt(1)}&outletIds={outletIds.ElementAt(2)}&" +
                 $"fromDate={fromDate}&toDate={toDate}";
+
+            /*
+             "guestSourceOfBusinesses": [
+                  {
+                    "id": 3,
+                    "sourceOfBusiness": "Facebook referral"
+                  },
+                  {
+                    "id": 4,
+                    "sourceOfBusiness": "Google search"
+                  }
+                ],
+                "gsobNrOfGuest": [
+                  22,
+                  13
+                ],
+                "weathers": [
+                  {
+                    "id": 6,
+                    "typeOfWeather": "Stormy"
+                  }
+                ]
+             */
 
             // Act ******************************************************
             var response = await _client.GetAsync(URL);
             response.EnsureSuccessStatusCode();
             var responseString = JArray.Parse(await response.Content.ReadAsStringAsync());
             int actualNrOfReports = responseString.Count();
-            var report1 = responseString[0];
+            
+            // Check 1
+            var report1 = responseString[0]; // Getting 1 report from report array
+
+            GuestSourceOfBusiness gsob1 = new GuestSourceOfBusiness { Id = 3, SourceOfBusiness = "Facebook referral" };
+            GuestSourceOfBusiness gsob2 = new GuestSourceOfBusiness { Id = 4, SourceOfBusiness = "Google search" };
+            expGsobs.Add(gsob1);
+            expGsobs.Add(gsob2);
+
+            expGsobNrOfGuests.Add(22);
+            expGsobNrOfGuests.Add(13);
 
             CheckFbReport
             (
@@ -73,16 +107,21 @@ namespace APITestProject1
                 expOutletId = 1,
                 expUserId = "35947f01-393b-442c-b815-d6d9f7d4b81e",
                 expLocalEventId = 2,
+                expGsobs,
+                expGsobNrOfGuests,
                 actualNrOfReports,
                 report1
             );
         }
 
         // *************************************** CheckFbReport *************************************************************
-        private static void CheckFbReport(int expectedNrOfReports, int expectedTables, int expFood, int expBeverage, int expOtherIncome, 
+        private static void CheckFbReport(
+            int expectedNrOfReports, int expectedTables, int expFood, int expBeverage, int expOtherIncome, 
             int expGuestsFromHotel, int expGuestsFromOutsideHotel, bool expIsPublicHoliday, string expEventNotes,
-            string expGSourceOfBusinessNotes, int expOutletId,  string expUserId, int expLocalEventId, 
-            int actualNrOfReports, JToken report)
+            string expGSourceOfBusinessNotes, int expOutletId,  string expUserId, int expLocalEventId, List<GuestSourceOfBusiness> expGsobs,
+            List<int> expGsobNrOfGuests,
+            int actualNrOfReports, JToken report
+        )
         {
             int actualTables = (int)report["tables"];
             int actFood = (int)report["food"];
@@ -96,6 +135,28 @@ namespace APITestProject1
             string actUserId = (string)report["userId"];
             int actLocalEventId = (int)report["localEventId"];
             string actGSourceOfBusinessNotes = (string)report["gSourceOfBusinessNotes"];
+
+            // Getting actual GuestSourceOfBusinesses
+            List<GuestSourceOfBusiness> actGsobs = new List<GuestSourceOfBusiness>();
+
+            for (int i = 0; i < (int)report["guestSourceOfBusinesses"].Count(); i++)
+            {
+                GuestSourceOfBusiness actGsob = new GuestSourceOfBusiness { 
+                    Id = (int)report["guestSourceOfBusinesses"][i]["id"],
+                    SourceOfBusiness = (string)report["guestSourceOfBusinesses"][i]["sourceOfBusiness"]
+                };
+
+                actGsobs.Add(actGsob);
+            }
+
+            // Getting actual gsobNrOfGuest
+            List<int> actGsobNrOfGuests = new List<int>();
+            var tempConvert = report["gsobNrOfGuest"];
+
+            foreach (var item in tempConvert)
+            {
+                actGsobNrOfGuests.Add((int)item);
+            }
 
 
             // Assert
@@ -112,6 +173,14 @@ namespace APITestProject1
             Assert.Equal(expOutletId, actOutletId);
             Assert.Equal(expUserId, actUserId);
             Assert.Equal(expLocalEventId, actLocalEventId);
+
+            for (int i = 0; i < expGsobs.Count(); i++)
+            {
+                Assert.Equal(expGsobs.ElementAt(i).Id, actGsobs.ElementAt(i).Id);
+                Assert.Equal(expGsobs.ElementAt(i).SourceOfBusiness, actGsobs.ElementAt(i).SourceOfBusiness);
+            }
+
+            Assert.Equal(expGsobNrOfGuests, actGsobNrOfGuests);
         }
     }
 }
