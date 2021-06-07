@@ -16,11 +16,39 @@ namespace APITestProject1
     {
         private readonly HttpClient _client;
         private ILoggerManager logger = new LoggerManager();
-        
-        public OutletsFbReportsControllerIntegTests(TestingWebAppFactory<Startup> factory)
+
+        private List<GuestSourceOfBusiness> gsobs = new List<GuestSourceOfBusiness>()
+            {
+                new GuestSourceOfBusiness() { Id = 1, SourceOfBusiness = "Hotel Website"},
+                new GuestSourceOfBusiness() { Id = 2, SourceOfBusiness = "Hungry Hub"},
+                new GuestSourceOfBusiness() { Id = 3, SourceOfBusiness = "Facebook referral"},
+                new GuestSourceOfBusiness() { Id = 4, SourceOfBusiness = "Google search"},
+                new GuestSourceOfBusiness() { Id = 5, SourceOfBusiness = "Instagram referral"},
+                new GuestSourceOfBusiness() { Id = 6, SourceOfBusiness = "Hotel referral"},
+                new GuestSourceOfBusiness() { Id = 7, SourceOfBusiness = "Other Hotel referral"},
+                new GuestSourceOfBusiness() { Id = 8, SourceOfBusiness = "Agent referral"},
+                new GuestSourceOfBusiness() { Id = 9, SourceOfBusiness = "Walk in"},
+                new GuestSourceOfBusiness() { Id = 10, SourceOfBusiness = "Other"},
+            };
+
+    /*
+     1	Hotel Website
+    2	Hungry Hub
+    3	Facebook referral
+    4	Google search
+    5	Instagram referral
+    6	Hotel referral
+    7	Other Hotel referral
+    8	Agent referral
+    9	Walk in
+    10	Other
+     */
+
+    public OutletsFbReportsControllerIntegTests(TestingWebAppFactory<Startup> factory)
         {
             _client = factory.CreateClient();
             _client.BaseAddress = new Uri("https://localhost:44306/");
+
         }
 
         [Fact]
@@ -66,8 +94,8 @@ namespace APITestProject1
             // Check 1 ------
             var report0 = responseString[0]; // Getting 1 report from the report array
 
-            GuestSourceOfBusiness gsob1 = new GuestSourceOfBusiness { Id = 3, SourceOfBusiness = "Facebook referral" };
-            GuestSourceOfBusiness gsob2 = new GuestSourceOfBusiness { Id = 4, SourceOfBusiness = "Google search" };
+            GuestSourceOfBusiness gsob1 = new GuestSourceOfBusiness { Id = 3, SourceOfBusiness = gsobs[2].SourceOfBusiness };
+            GuestSourceOfBusiness gsob2 = new GuestSourceOfBusiness { Id = 4, SourceOfBusiness = gsobs[3].SourceOfBusiness };
 
             expGsobs.Clear();
             expGsobs.Add(gsob1);
@@ -187,8 +215,8 @@ namespace APITestProject1
             // Check 5 ------
             var report4 = responseString[4];
 
-            GuestSourceOfBusiness gsob41 = new GuestSourceOfBusiness { Id = 1, SourceOfBusiness = "Hotel Website" };
-            GuestSourceOfBusiness gsob42 = new GuestSourceOfBusiness { Id = 2, SourceOfBusiness = "Hungry Hub" };
+            GuestSourceOfBusiness gsob41 = new GuestSourceOfBusiness { Id = 1, SourceOfBusiness = gsobs[0].SourceOfBusiness };
+            GuestSourceOfBusiness gsob42 = new GuestSourceOfBusiness { Id = 2, SourceOfBusiness = gsobs[1].SourceOfBusiness };
 
             expGsobs.Clear();
             expGsobs.Add(gsob41);
@@ -226,8 +254,8 @@ namespace APITestProject1
             // Check 6 ------
             var report5 = responseString[5];
 
-            GuestSourceOfBusiness gsob51 = new GuestSourceOfBusiness { Id = 1, SourceOfBusiness = "Hotel Website" };
-            GuestSourceOfBusiness gsob52 = new GuestSourceOfBusiness { Id = 5, SourceOfBusiness = "Instagram referral" };
+            GuestSourceOfBusiness gsob51 = new GuestSourceOfBusiness { Id = 1, SourceOfBusiness = gsobs[0].SourceOfBusiness };
+            GuestSourceOfBusiness gsob52 = new GuestSourceOfBusiness { Id = 5, SourceOfBusiness = gsobs[4].SourceOfBusiness };
 
             expGsobs.Clear();
             expGsobs.Add(gsob51);
