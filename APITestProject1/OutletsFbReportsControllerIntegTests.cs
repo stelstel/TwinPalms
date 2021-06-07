@@ -19,7 +19,7 @@ namespace APITestProject1
     {
         private readonly HttpClient _client;
         private ILoggerManager logger = new LoggerManager();
-
+        
         public OutletsFbReportsControllerIntegTests(TestingWebAppFactory<Startup> factory)
         {
             _client = factory.CreateClient();
@@ -49,38 +49,23 @@ namespace APITestProject1
             DateTime toDate = new DateTime(2022, 01, 01);
             List<GuestSourceOfBusiness> expGsobs = new List<GuestSourceOfBusiness>();
             List<int> expGsobNrOfGuests = new List<int>();
+            List<Weather> expWeathers = new List<Weather>();
             string URL = $"outlets/fbReports?outletIds={outletIds.ElementAt(0)}&outletIds={outletIds.ElementAt(1)}&outletIds={outletIds.ElementAt(2)}&" +
                 $"fromDate={fromDate}&toDate={toDate}";
+            expectedNrOfReports = 7;
 
-            /*
-             "guestSourceOfBusinesses": [
-                  {
-                    "id": 3,
-                    "sourceOfBusiness": "Facebook referral"
-                  },
-                  {
-                    "id": 4,
-                    "sourceOfBusiness": "Google search"
-                  }
-                ],
-                "gsobNrOfGuest": [
-                  22,
-                  13
-                ],
-                "weathers": [
-                  {
-                    "id": 6,
-                    "typeOfWeather": "Stormy"
-                  }
-                ]
-             */
 
-            // Act ******************************************************
+            // Act
             var response = await _client.GetAsync(URL);
             response.EnsureSuccessStatusCode();
             var responseString = JArray.Parse(await response.Content.ReadAsStringAsync());
             int actualNrOfReports = responseString.Count();
-            
+
+
+            // Assert
+            Assert.Equal(expectedNrOfReports, actualNrOfReports);
+
+
             // Check 1
             var report1 = responseString[0]; // Getting 1 report from report array
 
@@ -92,9 +77,11 @@ namespace APITestProject1
             expGsobNrOfGuests.Add(22);
             expGsobNrOfGuests.Add(13);
 
+            Weather weather1 = new Weather { Id = 6, TypeOfWeather = "Stormy" };
+            expWeathers.Add(weather1);
+        
             CheckFbReport
             (
-                expectedNrOfReports = 7,
                 expectedTables = 1,
                 expFood = 10000,
                 expBeverage = 20000,
@@ -109,18 +96,18 @@ namespace APITestProject1
                 expLocalEventId = 2,
                 expGsobs,
                 expGsobNrOfGuests,
-                actualNrOfReports,
+                expWeathers,
                 report1
             );
         }
 
         // *************************************** CheckFbReport *************************************************************
         private static void CheckFbReport(
-            int expectedNrOfReports, int expectedTables, int expFood, int expBeverage, int expOtherIncome, 
+            int expectedTables, int expFood, int expBeverage, int expOtherIncome, 
             int expGuestsFromHotel, int expGuestsFromOutsideHotel, bool expIsPublicHoliday, string expEventNotes,
             string expGSourceOfBusinessNotes, int expOutletId,  string expUserId, int expLocalEventId, List<GuestSourceOfBusiness> expGsobs,
-            List<int> expGsobNrOfGuests,
-            int actualNrOfReports, JToken report
+            List<int> expGsobNrOfGuests, List<Weather> expWeathers,
+            JToken report
         )
         {
             int actualTables = (int)report["tables"];
@@ -139,7 +126,7 @@ namespace APITestProject1
             // Getting actual GuestSourceOfBusinesses
             List<GuestSourceOfBusiness> actGsobs = new List<GuestSourceOfBusiness>();
 
-            for (int i = 0; i < (int)report["guestSourceOfBusinesses"].Count(); i++)
+            for (int i = 0; i < report["guestSourceOfBusinesses"].Count(); i++)
             {
                 GuestSourceOfBusiness actGsob = new GuestSourceOfBusiness { 
                     Id = (int)report["guestSourceOfBusinesses"][i]["id"],
@@ -158,9 +145,21 @@ namespace APITestProject1
                 actGsobNrOfGuests.Add((int)item);
             }
 
+            // Getting actual weathers
+            List<Weather> actWeathers = new List<Weather>();
+
+            for (int i = 0; i < report["weathers"].Count(); i++)
+            {
+                Weather weather = new Weather
+                {
+                    Id = (int)report["weathers"][i]["id"],
+                    TypeOfWeather = (string)report["weathers"][i]["typeOfWeather"]
+                };
+
+                actWeathers.Add(weather);
+            }
 
             // Assert
-            Assert.Equal(expectedNrOfReports, actualNrOfReports);
             Assert.Equal(expectedTables, actualTables);
             Assert.Equal(expFood, actFood);
             Assert.Equal(expBeverage, actBeverage);
@@ -181,6 +180,12 @@ namespace APITestProject1
             }
 
             Assert.Equal(expGsobNrOfGuests, actGsobNrOfGuests);
+
+            for (int i = 0; i < expWeathers.Count(); i++)
+            {
+                Assert.Equal(expWeathers.ElementAt(i).Id, actWeathers.ElementAt(i).Id);
+                Assert.Equal(expWeathers.ElementAt(i).TypeOfWeather, actWeathers.ElementAt(i).TypeOfWeather);
+            }
         }
     }
 }
