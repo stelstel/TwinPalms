@@ -1,14 +1,11 @@
 ﻿using Contracts;
 using Entities.Models;
 using LoggerService;
-using Microsoft.EntityFrameworkCore;
-using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
-using System.Text;
 using System.Threading.Tasks;
 using TwinPalmsKPI;
 using Xunit;
@@ -66,7 +63,7 @@ namespace APITestProject1
             Assert.Equal(expectedNrOfReports, actualNrOfReports);
 
 
-            // Check 1 ---
+            // Check 1 ------
             var report0 = responseString[0]; // Getting 1 report from the report array
 
             GuestSourceOfBusiness gsob1 = new GuestSourceOfBusiness { Id = 3, SourceOfBusiness = "Facebook referral" };
@@ -105,8 +102,8 @@ namespace APITestProject1
                 report0
             );
 
-            // Check 2 ---
-            var report1 = responseString[1]; // Getting 1 report from the report array
+            // Check 2 ------
+            var report1 = responseString[1];
 
             expGsobs.Clear();
             expGsobNrOfGuests.Clear();
@@ -133,7 +130,7 @@ namespace APITestProject1
                 report1
             );
 
-            // Check 3 ---
+            // Check 3 ------
             var report2 = responseString[2];
 
             expGsobs.Clear();
@@ -160,8 +157,119 @@ namespace APITestProject1
                 report2
             );
 
-            // Check 4 ---
-            var report6 = responseString[6]; // Getting 1 report from the report array
+            // Check 4 ------
+            var report3 = responseString[3];
+            
+            expGsobs.Clear();
+            expGsobNrOfGuests.Clear();
+            expWeathers.Clear();
+
+            CheckFbReport
+            (
+                expectedTables = 20,
+                expFood = 21000,
+                expBeverage = 32000,
+                expOtherIncome = 8500,
+                expGuestsFromHotel = 24,
+                expguestsFromOutsideHotel = 30,
+                expIsPublicHoliday = false,
+                expEventNotes = "busy night",
+                expGSourceOfBusinessNotes = "Lorem Ipsum GSOB",
+                expOutletId = 4,
+                expUserId = "35947f01-393b-442c-b815-d6d9f7d4b81e",
+                expLocalEventId = 1,
+                expGsobs,
+                expGsobNrOfGuests,
+                expWeathers,
+                report3
+            );
+
+            // Check 5 ------
+            var report4 = responseString[4];
+
+            GuestSourceOfBusiness gsob41 = new GuestSourceOfBusiness { Id = 1, SourceOfBusiness = "Hotel Website" };
+            GuestSourceOfBusiness gsob42 = new GuestSourceOfBusiness { Id = 2, SourceOfBusiness = "Hungry Hub" };
+
+            expGsobs.Clear();
+            expGsobs.Add(gsob41);
+            expGsobs.Add(gsob42);
+
+            expGsobNrOfGuests.Clear();
+            expGsobNrOfGuests.Add(32);
+            expGsobNrOfGuests.Add(3);
+
+            Weather weather41 = new Weather { Id = 5, TypeOfWeather = "Showers" };
+
+            expWeathers.Clear();
+            expWeathers.Add(weather41);
+
+            CheckFbReport
+            (
+                expectedTables = 14,
+                expFood = 19000,
+                expBeverage = 31000,
+                expOtherIncome = 9100,
+                expGuestsFromHotel = 25,
+                expguestsFromOutsideHotel = 4,
+                expIsPublicHoliday = false,
+                expEventNotes = "The DJ was really good",
+                expGSourceOfBusinessNotes = "Lorem ipsum GSOB",
+                expOutletId = 1,
+                expUserId = "35947f01-393b-442c-b815-d6d9f7d4b81e",
+                expLocalEventId = 3,
+                expGsobs,
+                expGsobNrOfGuests,
+                expWeathers,
+                report4
+            );
+
+            // Check 6 ------
+            var report5 = responseString[5];
+
+            GuestSourceOfBusiness gsob51 = new GuestSourceOfBusiness { Id = 1, SourceOfBusiness = "Hotel Website" };
+            GuestSourceOfBusiness gsob52 = new GuestSourceOfBusiness { Id = 5, SourceOfBusiness = "Instagram referral" };
+
+            expGsobs.Clear();
+            expGsobs.Add(gsob51);
+            expGsobs.Add(gsob52);
+
+            expGsobNrOfGuests.Clear();
+            expGsobNrOfGuests.Add(45);
+            expGsobNrOfGuests.Add(22);
+
+            Weather weather51 = new Weather { Id = 1, TypeOfWeather = "Sunny/Clear" };
+            Weather weather52 = new Weather { Id = 2, TypeOfWeather = "Partially Cloudy" };
+            Weather weather53 = new Weather { Id = 5, TypeOfWeather = "Showers" };
+            Weather weather54 = new Weather { Id = 6, TypeOfWeather = "Stormy" };
+
+            expWeathers.Clear();
+            expWeathers.Add(weather51);
+            expWeathers.Add(weather52);
+            expWeathers.Add(weather53);
+            expWeathers.Add(weather54);
+
+            CheckFbReport
+            (
+                expectedTables = 19,
+                expFood = 15000,
+                expBeverage = 21000,
+                expOtherIncome = 6500,
+                expGuestsFromHotel = 35,
+                expguestsFromOutsideHotel = 18,
+                expIsPublicHoliday = false,
+                expEventNotes = "The Flamenco dance lesson was quite nice, had meny people dancing",
+                expGSourceOfBusinessNotes = "Lorem Ipsum Google",
+                expOutletId = 1,
+                expUserId = "35947f01-393b-442c-b815-d6d9f7d4b81e",
+                expLocalEventId = 4,
+                expGsobs,
+                expGsobNrOfGuests,
+                expWeathers,
+                report5
+            );
+
+            // Check 7 ------
+            var report6 = responseString[6];
 
             expGsobs.Clear();
             expGsobNrOfGuests.Clear();
@@ -186,19 +294,18 @@ namespace APITestProject1
                 expWeathers,
                 report6
             );
-
-            
         }
 
         // *************************************** CheckFbReport *************************************************************
         private static void CheckFbReport(
             int expectedTables, int expFood, int expBeverage, int expOtherIncome, 
             int expGuestsFromHotel, int expGuestsFromOutsideHotel, bool expIsPublicHoliday, string expEventNotes,
-            string expGSourceOfBusinessNotes, int expOutletId,  string expUserId, int? expLocalEventId, List<GuestSourceOfBusiness> expGsobs,
-            List<int> expGsobNrOfGuests, List<Weather> expWeathers,
+            string expGSourceOfBusinessNotes, int expOutletId,  string expUserId, int? expLocalEventId, 
+            List<GuestSourceOfBusiness> expGsobs, List<int> expGsobNrOfGuests, List<Weather> expWeathers,
             JToken report
         )
         {
+            // Act *****************************************
             int actualTables = (int)report["tables"];
             int actFood = (int)report["food"];
             int actBeverage = (int)report["beverage"];
