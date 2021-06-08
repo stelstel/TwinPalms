@@ -1,7 +1,6 @@
 ﻿using Contracts;
 using Entities.Models;
 using LoggerService;
-using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
@@ -13,84 +12,47 @@ using Xunit;
 
 namespace APITestProject1
 {
-    public class FbReportsControllerIntegTests : IClassFixture<TestingWebAppFactory<Startup>>
+    public class OutletsFbReportsIntegTests : IClassFixture<TestingWebAppFactory<Startup>>
     {
         // exp is short for expected
         // act is short for actual
 
         private readonly HttpClient _client;
         private ILoggerManager logger = new LoggerManager();
-        //private List<GuestSourceOfBusiness> gsobs = new List<GuestSourceOfBusiness>();
-        //private List<Weather> weathers = new List<Weather>();
+        private List<GuestSourceOfBusiness> gsobs = new List<GuestSourceOfBusiness>();
+        private List<Weather> weathers = new List<Weather>();
         
-        // Constructor
-        public FbReportsControllerIntegTests(TestingWebAppFactory<Startup> factory)
+        public OutletsFbReportsIntegTests(TestingWebAppFactory<Startup> factory)
         {
             _client = factory.CreateClient();
             _client.BaseAddress = new Uri("https://localhost:44306/");
 
-            //gsobs.Add(new GuestSourceOfBusiness() { Id = 1, SourceOfBusiness = "Hotel Website" });
-            //gsobs.Add(new GuestSourceOfBusiness() { Id = 2, SourceOfBusiness = "Hungry Hub" });
-            //gsobs.Add(new GuestSourceOfBusiness() { Id = 3, SourceOfBusiness = "Facebook referral" });
-            //gsobs.Add(new GuestSourceOfBusiness() { Id = 4, SourceOfBusiness = "Google search" });
-            //gsobs.Add(new GuestSourceOfBusiness() { Id = 5, SourceOfBusiness = "Instagram referral" });
-            //gsobs.Add(new GuestSourceOfBusiness() { Id = 6, SourceOfBusiness = "Hotel referral" });
-            //gsobs.Add(new GuestSourceOfBusiness() { Id = 7, SourceOfBusiness = "Other Hotel referral" });
-            //gsobs.Add(new GuestSourceOfBusiness() { Id = 8, SourceOfBusiness = "Agent referral" });
-            //gsobs.Add(new GuestSourceOfBusiness() { Id = 9, SourceOfBusiness = "Walk in" });
-            //gsobs.Add(new GuestSourceOfBusiness() { Id = 10, SourceOfBusiness = "Other" });
+            gsobs.Add(new GuestSourceOfBusiness() { Id = 1, SourceOfBusiness = "Hotel Website" });
+            gsobs.Add(new GuestSourceOfBusiness() { Id = 2, SourceOfBusiness = "Hungry Hub" });
+            gsobs.Add(new GuestSourceOfBusiness() { Id = 3, SourceOfBusiness = "Facebook referral" });
+            gsobs.Add(new GuestSourceOfBusiness() { Id = 4, SourceOfBusiness = "Google search" });
+            gsobs.Add(new GuestSourceOfBusiness() { Id = 5, SourceOfBusiness = "Instagram referral" });
+            gsobs.Add(new GuestSourceOfBusiness() { Id = 6, SourceOfBusiness = "Hotel referral" });
+            gsobs.Add(new GuestSourceOfBusiness() { Id = 7, SourceOfBusiness = "Other Hotel referral" });
+            gsobs.Add(new GuestSourceOfBusiness() { Id = 8, SourceOfBusiness = "Agent referral" });
+            gsobs.Add(new GuestSourceOfBusiness() { Id = 9, SourceOfBusiness = "Walk in" });
+            gsobs.Add(new GuestSourceOfBusiness() { Id = 10, SourceOfBusiness = "Other" });
 
-            //weathers.Add(new Weather(){ Id = 1, TypeOfWeather = "Sunny/Clear" });
-            //weathers.Add(new Weather(){ Id = 2, TypeOfWeather = "Partially Cloudy" });
-            //weathers.Add(new Weather(){ Id = 3, TypeOfWeather = "Overcast" });
-            //weathers.Add(new Weather(){ Id = 4, TypeOfWeather = "Rain" });
-            //weathers.Add(new Weather(){ Id = 5, TypeOfWeather = "Showers" });
-            //weathers.Add(new Weather(){ Id = 6, TypeOfWeather = "Stormy" });
+            weathers.Add(new Weather(){ Id = 1, TypeOfWeather = "Sunny/Clear" });
+            weathers.Add(new Weather(){ Id = 2, TypeOfWeather = "Partially Cloudy" });
+            weathers.Add(new Weather(){ Id = 3, TypeOfWeather = "Overcast" });
+            weathers.Add(new Weather(){ Id = 4, TypeOfWeather = "Rain" });
+            weathers.Add(new Weather(){ Id = 5, TypeOfWeather = "Showers" });
+            weathers.Add(new Weather(){ Id = 6, TypeOfWeather = "Stormy" });
         }
-
-        /*
-         * 
-         * "id": 1,
-          "tables": 1,
-          "food": 10000,
-          "beverage": 20000,
-          "otherIncome": 5000,
-          "guestsFromHotel": 15,
-          "guestsFromOutsideHotel": 10,
-          "isPublicHoliday": false,
-          "eventNotes": "The DJ got everybody dancing",
-          "imagePath": null,
-          "gSourceOfBusinessNotes": "A lot of people just dropped in at around 1:00 AM",
-          "date": "2021-06-08T16:13:46.0985041",
-          "outletId": 1,
-          "userId": "35947f01-393b-442c-b815-d6d9f7d4b81e",
-          "localEventId": 2,
-          "guestSourceOfBusinesses": [
-            {
-              "id": 3,
-              "sourceOfBusiness": "Facebook referral"
-            },
-            {
-              "id": 4,
-              "sourceOfBusiness": "Google search"
-            }
-          ],
-          "weathers": [
-            {
-              "id": 6,
-              "typeOfWeather": "Stormy"
-            }
-          ]
-        */
 
         [Fact]
         //*************************************** testing GET api/outlets/fbReports ***********************************************
         public async Task get_OutletFbReports()
         {
             // Arrange *************************************************
-            // int expectedNrOfReports;
-            int expId;
-            int expTables;
+            int expectedNrOfReports;
+            int expectedTables;
             int expFood;
             int expBeverage;
             int expOtherIncome;
@@ -102,52 +64,50 @@ namespace APITestProject1
             int expOutletId;
             string expUserId;
             int? expLocalEventId;
-            // List<int> outletIds = new List<int> { 1, 2, 4 };
-            // DateTime fromDate = new DateTime(2021, 01, 01);
-            // DateTime toDate = new DateTime(2022, 01, 01);
-            //List<GuestSourceOfBusiness> expGsobs = new List<GuestSourceOfBusiness>();
-            // List<int> expGsobNrOfGuests = new List<int>();
-            //List<Weather> expWeathers = new List<Weather>();
-            //expectedNrOfReports = 7;
+            List<int> outletIds = new List<int> { 1, 2, 4 };
+            DateTime fromDate = new DateTime(2021, 01, 01);
+            DateTime toDate = new DateTime(2022, 01, 01);
+            List<GuestSourceOfBusiness> expGsobs = new List<GuestSourceOfBusiness>();
+            List<int> expGsobNrOfGuests = new List<int>();
+            List<Weather> expWeathers = new List<Weather>();
+            string URL = $"outlets/fbReports?outletIds={outletIds.ElementAt(0)}&outletIds={outletIds.ElementAt(1)}&outletIds={outletIds.ElementAt(2)}&" +
+                $"fromDate={fromDate}&toDate={toDate}";
+            expectedNrOfReports = 7;
 
-            // Check 1 ------
-            string URL = $"api/FbReports/1";
 
             // Act
             var response = await _client.GetAsync(URL);
             response.EnsureSuccessStatusCode();
-            // var responseString1 = (await response.Content.ReadAsStringAsync());
-            FbReport responseReport1 = JsonConvert.DeserializeObject<FbReport>(await response.Content.ReadAsStringAsync());
-            // JsonConvert.DeserializeObject<Account>(json);
-            //int actualNrOfReports = responseString.Count();
+            var responseString = JArray.Parse(await response.Content.ReadAsStringAsync());
+            int actualNrOfReports = responseString.Count();
 
 
             // Assert
-            //Assert.Equal(expectedNrOfReports, actualNrOfReports);
+            Assert.Equal(expectedNrOfReports, actualNrOfReports);
 
 
-            //var report0 = responseString[0]; // Getting 1 report from the report array
-           //GuestSourceOfBusiness gsob1 = new GuestSourceOfBusiness { Id = 3, SourceOfBusiness = gsobs[2].SourceOfBusiness };
-            //GuestSourceOfBusiness gsob2 = new GuestSourceOfBusiness { Id = 4, SourceOfBusiness = gsobs[3].SourceOfBusiness };
+            // Check 1 ------
+            var report0 = responseString[0]; // Getting 1 report from the report array
 
-            //expGsobs.Clear();
-            //expGsobs.Add(gsob1);
-            //expGsobs.Add(gsob2);
+            GuestSourceOfBusiness gsob1 = new GuestSourceOfBusiness { Id = 3, SourceOfBusiness = gsobs[2].SourceOfBusiness };
+            GuestSourceOfBusiness gsob2 = new GuestSourceOfBusiness { Id = 4, SourceOfBusiness = gsobs[3].SourceOfBusiness };
 
-            //expGsobNrOfGuests.Clear();
-            //expGsobNrOfGuests.Add(22);
-            //expGsobNrOfGuests.Add(13);
+            expGsobs.Clear();
+            expGsobs.Add(gsob1);
+            expGsobs.Add(gsob2);
 
-            //Weather weather1 = new Weather { Id = 6, TypeOfWeather = weathers[5].TypeOfWeather };
+            expGsobNrOfGuests.Clear();
+            expGsobNrOfGuests.Add(22);
+            expGsobNrOfGuests.Add(13);
 
-            //expWeathers.Clear();
-            //expWeathers.Add(weather1);
+            Weather weather1 = new Weather { Id = 6, TypeOfWeather = weathers[5].TypeOfWeather };
+
+            expWeathers.Clear();
+            expWeathers.Add(weather1);
         
-             
             CheckFbReport
             (
-                expId = 1,
-                expTables = 1,
+                expectedTables = 1,
                 expFood = 10000,
                 expBeverage = 20000,
                 expOtherIncome = 5000,
@@ -159,14 +119,12 @@ namespace APITestProject1
                 expOutletId = 1,
                 expUserId = "35947f01-393b-442c-b815-d6d9f7d4b81e",
                 expLocalEventId = 2,
-                //expGsobs,
-                //expWeathers,
-                responseReport1
+                expGsobs,
+                expGsobNrOfGuests,
+                expWeathers,
+                report0
             );
 
-        } ///////////////////////////////////////////////
-        /*
-            
             // Check 2 ------
             var report1 = responseString[1];
 
@@ -360,91 +318,68 @@ namespace APITestProject1
                 report6
             );
         }
-        
-        */
 
         // *************************************** CheckFbReport *************************************************************
         private static void CheckFbReport(
-            int expFbReportId, int expTables, int expFood, int expBeverage, int expOtherIncome, 
+            int expectedTables, int expFood, int expBeverage, int expOtherIncome, 
             int expGuestsFromHotel, int expGuestsFromOutsideHotel, bool expIsPublicHoliday, string expEventNotes,
             string expGSourceOfBusinessNotes, int expOutletId,  string expUserId, int? expLocalEventId, 
-            /*List<GuestSourceOfBusiness> expGsobs, List<Weather> expWeathers,*/
-            FbReport fbReport
-
-        /*
-          expectedId = 1,
-            expectedTables = 1,
-            expFood = 10000,
-            expBeverage = 20000,
-            expOtherIncome = 5000,
-            expGuestsFromHotel = 15,
-            expguestsFromOutsideHotel = 10,
-            expIsPublicHoliday = false,
-            expEventNotes = "The DJ got everybody dancing",
-            expGSourceOfBusinessNotes = "A lot of people just dropped in at around 1:00 AM",
-            expOutletId = 1,
-            expUserId = "35947f01-393b-442c-b815-d6d9f7d4b81e",
-            expLocalEventId = 2,
-            expGsobs,
-            expWeathers,
-            responseString1
-         */
+            List<GuestSourceOfBusiness> expGsobs, List<int> expGsobNrOfGuests, List<Weather> expWeathers,
+            JToken report
         )
         {
             // Act *****************************************
-            int actFbReportId = (int)fbReport.Id;
-            int actTables = (int)fbReport.Tables;
-            int actFood = (int)fbReport.Food;
-            int actBeverage = (int)fbReport.Beverage;
-            int actOtherIncome = (int)fbReport.OtherIncome;
-            int actGuestsFromHotel = (int)fbReport.GuestsFromHotel;
-            int actGuestsFromOutsideHotel = (int)fbReport.GuestsFromOutsideHotel;
-            bool actIsPublicHoliday = (bool)fbReport.IsPublicHoliday;
-            string actEventNotes = (string)fbReport.EventNotes;
-            int actOutletId = (int)fbReport.OutletId;
-            string actUserId = (string)fbReport.UserId;
-            int? actLocalEventId = (int?)fbReport.LocalEventId;
-            //string actGSourceOfBusinessNotes = (string)fbReport["gSourceOfBusinessNotes"];
+            int actualTables = (int)report["tables"];
+            int actFood = (int)report["food"];
+            int actBeverage = (int)report["beverage"];
+            int actOtherIncome = (int)report["otherIncome"];
+            int actGuestsFromHotel = (int)report["guestsFromHotel"];
+            int actGuestsFromOutsideHotel = (int)report["guestsFromOutsideHotel"];
+            bool actIsPublicHoliday = (bool)report["isPublicHoliday"];
+            string actEventNotes = (string)report["eventNotes"];
+            int actOutletId = (int)report["outletId"];
+            string actUserId = (string)report["userId"];
+            int? actLocalEventId = (int?)report["localEventId"];
+            string actGSourceOfBusinessNotes = (string)report["gSourceOfBusinessNotes"];
 
             // Getting actual GuestSourceOfBusinesses
             List<GuestSourceOfBusiness> actGsobs = new List<GuestSourceOfBusiness>();
 
-            //for (int i = 0; i < fbReport["guestSourceOfBusinesses"].Count(); i++)
-            //{
-            //    GuestSourceOfBusiness actGsob = new GuestSourceOfBusiness { 
-            //        Id = (int)fbReport["guestSourceOfBusinesses"][i]["id"],
-            //        SourceOfBusiness = (string)fbReport["guestSourceOfBusinesses"][i]["sourceOfBusiness"]
-            //    };
+            for (int i = 0; i < report["guestSourceOfBusinesses"].Count(); i++)
+            {
+                GuestSourceOfBusiness actGsob = new GuestSourceOfBusiness { 
+                    Id = (int)report["guestSourceOfBusinesses"][i]["id"],
+                    SourceOfBusiness = (string)report["guestSourceOfBusinesses"][i]["sourceOfBusiness"]
+                };
 
-            //    actGsobs.Add(actGsob);
-            //}
+                actGsobs.Add(actGsob);
+            }
 
             // Getting actual gsobNrOfGuest
-            //List<int> actGsobNrOfGuests = new List<int>();
-            //var tempConvert = fbReport["gsobNrOfGuest"];
+            List<int> actGsobNrOfGuests = new List<int>();
+            var tempConvert = report["gsobNrOfGuest"];
 
-            //foreach (var item in tempConvert)
-            //{
-            //    actGsobNrOfGuests.Add((int)item);
-            //}
+            foreach (var item in tempConvert)
+            {
+                actGsobNrOfGuests.Add((int)item);
+            }
 
             // Getting actual weathers
-            //List<Weather> actWeathers = new List<Weather>();
+            List<Weather> actWeathers = new List<Weather>();
 
-            //for (int i = 0; i < fbReport["weathers"].Count(); i++)
-            //{
-            //    Weather weather = new Weather
-            //    {
-            //        Id = (int)fbReport["weathers"][i]["id"],
-            //        TypeOfWeather = (string)fbReport["weathers"][i]["typeOfWeather"]
-            //    };
+            for (int i = 0; i < report["weathers"].Count(); i++)
+            {
+                Weather weather = new Weather
+                {
+                    Id = (int)report["weathers"][i]["id"],
+                    TypeOfWeather = (string)report["weathers"][i]["typeOfWeather"]
+                };
 
-            //    actWeathers.Add(weather);
-            //}
+                actWeathers.Add(weather);
+            }
 
             // Assert
-            Assert.Equal(expFbReportId, actFbReportId);
-            Assert.Equal(expTables, actTables);
+            Assert.Equal(expectedTables, actualTables);
             Assert.Equal(expFood, actFood);
             Assert.Equal(expBeverage, actBeverage);
             Assert.Equal(expOtherIncome, actOtherIncome);
@@ -452,24 +387,24 @@ namespace APITestProject1
             Assert.Equal(expGuestsFromOutsideHotel, actGuestsFromOutsideHotel);
             Assert.Equal(expIsPublicHoliday.ToString(), actIsPublicHoliday.ToString());
             Assert.Equal(expEventNotes, actEventNotes);
-            //Assert.Equal(expGSourceOfBusinessNotes, actGSourceOfBusinessNotes);
+            Assert.Equal(expGSourceOfBusinessNotes, actGSourceOfBusinessNotes);
             Assert.Equal(expOutletId, actOutletId);
             Assert.Equal(expUserId, actUserId);
             Assert.Equal(expLocalEventId, actLocalEventId);
 
-            //for (int i = 0; i < expGsobs.Count(); i++)
-            //{
-            //    Assert.Equal(expGsobs.ElementAt(i).Id, actGsobs.ElementAt(i).Id);
-            //    Assert.Equal(expGsobs.ElementAt(i).SourceOfBusiness, actGsobs.ElementAt(i).SourceOfBusiness);
-            //}
+            for (int i = 0; i < expGsobs.Count(); i++)
+            {
+                Assert.Equal(expGsobs.ElementAt(i).Id, actGsobs.ElementAt(i).Id);
+                Assert.Equal(expGsobs.ElementAt(i).SourceOfBusiness, actGsobs.ElementAt(i).SourceOfBusiness);
+            }
 
-            //Assert.Equal(expGsobNrOfGuests, actGsobNrOfGuests);
+            Assert.Equal(expGsobNrOfGuests, actGsobNrOfGuests);
 
-            //for (int i = 0; i < expWeathers.Count(); i++)
-            //{
-            //    Assert.Equal(expWeathers.ElementAt(i).Id, actWeathers.ElementAt(i).Id);
-            //    Assert.Equal(expWeathers.ElementAt(i).TypeOfWeather, actWeathers.ElementAt(i).TypeOfWeather);
-            //}
+            for (int i = 0; i < expWeathers.Count(); i++)
+            {
+                Assert.Equal(expWeathers.ElementAt(i).Id, actWeathers.ElementAt(i).Id);
+                Assert.Equal(expWeathers.ElementAt(i).TypeOfWeather, actWeathers.ElementAt(i).TypeOfWeather);
+            }
         }
     }
 }
