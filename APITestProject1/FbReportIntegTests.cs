@@ -18,14 +18,14 @@ namespace APITestProject1
         // exp is short for expected
         // act is short for actual
 
-        private readonly HttpClient _client;
+        private readonly HttpClient client;
         private ILoggerManager logger = new LoggerManager();
                 
         // Constructor
         public FbReportIntegTests(TestingWebAppFactory<Startup> factory)
         {
-            _client = factory.CreateClient();
-            _client.BaseAddress = new Uri("https://localhost:44306/");
+            client = factory.CreateClient();
+            client.BaseAddress = new Uri("https://localhost:44306/");
         }
 
         [Fact]
@@ -46,15 +46,13 @@ namespace APITestProject1
             int expOutletId;
             string expUserId;
             int? expLocalEventId;
-           
+
 
             // Check 1. FbReportId = 1 ------------------------------------------
             string URL = $"api/FbReports/1";
 
             // Act
-            var response = await _client.GetAsync(URL);
-            response.EnsureSuccessStatusCode();
-            FbReport responseReport1 = JsonConvert.DeserializeObject<FbReport>(await response.Content.ReadAsStringAsync());
+            FbReport responseReport1 = await GetResponse(URL);
 
             CheckFbReport
             (
@@ -73,7 +71,16 @@ namespace APITestProject1
                 expLocalEventId = 2,
                 responseReport1
             );
-        } 
+        }
+
+        // ************************************** GetResponse ****************************************************************
+        private async Task<FbReport> GetResponse(string URL)
+        {
+            var response = await client.GetAsync(URL);
+            response.EnsureSuccessStatusCode();
+            FbReport responseReport = JsonConvert.DeserializeObject<FbReport>(await response.Content.ReadAsStringAsync());
+            return responseReport;
+        }
 
         // *************************************** CheckFbReport *************************************************************
         private static void CheckFbReport(
