@@ -98,7 +98,8 @@ namespace Entities.Configuration
                     GuestsFromOutsideHotel = 21,
                     IsPublicHoliday = true,
                     EventNotes = "Umpa Umpa DJ",
-                    GSourceOfBusinessNotes = "Hectic day. A lot of Germans. Since the didn't speak english we were unable to find out how they got to know of the Umpa Umpa Madness Night",
+                    GSourceOfBusinessNotes = "Hectic day. A lot of Germans. Since they didn't speak english " +
+                        "we were unable to find out how they got to know about the Umpa Umpa Madness Night",
                     Date = DateTime.Now.AddDays(-1).AddHours(-1),
                     OutletId = 2,
                     UserId = "b0b22e53-3ad2-4a0a-9e58-aa0a70a5a157",

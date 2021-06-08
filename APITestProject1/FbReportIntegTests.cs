@@ -34,12 +34,22 @@ namespace APITestProject1
         private int expOutletId;
         private string expUserId;
         private int? expLocalEventId;
+        private List<string> userIds;
 
         // Constructor
         public FbReportIntegTests(TestingWebAppFactory<Startup> factory)
         {
             client = factory.CreateClient();
             client.BaseAddress = new Uri("https://localhost:44306/");
+
+            userIds = new List<string>
+            {
+                "35947f01-393b-442c-b815-d6d9f7d4b81e",
+                "b0b22e53-3ad2-4a0a-9e58-aa0a70a5a157"
+            };
+
+            //userIds.Add("35947f01-393b-442c-b815-d6d9f7d4b81e");
+            //userIds.Add("b0b22e53-3ad2-4a0a-9e58-aa0a70a5a157");
         }
 
         [Fact]
@@ -49,14 +59,15 @@ namespace APITestProject1
         public async Task get_FbReport_1()
         {
             // Arrange
-            string URL = $"api/FbReports/1";
+            int id = 1;
+            string URL = $"api/FbReports/{id}";
 
             // Act
             FbReport responseReport = await GetResponse(URL);
 
             CheckFbReport
             (
-                expId = 1,
+                expId = id,
                 expTables = 1,
                 expFood = 10000,
                 expBeverage = 20000,
@@ -67,7 +78,7 @@ namespace APITestProject1
                 expEventNotes = "The DJ got everybody dancing",
                 expGSourceOfBusinessNotes = "A lot of people just dropped in at around 1:00 AM",
                 expOutletId = 1,
-                expUserId = "35947f01-393b-442c-b815-d6d9f7d4b81e",
+                expUserId = userIds.ElementAt(0),
                 expLocalEventId = 2,
                 responseReport
             );
@@ -78,14 +89,15 @@ namespace APITestProject1
         public async Task get_FbReport_2()
         {
             // Arrange
-            string URL = $"api/FbReports/2";
+            int id = 2;
+            string URL = $"api/FbReports/{id}";
 
             // Act
             FbReport responseReport = await GetResponse(URL);
 
             CheckFbReport
             (
-                expId = 2,
+                expId = id,
                 expTables = 14,
                 expFood = 19000,
                 expBeverage = 31000,
@@ -96,8 +108,159 @@ namespace APITestProject1
                 expEventNotes = "The DJ was really good",
                 expGSourceOfBusinessNotes = "A lot of peolpe came from Google Search",
                 expOutletId = 1,
-                expUserId = "35947f01-393b-442c-b815-d6d9f7d4b81e",
+                expUserId = userIds.ElementAt(0),
                 expLocalEventId = 3,
+                responseReport
+            );
+        }
+
+        [Fact]
+        // Testing GET /api/FbReports/3
+        public async Task get_FbReport_3()
+        {
+            // Arrange
+            int id = 3;
+            string URL = $"api/FbReports/{id}";
+
+            // Act
+            FbReport responseReport = await GetResponse(URL);
+
+            CheckFbReport
+            (
+                expId = id,
+                expTables = 19,
+                expFood = 15000,
+                expBeverage = 21000,
+                expOtherIncome = 6500,
+                expGuestsFromHotel = 35,
+                expguestsFromOutsideHotel = 18,
+                expIsPublicHoliday = false,
+                expEventNotes = "The Flamenco dance lesson was quite nice, had many people dancing",
+                expGSourceOfBusinessNotes = "Instagram",
+                expOutletId = 1,
+                expUserId = userIds.ElementAt(0),
+                expLocalEventId = 4,
+                responseReport
+            );
+        }
+
+        [Fact]
+        // Testing GET /api/FbReports/4
+        public async Task get_FbReport_4()
+        {
+            // Arrange
+            int id = 4;
+            string URL = $"api/FbReports/{id}";
+
+            // Act
+            FbReport responseReport = await GetResponse(URL);
+
+            CheckFbReport
+            (
+                expId = id,
+                expTables = 16,
+                expFood = 27000,
+                expBeverage = 28000,
+                expOtherIncome = 51000,
+                expGuestsFromHotel = 11,
+                expguestsFromOutsideHotel = 44,
+                expIsPublicHoliday = false,
+                expEventNotes = "The DJ was a star",
+                expGSourceOfBusinessNotes = null,
+                expOutletId = 1,
+                expUserId = userIds.ElementAt(0),
+                expLocalEventId = null,
+                responseReport
+            );
+        }
+
+        [Fact]
+        // Testing GET /api/FbReports/5
+        public async Task get_FbReport_5()
+        {
+            // Arrange
+            int id = 5;
+            string URL = $"api/FbReports/{id}";
+
+            // Act
+            FbReport responseReport = await GetResponse(URL);
+
+            CheckFbReport
+            (
+                expId = id,
+                expTables = 10,
+                expFood = 88000,
+                expBeverage = 91000,
+                expOtherIncome = 17400,
+                expGuestsFromHotel = 29,
+                expguestsFromOutsideHotel = 21,
+                expIsPublicHoliday = true,
+                expEventNotes = "Umpa Umpa DJ",
+                expGSourceOfBusinessNotes = "Hectic day.A lot of Germans.Since they didn't speak english " +
+                    "we were unable to find out how they got to know about the Umpa Umpa Madness Night",
+                expOutletId = 2,
+                expUserId = userIds.ElementAt(1),
+                expLocalEventId = 2,
+                responseReport
+            );
+        }
+
+        [Fact]
+        // Testing GET /api/FbReports/6
+        public async Task get_FbReport_6()
+        {
+            // Arrange
+            int id = 6;
+            string URL = $"api/FbReports/{id}";
+
+            // Act
+            FbReport responseReport = await GetResponse(URL);
+
+            CheckFbReport
+            (
+                expId = id,
+                expTables = 20,
+                expFood = 21000,
+                expBeverage = 32000,
+                expOtherIncome = 8500,
+                expGuestsFromHotel = 24,
+                expguestsFromOutsideHotel = 30,
+                expIsPublicHoliday = false,
+                expEventNotes = "The samba night was a success especially with the Italians",
+                expGSourceOfBusinessNotes = "Most of the guest had been handed leaflets down town",
+                expOutletId = 4,
+                expUserId = userIds.ElementAt(0),
+                expLocalEventId = 1,
+                responseReport
+            );
+        }
+
+        [Fact]
+        // Testing GET /api/FbReports/7
+        public async Task get_FbReport_7()
+        {
+            // Arrange
+            int id = 7;
+            string URL = $"api/FbReports/{id}";
+
+            // Act
+            FbReport responseReport = await GetResponse(URL);
+
+            CheckFbReport
+            (
+                expId = id,
+                expTables = 20,
+                expFood = 21000,
+                expBeverage = 32000,
+                expOtherIncome = 8500,
+                expGuestsFromHotel = 24,
+                expguestsFromOutsideHotel = 30,
+                expIsPublicHoliday = false,
+                expEventNotes = "Busy night",
+                expGSourceOfBusinessNotes = "A lot of the guests came from Agent referral",
+                expOutletId = 4,
+                expUserId = userIds.ElementAt(0),
+                expLocalEventId = 1,
                 responseReport
             );
         }
