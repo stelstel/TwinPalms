@@ -14,6 +14,9 @@ namespace APITestProject1
 {
     public class OutletsFbReportsControllerIntegTests : IClassFixture<TestingWebAppFactory<Startup>>
     {
+        // exp is short for expected
+        // act is short for actual
+
         private readonly HttpClient _client;
         private ILoggerManager logger = new LoggerManager();
         private List<GuestSourceOfBusiness> gsobs = new List<GuestSourceOfBusiness>();
@@ -140,7 +143,7 @@ namespace APITestProject1
                 expIsPublicHoliday = true,
                 expEventNotes = "Umpa Umpa DJ",
                 expGSourceOfBusinessNotes = "Hectic day. A lot of fat Germans. Since the didn't speak english " +
-                "we were unable to find out how they got to know of the Umpa Umpa Madness Night",
+                    "we were unable to find out how they got to know of the Umpa Umpa Madness Night",
                 expOutletId = 2,
                 expUserId = "b0b22e53-3ad2-4a0a-9e58-aa0a70a5a157",
                 expLocalEventId = 2,
