@@ -2,7 +2,6 @@
 using Entities.Models;
 using LoggerService;
 using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -47,14 +46,11 @@ namespace APITestProject1
                 "35947f01-393b-442c-b815-d6d9f7d4b81e",
                 "b0b22e53-3ad2-4a0a-9e58-aa0a70a5a157"
             };
-
-            //userIds.Add("35947f01-393b-442c-b815-d6d9f7d4b81e");
-            //userIds.Add("b0b22e53-3ad2-4a0a-9e58-aa0a70a5a157");
         }
 
-        [Fact]
         //*************************************** Testing GET /api/FbReports/{id} ***********************************************
 
+        [Fact]
         // Testing GET /api/FbReports/1
         public async Task get_FbReport_1()
         {
@@ -265,13 +261,36 @@ namespace APITestProject1
             );
         }
 
+        [Fact]
+        // Testing GET /api/FbReports/999. Since no FbReport exists with Id 999 the return from GetResponse should be null
+        public async Task get_FbReport_999()
+        {
+            // Arrange
+            int id = 999;
+            string URL = $"api/FbReports/{id}";
+
+            // Act
+            FbReport responseReport = await GetResponse(URL);
+
+            // Assert
+            Assert.Null(responseReport);
+        }
+
         // ************************************** GetResponse ****************************************************************
         private async Task<FbReport> GetResponse(string URL)
         {
             var response = await client.GetAsync(URL);
-            response.EnsureSuccessStatusCode();
-            FbReport responseReport = JsonConvert.DeserializeObject<FbReport>(await response.Content.ReadAsStringAsync());
-            return responseReport;
+
+            try
+            {
+                response.EnsureSuccessStatusCode();
+                FbReport responseReport = JsonConvert.DeserializeObject<FbReport>(await response.Content.ReadAsStringAsync());
+                return responseReport;
+            }
+            catch (Exception)
+            {
+                return null;
+            }
         }
 
         // *************************************** CheckFbReport *************************************************************
@@ -283,18 +302,18 @@ namespace APITestProject1
         )
         {
             // Act *****************************************
-            int actFbReportId = (int)fbReport.Id;
-            int actTables = (int)fbReport.Tables;
-            int actFood = (int)fbReport.Food;
-            int actBeverage = (int)fbReport.Beverage;
-            int actOtherIncome = (int)fbReport.OtherIncome;
-            int actGuestsFromHotel = (int)fbReport.GuestsFromHotel;
-            int actGuestsFromOutsideHotel = (int)fbReport.GuestsFromOutsideHotel;
-            bool actIsPublicHoliday = (bool)fbReport.IsPublicHoliday;
-            string actEventNotes = (string)fbReport.EventNotes;
-            int actOutletId = (int)fbReport.OutletId;
-            string actUserId = (string)fbReport.UserId;
-            int? actLocalEventId = (int?)fbReport.LocalEventId;
+            int actFbReportId = fbReport.Id;
+            int? actTables = fbReport.Tables;
+            int? actFood = fbReport.Food;
+            int? actBeverage = fbReport.Beverage;
+            int? actOtherIncome = fbReport.OtherIncome;
+            int? actGuestsFromHotel = fbReport.GuestsFromHotel;
+            int? actGuestsFromOutsideHotel = fbReport.GuestsFromOutsideHotel;
+            bool actIsPublicHoliday = fbReport.IsPublicHoliday;
+            string actEventNotes = fbReport.EventNotes;
+            int actOutletId = fbReport.OutletId;
+            string actUserId = fbReport.UserId;
+            int? actLocalEventId = fbReport.LocalEventId;
 
 
             // Assert **************************************
