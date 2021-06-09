@@ -33,7 +33,7 @@ namespace Entities.Configuration
                     IsPublicHoliday = false,
                     EventNotes = "The DJ got everybody dancing",
                     GSourceOfBusinessNotes = "A lot of people just dropped in at around 1:00 AM",
-                    Date = DateTime.Now,
+                    Date = new DateTime(2021, 12, 2, 4, 0, 0),
                     OutletId = 1,
                     UserId = "35947f01-393b-442c-b815-d6d9f7d4b81e",
                     LocalEventId = 2
@@ -50,7 +50,7 @@ namespace Entities.Configuration
                     IsPublicHoliday = false,
                     EventNotes = "The DJ was really good",
                     GSourceOfBusinessNotes = "A lot of peolpe came from Google Search",
-                    Date = DateTime.Now.AddMonths(-1),
+                    Date = new DateTime(2021, 8, 6, 1, 19, 42),
                     OutletId = 1,
                     UserId = "35947f01-393b-442c-b815-d6d9f7d4b81e",
                     LocalEventId = 3
@@ -67,7 +67,7 @@ namespace Entities.Configuration
                     IsPublicHoliday = false,
                     EventNotes = "The Flamenco dance lesson was quite nice, had many people dancing",
                     GSourceOfBusinessNotes = "Instagram",
-                    Date = DateTime.Now.AddMonths(-2),
+                    Date = new DateTime(2021, 7, 12, 1, 4, 9),
                     OutletId = 1,
                     UserId = "35947f01-393b-442c-b815-d6d9f7d4b81e",
                     LocalEventId = 4
@@ -83,7 +83,7 @@ namespace Entities.Configuration
                     GuestsFromOutsideHotel = 44,
                     IsPublicHoliday = false,
                     EventNotes = "The DJ was a star",
-                    Date = DateTime.Now.AddMonths(-3),
+                    Date = new DateTime(2021, 6, 22, 1, 19, 44),
                     OutletId = 1,
                     UserId = "35947f01-393b-442c-b815-d6d9f7d4b81e"
                 },
@@ -100,7 +100,7 @@ namespace Entities.Configuration
                     EventNotes = "Umpa Umpa DJ",
                     GSourceOfBusinessNotes = "Hectic day. A lot of Germans. Since they didn't speak english " +
                         "we were unable to find out how they got to know about the Umpa Umpa Madness Night",
-                    Date = DateTime.Now.AddDays(-1).AddHours(-1),
+                    Date = new DateTime(2021, 11, 2, 4, 0, 0),
                     OutletId = 2,
                     UserId = "b0b22e53-3ad2-4a0a-9e58-aa0a70a5a157",
                     LocalEventId = 2
@@ -117,7 +117,7 @@ namespace Entities.Configuration
                     IsPublicHoliday = false,
                     EventNotes = "The samba night was a success especially with the Italians",
                     GSourceOfBusinessNotes = "Most of the guest had been handed leaflets down town",
-                    Date = DateTime.Now.AddDays(-2).AddHours(-2).AddMinutes(-24),
+                    Date = new DateTime(2021, 10, 3, 3, 29, 0),
                     OutletId = 4,
                     UserId = "35947f01-393b-442c-b815-d6d9f7d4b81e",
                     LocalEventId = 1
@@ -134,7 +134,7 @@ namespace Entities.Configuration
                     IsPublicHoliday = false,
                     EventNotes = "Busy night",
                     GSourceOfBusinessNotes = "A lot of the guests came from Agent referral",
-                    Date = new DateTime(2021, 5, 09, 04, 00, 00), //closing time ex 4 am
+                    Date = new DateTime(2021, 9, 5, 2, 39, 10),
                     OutletId = 4,
                     UserId = "35947f01-393b-442c-b815-d6d9f7d4b81e",
                     LocalEventId = 1
