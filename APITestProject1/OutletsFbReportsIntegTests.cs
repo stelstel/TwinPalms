@@ -65,6 +65,7 @@ namespace APITestProject1
             int expOutletId;
             string expUserId;
             int? expLocalEventId;
+            DateTime expDate;
             List<int> outletIds = new List<int> { 1, 2, 4 };
             DateTime fromDate = new DateTime(2021, 01, 01);
             DateTime toDate = new DateTime(2022, 01, 01);
@@ -121,6 +122,7 @@ namespace APITestProject1
                 expOutletId = 1,
                 expUserId = "35947f01-393b-442c-b815-d6d9f7d4b81e",
                 expLocalEventId = 2,
+                expDate = new DateTime(2021, 12, 2, 4, 0, 0),
                 expGsobs,
                 expGsobNrOfGuests,
                 expWeathers,
@@ -150,6 +152,7 @@ namespace APITestProject1
                 expOutletId = 2,
                 expUserId = "b0b22e53-3ad2-4a0a-9e58-aa0a70a5a157",
                 expLocalEventId = 2,
+                expDate = new DateTime(2021, 11, 2, 4, 0, 0),
                 expGsobs,
                 expGsobNrOfGuests,
                 expWeathers,
@@ -178,6 +181,7 @@ namespace APITestProject1
                 expOutletId = 4,
                 expUserId = "35947f01-393b-442c-b815-d6d9f7d4b81e",
                 expLocalEventId = 1,
+                expDate = new DateTime(2021, 10, 3, 3, 29, 0),
                 expGsobs,
                 expGsobNrOfGuests,
                 expWeathers,
@@ -206,6 +210,7 @@ namespace APITestProject1
                 expOutletId = 4,
                 expUserId = "35947f01-393b-442c-b815-d6d9f7d4b81e",
                 expLocalEventId = 1,
+                expDate = new DateTime(2021, 9, 5, 2, 39, 10),
                 expGsobs,
                 expGsobNrOfGuests,
                 expWeathers,
@@ -246,6 +251,7 @@ namespace APITestProject1
                 expOutletId = 1,
                 expUserId = "35947f01-393b-442c-b815-d6d9f7d4b81e",
                 expLocalEventId = 3,
+                expDate = new DateTime(2021, 8, 6, 1, 19, 42),
                 expGsobs,
                 expGsobNrOfGuests,
                 expWeathers,
@@ -292,6 +298,7 @@ namespace APITestProject1
                 expOutletId = 1,
                 expUserId = "35947f01-393b-442c-b815-d6d9f7d4b81e",
                 expLocalEventId = 4,
+                expDate = new DateTime(2021, 7, 12, 1, 4, 9),
                 expGsobs,
                 expGsobNrOfGuests,
                 expWeathers,
@@ -320,6 +327,7 @@ namespace APITestProject1
                 expOutletId = 1,
                 expUserId = "35947f01-393b-442c-b815-d6d9f7d4b81e",
                 expLocalEventId = null,
+                expDate = new DateTime(2021, 6, 22, 1, 19, 44),
                 expGsobs,
                 expGsobNrOfGuests,
                 expWeathers,
@@ -331,7 +339,7 @@ namespace APITestProject1
         private static void CheckFbReport(
             int expectedTables, int expFood, int expBeverage, int expOtherIncome, 
             int expGuestsFromHotelTP, int expGuestsFromHotelTM, int expGuestsFromOutsideHotel, bool expIsPublicHoliday, string expEventNotes,
-            string expGSourceOfBusinessNotes, int expOutletId,  string expUserId, int? expLocalEventId, 
+            string expGSourceOfBusinessNotes, int expOutletId,  string expUserId, int? expLocalEventId, DateTime expDate, 
             List<GuestSourceOfBusiness> expGsobs, List<int> expGsobNrOfGuests, List<Weather> expWeathers,
             JToken report
         )
@@ -349,6 +357,7 @@ namespace APITestProject1
             int actOutletId = (int)report["outletId"];
             string actUserId = (string)report["userId"];
             int? actLocalEventId = (int?)report["localEventId"];
+            DateTime actDate = (DateTime)report["date"];
             string actGSourceOfBusinessNotes = (string)report["gSourceOfBusinessNotes"];
 
             // Getting actual GuestSourceOfBusinesses
@@ -401,6 +410,9 @@ namespace APITestProject1
             Assert.Equal(expOutletId, actOutletId);
             Assert.Equal(expUserId, actUserId);
             Assert.Equal(expLocalEventId, actLocalEventId);
+            Assert.Equal(expDate, actDate);
+
+            Assert.NotEqual(expFood, actGuestsFromHotelTP);
 
             for (int i = 0; i < expGsobs.Count(); i++)
             {

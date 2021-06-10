@@ -35,6 +35,8 @@ namespace APITestProject1
         private int expOutletId;
         private string expUserId;
         private int? expLocalEventId;
+        private DateTime expDate;
+
         private List<string> userIds;
 
         // Constructor
@@ -71,7 +73,7 @@ namespace APITestProject1
                 expBeverage = 20000,
                 expOtherIncome = 5000,
                 expGuestsFromHotelTP = 15,
-                expGuestsFromHotelTM = 0,
+                expGuestsFromHotelTM = 13,
                 expGuestsFromOutsideHotel = 10,
                 expIsPublicHoliday = false,
                 expEventNotes = "The DJ got everybody dancing",
@@ -80,6 +82,7 @@ namespace APITestProject1
                 expOutletId = 1,
                 expUserId = userIds.ElementAt(0),
                 expLocalEventId = 2,
+                expDate = new DateTime(2021, 12, 2, 4, 0, 0),
                 responseReport
             );
         }
@@ -103,7 +106,7 @@ namespace APITestProject1
                 expBeverage = 31000,
                 expOtherIncome = 9100,
                 expGuestsFromHotelTP = 25,
-                expGuestsFromHotelTM = 0,
+                expGuestsFromHotelTM = 9,
                 expGuestsFromOutsideHotel = 4,
                 expIsPublicHoliday = false,
                 expEventNotes = "The DJ was really good",
@@ -112,6 +115,7 @@ namespace APITestProject1
                 expOutletId = 1,
                 expUserId = userIds.ElementAt(0),
                 expLocalEventId = 3,
+                expDate = new DateTime(2021, 8, 6, 1, 19, 42),
                 responseReport
             );
         }
@@ -135,7 +139,7 @@ namespace APITestProject1
                 expBeverage = 21000,
                 expOtherIncome = 6500,
                 expGuestsFromHotelTP = 35,
-                expGuestsFromHotelTM = 0,
+                expGuestsFromHotelTM = 22,
                 expGuestsFromOutsideHotel = 18,
                 expIsPublicHoliday = false,
                 expEventNotes = "The Flamenco dance lesson was quite nice, had many people dancing",
@@ -144,6 +148,7 @@ namespace APITestProject1
                 expOutletId = 1,
                 expUserId = userIds.ElementAt(0),
                 expLocalEventId = 4,
+                expDate = new DateTime(2021, 7, 12, 1, 4, 9),
                 responseReport
             );
         }
@@ -167,7 +172,7 @@ namespace APITestProject1
                 expBeverage = 28000,
                 expOtherIncome = 51000,
                 expGuestsFromHotelTP = 11,
-                expGuestsFromHotelTM = 0,
+                expGuestsFromHotelTM = 14,
                 expGuestsFromOutsideHotel = 44,
                 expIsPublicHoliday = false,
                 expEventNotes = "The DJ was a star",
@@ -176,6 +181,7 @@ namespace APITestProject1
                 expOutletId = 1,
                 expUserId = userIds.ElementAt(0),
                 expLocalEventId = null,
+                expDate = new DateTime(2021, 6, 22, 1, 19, 44),
                 responseReport
             );
         }
@@ -199,7 +205,7 @@ namespace APITestProject1
                 expBeverage = 91000,
                 expOtherIncome = 17400,
                 expGuestsFromHotelTP = 29,
-                expGuestsFromHotelTM = 0,
+                expGuestsFromHotelTM = 21,
                 expGuestsFromOutsideHotel = 21,
                 expIsPublicHoliday = true,
                 expEventNotes = "Umpa Umpa DJ",
@@ -209,6 +215,7 @@ namespace APITestProject1
                 expOutletId = 2,
                 expUserId = userIds.ElementAt(1),
                 expLocalEventId = 2,
+                expDate = new DateTime(2021, 11, 2, 4, 0, 0),
                 responseReport
             );
         }
@@ -232,7 +239,7 @@ namespace APITestProject1
                 expBeverage = 32000,
                 expOtherIncome = 8500,
                 expGuestsFromHotelTP = 24,
-                expGuestsFromHotelTM = 0,
+                expGuestsFromHotelTM = 20,
                 expGuestsFromOutsideHotel = 30,
                 expIsPublicHoliday = false,
                 expEventNotes = "The samba night was a success especially with the Italians",
@@ -241,6 +248,7 @@ namespace APITestProject1
                 expOutletId = 4,
                 expUserId = userIds.ElementAt(0),
                 expLocalEventId = 1,
+                expDate = new DateTime(2021, 10, 3, 3, 29, 0),
                 responseReport
             );
         }
@@ -264,7 +272,7 @@ namespace APITestProject1
                 expBeverage = 32000,
                 expOtherIncome = 8500,
                 expGuestsFromHotelTP = 24,
-                expGuestsFromHotelTM = 0,
+                expGuestsFromHotelTM = 21,
                 expGuestsFromOutsideHotel = 30,
                 expIsPublicHoliday = false,
                 expEventNotes = "Busy night",
@@ -273,6 +281,7 @@ namespace APITestProject1
                 expOutletId = 4,
                 expUserId = userIds.ElementAt(0),
                 expLocalEventId = 1,
+                expDate = new DateTime(2021, 9, 5, 2, 39, 10),
                 responseReport
             );
         }
@@ -313,7 +322,7 @@ namespace APITestProject1
         private static void CheckFbReport(
             int expFbReportId, int expTables, int expFood, int expBeverage, int expOtherIncome, 
             int expGuestsFromHotelTP, int expGuestsFromHotelTM, int expGuestsFromOutsideHotel, bool expIsPublicHoliday, string expEventNotes,
-            string expGSourceOfBusinessNotes, string expNotes, int expOutletId,  string expUserId, int? expLocalEventId, 
+            string expGSourceOfBusinessNotes, string expNotes, int expOutletId,  string expUserId, int? expLocalEventId, DateTime expDate,
             FbReport fbReport
         )
         {
@@ -333,6 +342,7 @@ namespace APITestProject1
             int actOutletId = fbReport.OutletId;
             string actUserId = fbReport.UserId;
             int? actLocalEventId = fbReport.LocalEventId;
+            DateTime actDate = fbReport.Date;
 
 
             // Assert **************************************
@@ -342,7 +352,7 @@ namespace APITestProject1
             Assert.Equal(expBeverage, actBeverage);
             Assert.Equal(expOtherIncome, actOtherIncome);
             Assert.Equal(expGuestsFromHotelTP, actGuestsFromHotelTP);
-            Assert.Equal(expGuestsFromHotelTP, actGuestsFromHotelTP);
+            Assert.Equal(expGuestsFromHotelTM, actGuestsFromHotelTM);
             Assert.Equal(expGuestsFromOutsideHotel, actGuestsFromOutsideHotel);
             Assert.Equal(expIsPublicHoliday.ToString(), actIsPublicHoliday.ToString());
             Assert.Equal(expEventNotes, actEventNotes);
@@ -351,6 +361,9 @@ namespace APITestProject1
             Assert.Equal(expOutletId, actOutletId);
             Assert.Equal(expUserId, actUserId);
             Assert.Equal(expLocalEventId, actLocalEventId);
+            Assert.Equal(expDate, actDate);
+
+            Assert.NotEqual(expFood, actGuestsFromHotelTM);
         }
     }
 }
