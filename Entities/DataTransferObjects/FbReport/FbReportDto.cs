@@ -12,7 +12,8 @@ namespace Entities.DataTransferObjects
         public int? Food { get; set; }
         public int? Beverage { get; set; }
         public int? OtherIncome { get; set; }
-        public int? GuestsFromHotel { get; set; }
+        public int? GuestsFromHotelTP { get; set; }
+        public int? GuestsFromHotelTM { get; set; }
         public int? GuestsFromOutsideHotel { get; set; }
         public bool IsPublicHoliday { get; set; }
         public string EventNotes { get; set; }

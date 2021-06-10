@@ -19,8 +19,11 @@ namespace Entities.DataTransferObjects
         [Range(0, int.MaxValue, ErrorMessage = "OtherIncome can't be lower than 0")]
         public int? OtherIncome { get; set; }
 
-        [Range(0, int.MaxValue, ErrorMessage = "GuestsFromHotel can't be lower than 0")]
-        public int? GuestsFromHotel { get; set; }
+        [Range(0, int.MaxValue, ErrorMessage = "GuestsFromHotelTP can't be lower than 0")]
+        public int? GuestsFromHotelTP { get; set; }
+
+        [Range(0, int.MaxValue, ErrorMessage = "GuestsFromHotelTM can't be lower than 0")]
+        public int? GuestsFromHotelTM { get; set; }
 
         [Range(0, int.MaxValue, ErrorMessage = "GuestsFromOutsideHotel can't be lower than 0")]
         public int? GuestsFromOutsideHotel { get; set; }

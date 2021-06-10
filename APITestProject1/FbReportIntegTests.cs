@@ -25,7 +25,8 @@ namespace APITestProject1
         private int expFood;
         private int expBeverage;
         private int expOtherIncome;
-        private int expGuestsFromHotel;
+        private int expGuestsFromHotelTP;
+        private int expGuestsFromHotelTM;
         private int expguestsFromOutsideHotel;
         private bool expIsPublicHoliday;
         private string expEventNotes;
@@ -68,7 +69,8 @@ namespace APITestProject1
                 expFood = 10000,
                 expBeverage = 20000,
                 expOtherIncome = 5000,
-                expGuestsFromHotel = 15,
+                expGuestsFromHotelTP = 15,
+                expGuestsFromHotelTM = 0,
                 expguestsFromOutsideHotel = 10,
                 expIsPublicHoliday = false,
                 expEventNotes = "The DJ got everybody dancing",
@@ -98,7 +100,8 @@ namespace APITestProject1
                 expFood = 19000,
                 expBeverage = 31000,
                 expOtherIncome = 9100,
-                expGuestsFromHotel = 25,
+                expGuestsFromHotelTP = 25,
+                expGuestsFromHotelTM = 0,
                 expguestsFromOutsideHotel = 4,
                 expIsPublicHoliday = false,
                 expEventNotes = "The DJ was really good",
@@ -128,7 +131,8 @@ namespace APITestProject1
                 expFood = 15000,
                 expBeverage = 21000,
                 expOtherIncome = 6500,
-                expGuestsFromHotel = 35,
+                expGuestsFromHotelTP = 35,
+                expGuestsFromHotelTM = 0,
                 expguestsFromOutsideHotel = 18,
                 expIsPublicHoliday = false,
                 expEventNotes = "The Flamenco dance lesson was quite nice, had many people dancing",
@@ -158,7 +162,8 @@ namespace APITestProject1
                 expFood = 27000,
                 expBeverage = 28000,
                 expOtherIncome = 51000,
-                expGuestsFromHotel = 11,
+                expGuestsFromHotelTP = 11,
+                expGuestsFromHotelTM = 0,
                 expguestsFromOutsideHotel = 44,
                 expIsPublicHoliday = false,
                 expEventNotes = "The DJ was a star",
@@ -188,7 +193,8 @@ namespace APITestProject1
                 expFood = 88000,
                 expBeverage = 91000,
                 expOtherIncome = 17400,
-                expGuestsFromHotel = 29,
+                expGuestsFromHotelTP = 29,
+                expGuestsFromHotelTM = 0,
                 expguestsFromOutsideHotel = 21,
                 expIsPublicHoliday = true,
                 expEventNotes = "Umpa Umpa DJ",
@@ -219,7 +225,8 @@ namespace APITestProject1
                 expFood = 21000,
                 expBeverage = 32000,
                 expOtherIncome = 8500,
-                expGuestsFromHotel = 24,
+                expGuestsFromHotelTP = 24,
+                expGuestsFromHotelTM = 0,
                 expguestsFromOutsideHotel = 30,
                 expIsPublicHoliday = false,
                 expEventNotes = "The samba night was a success especially with the Italians",
@@ -249,7 +256,8 @@ namespace APITestProject1
                 expFood = 21000,
                 expBeverage = 32000,
                 expOtherIncome = 8500,
-                expGuestsFromHotel = 24,
+                expGuestsFromHotelTP = 24,
+                expGuestsFromHotelTM = 0,
                 expguestsFromOutsideHotel = 30,
                 expIsPublicHoliday = false,
                 expEventNotes = "Busy night",
@@ -296,7 +304,7 @@ namespace APITestProject1
         // *************************************** CheckFbReport *************************************************************
         private static void CheckFbReport(
             int expFbReportId, int expTables, int expFood, int expBeverage, int expOtherIncome, 
-            int expGuestsFromHotel, int expGuestsFromOutsideHotel, bool expIsPublicHoliday, string expEventNotes,
+            int expGuestsFromHotelTP, int expGuestsFromHotelTM, int expGuestsFromOutsideHotel, bool expIsPublicHoliday, string expEventNotes,
             string expGSourceOfBusinessNotes, int expOutletId,  string expUserId, int? expLocalEventId, 
             FbReport fbReport
         )
@@ -307,7 +315,8 @@ namespace APITestProject1
             int? actFood = fbReport.Food;
             int? actBeverage = fbReport.Beverage;
             int? actOtherIncome = fbReport.OtherIncome;
-            int? actGuestsFromHotel = fbReport.GuestsFromHotel;
+            int? actGuestsFromHotelTP = fbReport.GuestsFromHotelTP;
+            int? actGuestsFromHotelTM = fbReport.GuestsFromHotelTM;
             int? actGuestsFromOutsideHotel = fbReport.GuestsFromOutsideHotel;
             bool actIsPublicHoliday = fbReport.IsPublicHoliday;
             string actEventNotes = fbReport.EventNotes;
@@ -322,7 +331,8 @@ namespace APITestProject1
             Assert.Equal(expFood, actFood);
             Assert.Equal(expBeverage, actBeverage);
             Assert.Equal(expOtherIncome, actOtherIncome);
-            Assert.Equal(expGuestsFromHotel, actGuestsFromHotel);
+            Assert.Equal(expGuestsFromHotelTP, actGuestsFromHotelTP);
+            Assert.Equal(expGuestsFromHotelTP, actGuestsFromHotelTP);
             Assert.Equal(expGuestsFromOutsideHotel, actGuestsFromOutsideHotel);
             Assert.Equal(expIsPublicHoliday.ToString(), actIsPublicHoliday.ToString());
             Assert.Equal(expEventNotes, actEventNotes);
