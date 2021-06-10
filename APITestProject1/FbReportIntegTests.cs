@@ -9,6 +9,7 @@ using System.Net.Http;
 using System.Threading.Tasks;
 using TwinPalmsKPI;
 using Xunit;
+using static APITestProject1.testObjects;
 
 namespace APITestProject1
 {
@@ -38,6 +39,10 @@ namespace APITestProject1
         private DateTime expDate;
 
         private List<string> userIds;
+        private List<string> notes = new List<string>();
+        private List<string> eventNotes = new List<string>();
+        private List<string> gsobNotes = new List<string>();
+
 
         // Constructor
         public FbReportIntegTests(TestingWebAppFactory<Startup> factory)
@@ -50,6 +55,10 @@ namespace APITestProject1
                 "35947f01-393b-442c-b815-d6d9f7d4b81e",
                 "b0b22e53-3ad2-4a0a-9e58-aa0a70a5a157"
             };
+
+            notes = testObjectsNotes;
+            eventNotes = testObjectsEventNotes;
+            gsobNotes = testObjectsGSOBNotes;
         }
 
         //*************************************** Testing GET /api/FbReports/{id} ***********************************************
@@ -76,9 +85,9 @@ namespace APITestProject1
                 expGuestsFromHotelTM = 13,
                 expGuestsFromOutsideHotel = 10,
                 expIsPublicHoliday = false,
-                expEventNotes = "The DJ got everybody dancing",
-                expGSourceOfBusinessNotes = "A lot of people just dropped in at around 1:00 AM",
-                expNotes = "Lorem ipsum dolor sit amet",
+                expEventNotes = eventNotes[0],
+                expGSourceOfBusinessNotes = gsobNotes[0],
+                expNotes = notes[0],
                 expOutletId = 1,
                 expUserId = userIds.ElementAt(0),
                 expLocalEventId = 2,
@@ -109,9 +118,9 @@ namespace APITestProject1
                 expGuestsFromHotelTM = 9,
                 expGuestsFromOutsideHotel = 4,
                 expIsPublicHoliday = false,
-                expEventNotes = "The DJ was really good",
-                expGSourceOfBusinessNotes = "A lot of peolpe came from Google Search",
-                expNotes = "Consectetur adipiscing elit",
+                expEventNotes = eventNotes[1],
+                expGSourceOfBusinessNotes = gsobNotes[1],
+                expNotes = notes[1],
                 expOutletId = 1,
                 expUserId = userIds.ElementAt(0),
                 expLocalEventId = 3,
@@ -142,9 +151,9 @@ namespace APITestProject1
                 expGuestsFromHotelTM = 22,
                 expGuestsFromOutsideHotel = 18,
                 expIsPublicHoliday = false,
-                expEventNotes = "The Flamenco dance lesson was quite nice, had many people dancing",
-                expGSourceOfBusinessNotes = "Instagram",
-                expNotes = "Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua",
+                expEventNotes = eventNotes[2],
+                expGSourceOfBusinessNotes = gsobNotes[2],
+                expNotes = notes[2],
                 expOutletId = 1,
                 expUserId = userIds.ElementAt(0),
                 expLocalEventId = 4,
@@ -175,9 +184,9 @@ namespace APITestProject1
                 expGuestsFromHotelTM = 14,
                 expGuestsFromOutsideHotel = 44,
                 expIsPublicHoliday = false,
-                expEventNotes = "The DJ was a star",
-                expGSourceOfBusinessNotes = null,
-                expNotes = "Ut enim ad minim veniam",
+                expEventNotes = eventNotes[3],
+                expGSourceOfBusinessNotes = gsobNotes[3],
+                expNotes = notes[3],
                 expOutletId = 1,
                 expUserId = userIds.ElementAt(0),
                 expLocalEventId = null,
@@ -208,10 +217,9 @@ namespace APITestProject1
                 expGuestsFromHotelTM = 21,
                 expGuestsFromOutsideHotel = 21,
                 expIsPublicHoliday = true,
-                expEventNotes = "Umpa Umpa DJ",
-                expGSourceOfBusinessNotes = "Hectic day. A lot of Germans. Since they didn't speak english " +
-                    "we were unable to find out how they got to know about the Umpa Umpa Madness Night",
-                expNotes = "Quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat",
+                expEventNotes = eventNotes[4],
+                expGSourceOfBusinessNotes = gsobNotes[4],
+                expNotes = notes[4],
                 expOutletId = 2,
                 expUserId = userIds.ElementAt(1),
                 expLocalEventId = 2,
@@ -242,9 +250,9 @@ namespace APITestProject1
                 expGuestsFromHotelTM = 20,
                 expGuestsFromOutsideHotel = 30,
                 expIsPublicHoliday = false,
-                expEventNotes = "The samba night was a success especially with the Italians",
-                expGSourceOfBusinessNotes = "Most of the guest had been handed leaflets down town",
-                expNotes = "Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur",
+                expEventNotes = eventNotes[5],
+                expGSourceOfBusinessNotes = gsobNotes[5],
+                expNotes = notes[5],
                 expOutletId = 4,
                 expUserId = userIds.ElementAt(0),
                 expLocalEventId = 1,
@@ -275,9 +283,9 @@ namespace APITestProject1
                 expGuestsFromHotelTM = 21,
                 expGuestsFromOutsideHotel = 30,
                 expIsPublicHoliday = false,
-                expEventNotes = "Busy night",
-                expGSourceOfBusinessNotes = "A lot of the guests came from Agent referral",
-                expNotes = "Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum",
+                expEventNotes = eventNotes[6],
+                expGSourceOfBusinessNotes = gsobNotes[6],
+                expNotes = notes[6],
                 expOutletId = 4,
                 expUserId = userIds.ElementAt(0),
                 expLocalEventId = 1,

@@ -52,7 +52,7 @@ namespace Entities.Configuration
                     GuestsFromOutsideHotel = 4,
                     IsPublicHoliday = false,
                     EventNotes = "The DJ was really good",
-                    GSourceOfBusinessNotes = "A lot of peolpe came from Google Search",
+                    GSourceOfBusinessNotes = "A lot of people came from Google Search",
                     Notes = "Consectetur adipiscing elit",
                     Date = new DateTime(2021, 8, 6, 1, 19, 42),
                     OutletId = 1,

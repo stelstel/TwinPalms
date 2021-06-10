@@ -9,6 +9,7 @@ using System.Net.Http;
 using System.Threading.Tasks;
 using TwinPalmsKPI;
 using Xunit;
+using static APITestProject1.testObjects;
 
 namespace APITestProject1
 {
@@ -21,29 +22,21 @@ namespace APITestProject1
         private ILoggerManager logger = new LoggerManager();
         private List<GuestSourceOfBusiness> gsobs = new List<GuestSourceOfBusiness>();
         private List<Weather> weathers = new List<Weather>();
-        
+        private List<string> notes = new List<string>();
+        private List<string> eventNotes = new List<string>();
+        private List<string> gsobNotes = new List<string>();
+
+        // Constructor
         public OutletsFbReportsIntegTests(TestingWebAppFactory<Startup> factory)
         {
             _client = factory.CreateClient();
             _client.BaseAddress = new Uri("https://localhost:44306/");
 
-            gsobs.Add(new GuestSourceOfBusiness() { Id = 1, SourceOfBusiness = "Hotel Website" });
-            gsobs.Add(new GuestSourceOfBusiness() { Id = 2, SourceOfBusiness = "Hungry Hub" });
-            gsobs.Add(new GuestSourceOfBusiness() { Id = 3, SourceOfBusiness = "Facebook referral" });
-            gsobs.Add(new GuestSourceOfBusiness() { Id = 4, SourceOfBusiness = "Google search" });
-            gsobs.Add(new GuestSourceOfBusiness() { Id = 5, SourceOfBusiness = "Instagram referral" });
-            gsobs.Add(new GuestSourceOfBusiness() { Id = 6, SourceOfBusiness = "Hotel referral" });
-            gsobs.Add(new GuestSourceOfBusiness() { Id = 7, SourceOfBusiness = "Other Hotel referral" });
-            gsobs.Add(new GuestSourceOfBusiness() { Id = 8, SourceOfBusiness = "Agent referral" });
-            gsobs.Add(new GuestSourceOfBusiness() { Id = 9, SourceOfBusiness = "Walk in" });
-            gsobs.Add(new GuestSourceOfBusiness() { Id = 10, SourceOfBusiness = "Other" });
-
-            weathers.Add(new Weather(){ Id = 1, TypeOfWeather = "Sunny/Clear" });
-            weathers.Add(new Weather(){ Id = 2, TypeOfWeather = "Partially Cloudy" });
-            weathers.Add(new Weather(){ Id = 3, TypeOfWeather = "Overcast" });
-            weathers.Add(new Weather(){ Id = 4, TypeOfWeather = "Rain" });
-            weathers.Add(new Weather(){ Id = 5, TypeOfWeather = "Showers" });
-            weathers.Add(new Weather(){ Id = 6, TypeOfWeather = "Stormy" });
+            gsobs = testObjectsGsobs;
+            weathers = testObjectsWeathers;
+            notes = testObjectsNotes;
+            eventNotes = testObjectsEventNotes;
+            gsobNotes = testObjectsGSOBNotes;
         }
 
         [Fact]
@@ -72,8 +65,10 @@ namespace APITestProject1
             List<GuestSourceOfBusiness> expGsobs = new List<GuestSourceOfBusiness>();
             List<int> expGsobNrOfGuests = new List<int>();
             List<Weather> expWeathers = new List<Weather>();
+
             string URL = $"outlets/fbReports?outletIds={outletIds.ElementAt(0)}&outletIds={outletIds.ElementAt(1)}&outletIds={outletIds.ElementAt(2)}&" +
                 $"fromDate={fromDate}&toDate={toDate}";
+
             expectedNrOfReports = 7;
 
 
@@ -106,7 +101,7 @@ namespace APITestProject1
 
             expWeathers.Clear();
             expWeathers.Add(weather1);
-        
+
             CheckFbReport
             (
                 expectedTables = 1,
@@ -117,8 +112,8 @@ namespace APITestProject1
                 expGuestsFromHotelTM = 13,
                 expguestsFromOutsideHotel = 10,
                 expIsPublicHoliday = false,
-                expEventNotes = "The DJ got everybody dancing",
-                expGSourceOfBusinessNotes = "A lot of people just dropped in at around 1:00 AM",
+                expEventNotes = eventNotes[0],
+                expGSourceOfBusinessNotes = gsobNotes[0],
                 expOutletId = 1,
                 expUserId = "35947f01-393b-442c-b815-d6d9f7d4b81e",
                 expLocalEventId = 2,
@@ -146,9 +141,8 @@ namespace APITestProject1
                 expGuestsFromHotelTM = 21,
                 expguestsFromOutsideHotel = 21,
                 expIsPublicHoliday = true,
-                expEventNotes = "Umpa Umpa DJ",
-                expGSourceOfBusinessNotes = "Hectic day. A lot of Germans. Since they didn't speak english " +
-                    "we were unable to find out how they got to know about the Umpa Umpa Madness Night",
+                expEventNotes = eventNotes[4],
+                expGSourceOfBusinessNotes = gsobNotes[4],
                 expOutletId = 2,
                 expUserId = "b0b22e53-3ad2-4a0a-9e58-aa0a70a5a157",
                 expLocalEventId = 2,
@@ -176,8 +170,8 @@ namespace APITestProject1
                 expGuestsFromHotelTM = 20,
                 expguestsFromOutsideHotel = 30,
                 expIsPublicHoliday = false,
-                expEventNotes = "The samba night was a success especially with the Italians",
-                expGSourceOfBusinessNotes = "Most of the guest had been handed leaflets down town",
+                expEventNotes = eventNotes[5],
+                expGSourceOfBusinessNotes = gsobNotes[5],
                 expOutletId = 4,
                 expUserId = "35947f01-393b-442c-b815-d6d9f7d4b81e",
                 expLocalEventId = 1,
@@ -205,8 +199,8 @@ namespace APITestProject1
                 expGuestsFromHotelTM = 21,
                 expguestsFromOutsideHotel = 30,
                 expIsPublicHoliday = false,
-                expEventNotes = "Busy night",
-                expGSourceOfBusinessNotes = "A lot of the guests came from Agent referral",
+                expEventNotes = eventNotes[6],
+                expGSourceOfBusinessNotes = gsobNotes[6],
                 expOutletId = 4,
                 expUserId = "35947f01-393b-442c-b815-d6d9f7d4b81e",
                 expLocalEventId = 1,
@@ -246,8 +240,8 @@ namespace APITestProject1
                 expGuestsFromHotelTM = 9,
                 expguestsFromOutsideHotel = 4,
                 expIsPublicHoliday = false,
-                expEventNotes = "The DJ was really good",
-                expGSourceOfBusinessNotes = "A lot of peolpe came from Google Search",
+                expEventNotes = eventNotes[1],
+                expGSourceOfBusinessNotes = gsobNotes[1],
                 expOutletId = 1,
                 expUserId = "35947f01-393b-442c-b815-d6d9f7d4b81e",
                 expLocalEventId = 3,
@@ -293,8 +287,8 @@ namespace APITestProject1
                 expGuestsFromHotelTM = 22,
                 expguestsFromOutsideHotel = 18,
                 expIsPublicHoliday = false,
-                expEventNotes = "The Flamenco dance lesson was quite nice, had many people dancing",
-                expGSourceOfBusinessNotes = "Instagram",
+                expEventNotes = eventNotes[2],
+                expGSourceOfBusinessNotes = gsobNotes[2],
                 expOutletId = 1,
                 expUserId = "35947f01-393b-442c-b815-d6d9f7d4b81e",
                 expLocalEventId = 4,
@@ -322,8 +316,8 @@ namespace APITestProject1
                 expGuestsFromHotelTM = 14,
                 expguestsFromOutsideHotel = 44,
                 expIsPublicHoliday = false,
-                expEventNotes = "The DJ was a star",
-                expGSourceOfBusinessNotes = null,
+                expEventNotes = eventNotes[3],
+                expGSourceOfBusinessNotes = gsobNotes[3],
                 expOutletId = 1,
                 expUserId = "35947f01-393b-442c-b815-d6d9f7d4b81e",
                 expLocalEventId = null,
