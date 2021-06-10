@@ -28,6 +28,8 @@ namespace Entities.Models
         public string EventNotes { get; set; }
         public string ImagePath { get; set; }
         public string GSourceOfBusinessNotes { get; set; }
+        public string Notes { get; set; }
+
         [Required]
         public DateTime Date { get; set; }
         [Required]

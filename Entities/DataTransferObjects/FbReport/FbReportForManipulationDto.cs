@@ -40,6 +40,10 @@ namespace Entities.DataTransferObjects
         [StringLength(5000, ErrorMessage = "GSourceOfBusinessNotes can't contain more than 5000 characters")]
         [DataType(DataType.Text)]
         public string GSourceOfBusinessNotes { get; set; }
+        
+        [StringLength(5000, ErrorMessage = "Notes can't contain more than 5000 characters")]
+        [DataType(DataType.Text)]
+        public string Notes { get; set; }
 
         [Required(ErrorMessage = "Date is a required field.")]
         [DataType(DataType.DateTime)]

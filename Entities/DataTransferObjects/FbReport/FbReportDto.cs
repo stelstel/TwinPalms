@@ -19,6 +19,7 @@ namespace Entities.DataTransferObjects
         public string EventNotes { get; set; }
         public string ImagePath { get; set; }
         public string GSourceOfBusinessNotes { get; set; }
+        public string Notes { get; set; }
         public DateTime Date { get; set; }
         public int OutletId { get; set; }
         public string UserId { get; set; }
