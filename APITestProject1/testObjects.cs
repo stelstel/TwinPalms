@@ -22,7 +22,7 @@ namespace APITestProject1
             new GuestSourceOfBusiness() { Id = 10, SourceOfBusiness = "Other" }
         };
 
-        public static List<Weather> testObjectsWeathers = new List<Weather>
+        public static List<Weather> TestObjWeathers = new List<Weather>
         {
             new Weather() { Id = 1, TypeOfWeather = "Sunny/Clear" },
             new Weather() { Id = 2, TypeOfWeather = "Partially Cloudy" },
@@ -32,7 +32,7 @@ namespace APITestProject1
             new Weather() { Id = 6, TypeOfWeather = "Stormy" }
         };
 
-        public static List<string> testObjectsNotes = new List<string>
+        public static List<string> TestObjNotes = new List<string>
         {
             "Lorem ipsum dolor sit amet",
             "Consectetur adipiscing elit",
@@ -43,7 +43,7 @@ namespace APITestProject1
             "Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum"
         };
 
-        public static List<string> testObjectsEventNotes = new List<string>
+        public static List<string> TestObjEventNotes = new List<string>
         {
             "The DJ got everybody dancing",                                         // 0
             "The DJ was really good",                                               // 1
@@ -54,7 +54,7 @@ namespace APITestProject1
             "Busy night"                                                            // 6
         };
 
-        public static List<string> testObjectsGSOBNotes = new List<string>
+        public static List<string> TestObjGSOBNotes = new List<string>
         {
             "A lot of people just dropped in at around 1:00 AM",    //0
             "A lot of people came from Google Search",              //1
@@ -65,5 +65,11 @@ namespace APITestProject1
             "Most of the guest had been handed leaflets down town", // 5
             "A lot of the guests came from Agent referral"          // 6
         };
-    }
+
+        public static List<string> TestObjUserIds = new List<string>
+            {
+                "35947f01-393b-442c-b815-d6d9f7d4b81e",
+                "b0b22e53-3ad2-4a0a-9e58-aa0a70a5a157"
+            };
+}
 }

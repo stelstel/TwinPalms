@@ -51,15 +51,10 @@ namespace APITestProject1
             client = factory.CreateClient();
             client.BaseAddress = new Uri("https://localhost:44306/");
 
-            userIds = new List<string>
-            {
-                "35947f01-393b-442c-b815-d6d9f7d4b81e",
-                "b0b22e53-3ad2-4a0a-9e58-aa0a70a5a157"
-            };
-
-            notes = testObjectsNotes;
-            eventNotes = testObjectsEventNotes;
-            gsobNotes = testObjectsGSOBNotes;
+            userIds = TestObjUserIds;
+            notes = TestObjNotes;
+            eventNotes = TestObjEventNotes;
+            gsobNotes = TestObjGSOBNotes;
         }
 
         //*************************************** Testing GET /api/FbReports/{id} ***********************************************
