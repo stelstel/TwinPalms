@@ -32,7 +32,7 @@ namespace APITestProject1
             _client = factory.CreateClient();
             _client.BaseAddress = new Uri("https://localhost:44306/");
 
-            gsobs = testObjectsGsobs;
+            gsobs = TestObjGsobs;
             weathers = testObjectsWeathers;
             notes = testObjectsNotes;
             eventNotes = testObjectsEventNotes;
@@ -69,7 +69,7 @@ namespace APITestProject1
             string URL = $"outlets/fbReports?outletIds={outletIds.ElementAt(0)}&outletIds={outletIds.ElementAt(1)}&outletIds={outletIds.ElementAt(2)}&" +
                 $"fromDate={fromDate}&toDate={toDate}";
 
-            expectedNrOfReports = 7;
+            expectedNrOfReports = TestObjNrOfReports;
 
 
             // Act

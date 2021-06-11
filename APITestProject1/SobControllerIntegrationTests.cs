@@ -34,7 +34,7 @@ namespace APITestProject1
             // Arrange ********************************
             List<string> sobs = new List<string>();
             
-            foreach (var togsob in testObjects.testObjectsGsobs)
+            foreach (var togsob in testObjects.TestObjGsobs)
             {
                 sobs.Add(togsob.SourceOfBusiness);
             }

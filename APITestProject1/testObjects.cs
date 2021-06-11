@@ -6,7 +6,9 @@ namespace APITestProject1
     public static class testObjects
     // Hard coded objects for integration tests
     {
-        public static List<GuestSourceOfBusiness> testObjectsGsobs = new List<GuestSourceOfBusiness>
+        public static int TestObjNrOfReports = 7;
+
+        public static List<GuestSourceOfBusiness> TestObjGsobs = new List<GuestSourceOfBusiness>
         {
             new GuestSourceOfBusiness() { Id = 1, SourceOfBusiness = "Hotel Website" },
             new GuestSourceOfBusiness() { Id = 2, SourceOfBusiness = "Hungry Hub" },

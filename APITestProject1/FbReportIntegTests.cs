@@ -2,6 +2,7 @@
 using Entities.Models;
 using LoggerService;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -72,8 +73,7 @@ namespace APITestProject1
             string URL = $"api/FbReports/{id}";
 
             // Act
-            // FbReport responseReport = await GetOneResponse(URL); //TODO
-            FbReport responseReport = await GetResponse(URL);
+            FbReport responseReport = await GetOneResponse(URL);
 
             CheckFbReport
             (
@@ -106,8 +106,7 @@ namespace APITestProject1
             string URL = $"api/FbReports/{id}";
 
             // Act
-            // FbReport responseReport = await GetOneResponse(URL); //TODO
-            FbReport responseReport = await GetResponse(URL);
+            FbReport responseReport = await GetOneResponse(URL);
 
             CheckFbReport
             (
@@ -140,8 +139,7 @@ namespace APITestProject1
             string URL = $"api/FbReports/{id}";
 
             // Act
-            //FbReport responseReport = await GetOneResponse(URL); //TODO
-            FbReport responseReport = await GetResponse(URL);
+            FbReport responseReport = await GetOneResponse(URL);
 
             CheckFbReport
             (
@@ -174,8 +172,7 @@ namespace APITestProject1
             string URL = $"api/FbReports/{id}";
 
             // Act
-            // FbReport responseReport = await GetOneResponse(URL); //TODO
-            FbReport responseReport = await GetResponse(URL);
+            FbReport responseReport = await GetOneResponse(URL);
 
             CheckFbReport
             (
@@ -208,8 +205,7 @@ namespace APITestProject1
             string URL = $"api/FbReports/{id}";
 
             // Act
-            // FbReport responseReport = await GetOneResponse(URL); //TODO
-            FbReport responseReport = await GetResponse(URL);
+            FbReport responseReport = await GetOneResponse(URL);
 
             CheckFbReport
             (
@@ -242,8 +238,7 @@ namespace APITestProject1
             string URL = $"api/FbReports/{id}";
 
             // Act
-            // FbReport responseReport = await GetOneResponse(URL); //TODO
-            FbReport responseReport = await GetResponse(URL);
+            FbReport responseReport = await GetOneResponse(URL);
 
             CheckFbReport
             (
@@ -276,8 +271,7 @@ namespace APITestProject1
             string URL = $"api/FbReports/{id}";
 
             // Act
-            // FbReport responseReport = await GetOneResponse(URL); //TODO
-            FbReport responseReport = await GetResponse(URL);
+            FbReport responseReport = await GetOneResponse(URL);
 
             CheckFbReport
             (
@@ -310,36 +304,33 @@ namespace APITestProject1
             string URL = $"api/FbReports/{id}";
 
             // Act
-            // FbReport responseReport = await GetOneResponse(URL); //TODO
-            FbReport responseReport = await GetResponse(URL);
+            FbReport responseReport = await GetOneResponse(URL);
 
             // Assert
             Assert.Null(responseReport);
         }
 
-        // TODO
-        //[Fact]
-        // Testing GET /api/FbReports
-        //public async Task get_FbReports()
-        //{
-        //    // Arrange
-        //    string URL = $"api/FbReports";
-        //    int expNrOfReports = 7;
-        //    List<FbReport> reports = new List<FbReport>();
+        
+        [Fact]
+        // *************** Testing GET /api/FbReports. How many reports gets returned? *******************************
+        public async Task get_FbReports_length()
+        {
+            // Arrange
+            string URL = $"api/FbReports";
+            int expNrOfReports = TestObjNrOfReports;
 
-        //    // Act
-        //    //reports = await GetOneResponse(URL);
-        //    //int NrOfReports = responseReport
-        //    // Assert
+            List<FbReport> responseReports = new List<FbReport>();
 
+            // Act
+            responseReports = await GetResponseList(URL);
+            int actNrOfReports = responseReports.Count();
 
-        //}
-
-
+            // Assert
+            Assert.Equal(expNrOfReports, actNrOfReports);
+        }
 
         // ************************************** GetOneResponse ****************************************************************
-        //private async Task<FbReport> GetOneResponse(string URL) // TODO
-        private async Task<FbReport> GetResponse(string URL) // TODO
+        private async Task<FbReport> GetOneResponse(string URL)
         {
             var response = await client.GetAsync(URL);
 
@@ -355,14 +346,14 @@ namespace APITestProject1
             }
         }
 
-        // ************************************** GetResponsList ****************************************************************
-        //private async Task<FbReport> GetResponsList(string URL)
-        //{
-        //    var response = await client.GetAsync(URL);
-        //    response.EnsureSuccessStatusCode();
-        //    List<FbReport> responseReport = JsonConvert.DeserializeObject<FbReport>(await response.Content.ReadAsStringAsync());
-        //    return responseReport;
-        //}
+        // ************************************** GetResponseList ****************************************************************
+        private async Task<List<FbReport>> GetResponseList(string URL)
+        {
+            var response = await client.GetAsync(URL);
+            response.EnsureSuccessStatusCode();
+            List<FbReport> responseReports = JsonConvert.DeserializeObject<List<FbReport>>(await response.Content.ReadAsStringAsync());
+            return responseReports;
+        }
 
         // *************************************** CheckFbReport *************************************************************
         private static void CheckFbReport(
