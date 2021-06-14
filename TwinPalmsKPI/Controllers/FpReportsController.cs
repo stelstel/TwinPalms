@@ -113,7 +113,7 @@ namespace TwinPalmsKPI.Controllers
                 }
             }
 
-            // var serializeGsob = JsonSerializer.Serialize(formCollection["guestSourceOfBusinesses"]); /////////////////////////////
+            // var serializeGsob = JsonSerializer.Serialize(formCollection["guestSourceOfBusinesses"]); ///////////////////////////// TODO remove?
             _logger.LogDebug($"serialized: {formCollection["guestSourceOfBusinesses"]}");
             
             var gsobsFromRequest = JsonSerializer.Deserialize<IEnumerable<GsobDto>>(formCollection["guestSourceOfBusinesses"]).ToList();

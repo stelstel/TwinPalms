@@ -1,5 +1,6 @@
 ﻿using Contracts;
 using Entities.Models;
+using LoggerService;
 using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
@@ -11,12 +12,14 @@ using System.Text;
 using System.Threading.Tasks;
 using TwinPalmsKPI;
 using Xunit;
+using static APITestProject1.testObjects;
 
 namespace APITestProject1
 {
     public class SobControllerIntegrationTests : IClassFixture<TestingWebAppFactory<Startup>>
     {
         private readonly HttpClient _client;
+        private ILoggerManager logger = new LoggerManager();
 
         public SobControllerIntegrationTests(TestingWebAppFactory<Startup> factory)
         {
@@ -29,18 +32,12 @@ namespace APITestProject1
         public async Task get_all_seeded_sobs()
         {
             // Arrange ********************************
-            List<string> sobs = new List<string>{
-                "Hotel Website",
-                "Hungry Hub",
-                "Facebook referral",
-                "Google search",
-                "Instagram referral",
-                "Hotel referral",
-                "Other Hotel referral",
-                "Agent referral",
-                "Walk in",
-                "Other"
-            };
+            List<string> sobs = new List<string>();
+            
+            foreach (var togsob in testObjects.testObjectsGsobs)
+            {
+                sobs.Add(togsob.SourceOfBusiness);
+            }
 
             List<int> responseIds = new List<int>();
             List<string> responseSobs = new List<string>();
@@ -91,7 +88,6 @@ namespace APITestProject1
 
             HttpResponseMessage getResponse = await _client.GetAsync($"/api/GuestSourceOfBusiness/{gsobId}"); // Getting gsob
             string getResponseBody = await getResponse.Content.ReadAsStringAsync();
-
             GuestSourceOfBusiness getResponseGsob = JsonConvert.DeserializeObject<GuestSourceOfBusiness>(getResponseBody);
 
 
@@ -105,25 +101,13 @@ namespace APITestProject1
 
         [Fact]
         //*************************** testing DELETE /api/GuestSourceOfBusiness/{id} **********************************
-        public async Task delete_1_gsob()
+        public async Task delete_gsob()
         {
             // Arrange ********************************
             List<int> responseIds = new List<int>();
             var response = await _client.GetAsync("api/GuestSourceOfBusiness");
             var responseString = JArray.Parse(await response.Content.ReadAsStringAsync());
             int startNrOfGsobs = responseString.Count;
-
-
-
-            // Debug
-            //int tempX = 0;
-            //string tempY = "";
-
-            //foreach (var rs in responseString)
-            //{
-            //    tempX = (int)rs["id"];
-            //    tempY = (string)rs["sourceOfBusiness"];
-            //}
 
             for (int i = 0; i < startNrOfGsobs; i++)
             {
@@ -146,14 +130,6 @@ namespace APITestProject1
             var responseStringAfter = JArray.Parse(await responseAfter.Content.ReadAsStringAsync());
             int endNrOfGsobs = responseStringAfter.Count;
 
-            // Debug
-            //foreach (var rsa in responseStringAfter)
-            //{
-            //    tempX = (int)rsa["id"];
-            //    tempY = (string)rsa["sourceOfBusiness"];
-            //}
-
-
             // Assert ****************************************
             Assert.Equal(startNrOfGsobs - 1, endNrOfGsobs);
 
@@ -163,17 +139,63 @@ namespace APITestProject1
             var httpContent = new StringContent(gsobJson, Encoding.UTF8, "application/json");
 
             await _client.PostAsync("api/GuestSourceOfBusiness", httpContent);
+        }
+
+        [Fact]
+        //*************************** testing PUT /api/GuestSourceOfBusiness/{id} **********************************
+        public async Task update_gsob()
+        {
+            string newSob = "Updated";
+            var response = await _client.GetAsync("api/GuestSourceOfBusiness");
+            var responseString = JArray.Parse(await response.Content.ReadAsStringAsync());
+
+            List<int> gsobIds = new List<int>();
+
+            foreach (var rs in responseString)
+            {
+                gsobIds.Add((int)rs["id"]);
+            }
+
+            var random = new Random();
+            int gsobId = random.Next(gsobIds.Count) + 1;
+
+            string sobBeforeUpdate = responseString.Where(rs => (int)rs["id"] == gsobId).First()["sourceOfBusiness"].ToString();
+
+            GuestSourceOfBusiness updatedGsob = new GuestSourceOfBusiness
+            {
+                Id = gsobId,
+                SourceOfBusiness = newSob
+            };
+
+            string newGsobJson = JsonConvert.SerializeObject(updatedGsob);
+
+            // Wrap our JSON inside a StringContent which then can be used by the HttpClient class
+            var httpContent = new StringContent(newGsobJson, Encoding.UTF8, "application/json");
+
+            var putResponse = await _client.PutAsync($"api/GuestSourceOfBusiness/{gsobId}", httpContent); // Putting gsob
+            putResponse.EnsureSuccessStatusCode();
+
+            HttpResponseMessage getResponse = await _client.GetAsync($"/api/GuestSourceOfBusiness/{gsobId}"); // Getting gsob
+            string getResponseBody = await getResponse.Content.ReadAsStringAsync();
+            GuestSourceOfBusiness getResponseGsob = JsonConvert.DeserializeObject<GuestSourceOfBusiness>(getResponseBody);
+
+            string sobAfterUpdate = getResponseGsob.SourceOfBusiness;
 
 
-            // Debug
-            //var responseRestore = await _client.GetAsync("api/GuestSourceOfBusiness");
-            //var responseStringRestore = JArray.Parse(await responseRestore.Content.ReadAsStringAsync());
+            // Assert ***************************************************************************
+            Assert.Equal(newSob, sobAfterUpdate);
+            Assert.NotEqual(newSob, sobBeforeUpdate);
 
-            //foreach (var rsr in responseStringRestore)
-            //{
-            //    tempX = (int)rsr["id"];
-            //    tempY = (string)rsr["sourceOfBusiness"];
-            //}
+            // Restoring DB
+            GuestSourceOfBusiness restoredGsob = new GuestSourceOfBusiness
+            {
+                Id = gsobId,
+                SourceOfBusiness = sobBeforeUpdate
+            };
+
+            string restoredGsobJson = JsonConvert.SerializeObject(restoredGsob);
+            var restoredHttpContent = new StringContent(restoredGsobJson, Encoding.UTF8, "application/json");
+            var putRestoredResponse = await _client.PutAsync($"api/GuestSourceOfBusiness/{gsobId}", restoredHttpContent); // Putting original gsob
         }
     }
 }
