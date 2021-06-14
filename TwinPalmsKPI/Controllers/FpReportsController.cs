@@ -129,7 +129,7 @@ namespace TwinPalmsKPI.Controllers
                 }
             }
 
-            if (!ModelState.IsValid)
+            /*if (!ModelState.IsValid)
             {
                 foreach (var error in ModelState.Values.SelectMany(v => v.Errors))
                 {
@@ -137,7 +137,7 @@ namespace TwinPalmsKPI.Controllers
                 }
 
                 return BadRequest(ModelState);
-            }
+            }*/
 
             if (env.IsDevelopment())
             {
@@ -159,12 +159,15 @@ namespace TwinPalmsKPI.Controllers
             
             var file = fbReport.File;
             var fbReportEntity = _mapper.Map<FbReport>(fbReport);
-            
-            if (!ModelState.IsValid)
+
+            /*if (!ModelState.IsValid)
             {
                 var errors = ModelState.Values.SelectMany(v => v.Errors);
                 return BadRequest(errors);
-            }
+            }*/
+            if (file != null)
+            {
+                
             try
             {
                 var folderName = Path.Combine("Resources", "Images");
@@ -192,6 +195,7 @@ namespace TwinPalmsKPI.Controllers
             catch (Exception ex)
             {
                 return StatusCode(500, $"Internal server error: {ex}");
+            }
             }
 
             /*********************************** Validate related models **************************************/
