@@ -167,36 +167,37 @@ namespace TwinPalmsKPI.Controllers
             }*/
             if (file != null)
             {
+
                 
-            try
-            {
-                var folderName = Path.Combine("Resources", "Images");
-                var pathToSave = Path.Combine(Directory.GetCurrentDirectory(), folderName);
-                if (file.Length > 0)
+                try
                 {
-                    var splitFileName = ContentDispositionHeaderValue.Parse(file.ContentDisposition).FileName.Trim('"').Split('.');
-                    var fileName = Guid.NewGuid() + "." + splitFileName[1];
-                    var fullPath = Path.Combine(pathToSave, fileName);
-                    var dbPath = Path.Combine(folderName, fileName);
-                    using (var stream = new FileStream(fullPath, FileMode.Create))
+                    var folderName = Path.Combine("Resources", "Images");
+                    var pathToSave = Path.Combine(Directory.GetCurrentDirectory(), folderName);
+                    if (file.Length > 0)
                     {
-                        file.CopyTo(stream);
-                        fbReportEntity.ImagePath = dbPath;
-                        _logger.LogInfo("entity to be created: " + fbReportEntity.ImagePath);
-                        _repository.FbReport.CreateFbReport(fbReportEntity);
-                        //await _repository.SaveAsync(); TODO: May we delete? This caused fbreports to be saved before validation- wrongful reports gets saved.
+                        var splitFileName = ContentDispositionHeaderValue.Parse(file.ContentDisposition).FileName.Trim('"').Split('.');
+                        var fileName = Guid.NewGuid() + "." + splitFileName[1];
+                        var fullPath = Path.Combine(pathToSave, fileName);
+                        var dbPath = Path.Combine(folderName, fileName);
+                        using (var stream = new FileStream(fullPath, FileMode.Create))
+                        {
+                            file.CopyTo(stream);
+                            fbReportEntity.ImagePath = dbPath;
+                            _logger.LogInfo("entity to be created: " + fbReportEntity.ImagePath);
+                            //await _repository.SaveAsync(); TODO: May we delete? This caused fbreports to be saved before validation- wrongful reports gets saved.
+                        }
+                    }
+                    else
+                    {
+                        return BadRequest();
                     }
                 }
-                else
+                catch (Exception ex)
                 {
-                    return BadRequest();
+                    return StatusCode(500, $"Internal server error: {ex}");
                 }
             }
-            catch (Exception ex)
-            {
-                return StatusCode(500, $"Internal server error: {ex}");
-            }
-            }
+                    _repository.FbReport.CreateFbReport(fbReportEntity);
 
             /*********************************** Validate related models **************************************/
             await ValidateWeathers(fbReport, fbReportEntity);
