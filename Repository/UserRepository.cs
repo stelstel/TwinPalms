@@ -14,35 +14,36 @@ namespace Repository
     public class UserRepository : RepositoryBase<User>, IUserRepository
     {
         private readonly RepositoryContext _repositoryContext;
-        
+
         public UserRepository(RepositoryContext repositoryContext)
-            :base(repositoryContext)
+            : base(repositoryContext)
         {
             _repositoryContext = repositoryContext;
-            
+
         }
 
         public void DeleteUser(User user) => Delete(user);
 
-        public void UpdateUser(User user) => Update(user);        
+        public void UpdateUser(User user) => Update(user);
 
         public async Task<User> GetUserAsync(string id, bool trackChanges) =>
             await FindByCondition(u => u.Id.Equals(id), trackChanges)
             .Include(u => u.UserRoles).ThenInclude(ur => ur.Role)
             .Include(u => u.OutletUsers).ThenInclude(ou => ou.Outlet)
-            .Include(u => u.HotelUsers).ThenInclude(hu => hu.Hotel)           
+            .Include(u => u.HotelUsers).ThenInclude(hu => hu.Hotel)
             .Include(u => u.CompanyUsers).ThenInclude(cu => cu.Company)
             .SingleOrDefaultAsync();
 
         public async Task<User> GetUserAsync(string id, bool trackChanges, IList<string> userRoles)
-        {            
-            if (!userRoles.Any(ur => ur.Contains("SuperAdmin")))        
+        {
+            if (!userRoles.Any(ur => ur.Contains("SuperAdmin")))
             {
                 if (userRoles.Any(ur => ur.Contains("Admin")))
                 {
                     return await FindByCondition(u => u.Id.Equals(id), trackChanges)
                                       .Include(u => u.CompanyUsers).ThenInclude(cu => cu.Company)
                                       .ThenInclude(c => c.Outlets)
+
                                       .SingleOrDefaultAsync();
                 }
                 else
@@ -50,10 +51,11 @@ namespace Repository
                     return await FindByCondition(u => u.Id.Equals(id), trackChanges)
                         .Include(u => u.OutletUsers).ThenInclude(ou => ou.Outlet)
                         .Include(u => u.HotelUsers).ThenInclude(hu => hu.Hotel)
+                        .ThenInclude(h => h.RoomTypes)
                         .SingleOrDefaultAsync();
                 }
-            }           
-            else return await FindByCondition(u => u.Id.Equals(id), trackChanges)                                    
+            }
+            else return await FindByCondition(u => u.Id.Equals(id), trackChanges)
                                     .SingleOrDefaultAsync();
         }
 
@@ -79,26 +81,26 @@ namespace Repository
 
                           ).OrderBy(x => x.Id).ToListAsync();*/
 
-            return await FindAll(trackChanges)              
+            return await FindAll(trackChanges)
                     .Include(u => u.OutletUsers).ThenInclude(ou => ou.Outlet)
                     .Include(u => u.HotelUsers).ThenInclude(hu => hu.Hotel)
                     .Include(u => u.UserRoles).ThenInclude(ur => ur.Role)
-                    .Include(u => u.CompanyUsers).ThenInclude(cu => cu.Company)                    
+                    .Include(u => u.CompanyUsers).ThenInclude(cu => cu.Company)
                     .ToListAsync();
         }
 
         public async void AddUserConnectionsAsync(string id, int[] outletIds, int[] hotelIds, bool trackChanges)
         {
-           var user = await FindByCondition(u => u.Id.Equals(id), trackChanges).FirstOrDefaultAsync();
-                    foreach (var hotelId in hotelIds)
-                    {
-                        user.HotelUsers.Add(new HotelUser { HotelId = hotelId, UserId = user.Id });
-                    }
-                    foreach (int outletId in outletIds)
-                    {  
-                        user.OutletUsers.Add(new OutletUser {OutletId = outletId, UserId = user.Id});
-                    }
-                await _repositoryContext.SaveChangesAsync();
+            var user = await FindByCondition(u => u.Id.Equals(id), trackChanges).FirstOrDefaultAsync();
+            foreach (var hotelId in hotelIds)
+            {
+                user.HotelUsers.Add(new HotelUser { HotelId = hotelId, UserId = user.Id });
+            }
+            foreach (int outletId in outletIds)
+            {
+                user.OutletUsers.Add(new OutletUser { OutletId = outletId, UserId = user.Id });
+            }
+            await _repositoryContext.SaveChangesAsync();
         }
 
         public async Task<int> AddUserConnectionsAsync(string id, int[] companies, bool trackChanges)
@@ -107,7 +109,7 @@ namespace Repository
 
             foreach (int companyId in companies)
             {
-               
+
                 user.CompanyUsers.Add(new CompanyUser { CompanyId = companyId, UserId = user.Id });
 
             }
@@ -117,7 +119,7 @@ namespace Repository
         public async Task<IEnumerable<int>> GetCompaniesAsync(string id, bool trackChanges)
         {
             var companies = await FindByCondition(u => u.Id.Equals(id), trackChanges)
-                .Select(user =>user.CompanyUsers.Select(c => c.CompanyId).ToArray())
+                .Select(user => user.CompanyUsers.Select(c => c.CompanyId).ToArray())
                 .FirstOrDefaultAsync();
             return companies;
         }

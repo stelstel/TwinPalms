@@ -62,7 +62,7 @@ namespace Entities
         public virtual DbSet<OutletUser> OutletUsers { get; set; }
         public virtual DbSet<CompanyUser> CompanyUsers { get; set; }
         public virtual DbSet<RoomType> RoomTypes { get; set; }
-        public virtual DbSet<RoomsReport> RoomsReports { get; set; }                
+        public virtual DbSet<RoomReport> RoomReports { get; set; }                
         public virtual DbSet<Weather> Weathers { get; set; }
         public virtual DbSet<WeatherFbReport> WeatherFbReports { get; set; }
         public virtual DbSet<WeatherOtherReport> WeatherOtherReports { get; set; }

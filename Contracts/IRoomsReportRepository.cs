@@ -8,12 +8,12 @@ namespace Contracts
 {
     public interface IRoomsReportRepository
     {
-        Task<IEnumerable<RoomsReport>> GetAllRoomsReportsAsync(bool trackChanges);
-        Task<IEnumerable<RoomsReport>> GetAllRoomsReportsDataAsync(int hotelId, int[] roomTypes, DateTime fromDate, DateTime toDate, bool trackChanges);
-        Task<RoomsReport> GetRoomsReportAsync(int id, bool trackChanges);
+        Task<IEnumerable<RoomReport>> GetAllRoomsReportsAsync(bool trackChanges);
+        Task<IEnumerable<RoomReport>> GetAllRoomsReportsDataAsync(int hotelId, int[] roomTypes, DateTime fromDate, DateTime toDate, bool trackChanges);
+        Task<RoomReport> GetRoomsReportAsync(int id, bool trackChanges);
 
-        void CreateRoomsReport(RoomsReport roomsReport);
-        void DeleteRoomsReport(RoomsReport roomsReport);
-        void UpdateRoomsReport(RoomsReport roomsReport);
+        void CreateRoomsReport(RoomReport roomsReport);
+        void DeleteRoomsReport(RoomReport roomsReport);
+        void UpdateRoomsReport(RoomReport roomsReport);
     }
 }

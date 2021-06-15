@@ -130,7 +130,7 @@ namespace Repository
 
         public IRoomsReportRepository RoomsReport
         {
-            get => _roomsReportRepository ??= new RoomsReportRepository(_repositoryContext);
+            get => _roomsReportRepository ??= new RoomReportRepository(_repositoryContext);
         }
 
         public async Task SaveAsync() => await _repositoryContext.SaveChangesAsync();
