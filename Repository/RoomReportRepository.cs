@@ -10,30 +10,30 @@ using System.Threading.Tasks;
 
 namespace Repository
 {
-    public class RoomsReportRepository : RepositoryBase<RoomsReport>, IRoomsReportRepository
+    public class RoomReportRepository : RepositoryBase<RoomReport>, IRoomsReportRepository
     {
-        public RoomsReportRepository(RepositoryContext repositoryContext) : base(repositoryContext)
+        public RoomReportRepository(RepositoryContext repositoryContext) : base(repositoryContext)
         {
         }
 
-        public void CreateRoomsReport(RoomsReport roomsReport) => Create(roomsReport);
+        public void CreateRoomsReport(RoomReport roomsReport) => Create(roomsReport);
 
-        public void DeleteRoomsReport(RoomsReport roomsReport) => Delete(roomsReport);
+        public void DeleteRoomsReport(RoomReport roomsReport) => Delete(roomsReport);
 
-        public void UpdateRoomsReport(RoomsReport roomsReport) => Update(roomsReport);
+        public void UpdateRoomsReport(RoomReport roomsReport) => Update(roomsReport);
 
-        public async Task<IEnumerable<RoomsReport>> GetAllRoomsReportsAsync(bool trackChanges) =>
+        public async Task<IEnumerable<RoomReport>> GetAllRoomsReportsAsync(bool trackChanges) =>
             await FindAll(trackChanges)
             .OrderBy(c => c.RoomTypeId) //sorts by roomtype, which is assumed unique between hotels
             .ToListAsync();
-        public async Task<IEnumerable<RoomsReport>> GetAllRoomsReportsDataAsync(int hotelId, int[] roomTypes, DateTime fromDate, DateTime toDate, bool trackChanges) =>
+        public async Task<IEnumerable<RoomReport>> GetAllRoomsReportsDataAsync(int hotelId, int[] roomTypes, DateTime fromDate, DateTime toDate, bool trackChanges) =>
             await FindAll(trackChanges)
             .Include(rr => rr.RoomType).ThenInclude(rt => rt.Hotel)
             .Where(rr => roomTypes.Contains(rr.RoomTypeId) && rr.Date >= fromDate && rr.Date <= toDate)
             .OrderBy(rr => rr.RoomType.HotelId)
             .ThenBy(rr => rr.Date) //sorts by roomtype, which is assumed unique between hotels
             .ToListAsync();
-        public async Task<RoomsReport> GetRoomsReportAsync(int id, bool trackChanges) =>
+        public async Task<RoomReport> GetRoomsReportAsync(int id, bool trackChanges) =>
             await FindByCondition(c => c.Id.Equals(id), trackChanges)
             .SingleOrDefaultAsync();
     }

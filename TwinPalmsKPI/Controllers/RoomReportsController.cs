@@ -14,13 +14,13 @@ namespace TwinPalmsKPI.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class RoomsReportController : ControllerBase
+    public class RoomReportsController : ControllerBase
     {
         private readonly IRepositoryManager _repository;
         private readonly ILoggerManager _logger;
         private readonly IMapper _mapper;
 
-        public RoomsReportController(IRepositoryManager repository, ILoggerManager logger, IMapper mapper)
+        public RoomReportsController(IRepositoryManager repository, ILoggerManager logger, IMapper mapper)
         {
             _repository = repository;
             _logger = logger;
@@ -51,7 +51,7 @@ namespace TwinPalmsKPI.Controllers
                 _logger.LogInfo($"RoomsReport with id {id} doesn't exist in the database.");
                 return NotFound();
             }
-            var roomsReportDto = _mapper.Map<RoomsReportDto>(roomsReport);
+            var roomsReportDto = _mapper.Map<RoomReportDto>(roomsReport);
             return Ok(roomsReportDto);
         }
 
@@ -60,24 +60,25 @@ namespace TwinPalmsKPI.Controllers
         /// </summary>
         [HttpPost]
         [ServiceFilter(typeof(ValidationFilterAttribute))]
-        public async Task<IActionResult> CreateRoomsReport([FromBody] RoomsReportForCreationDto roomsReport)
+        public async Task<IActionResult> CreateRoomsReport([FromForm] RoomReportForCreationDto roomReport)
         {
+            _logger.LogDebug("file " + roomReport.File);
 
-            var roomsReportEntity = _mapper.Map<RoomsReport>(roomsReport);
-            if (roomsReport.LocalEventId != null)
+            var roomReportEntity = _mapper.Map<RoomReport>(roomReport);
+            if (roomReport.LocalEventId != null)
             {
 
-                var localEvent = await _repository.LocalEvent.GetLocalEventAsync((int)roomsReport.LocalEventId, false);
+                var localEvent = await _repository.LocalEvent.GetLocalEventAsync((int)roomReport.LocalEventId, false);
                 
                 if (localEvent == null)
                 {
                     return NotFound("Local event does not exist");
                 }
             }
-            if (roomsReport.RoomTypeId > 0)
+            if (roomReport.RoomTypeId > 0)
             {
 
-                var roomType = await _repository.RoomType.GetRoomTypeAsync(roomsReport.RoomTypeId, false);
+                var roomType = await _repository.RoomType.GetRoomTypeAsync(roomReport.RoomTypeId, false);
 
                 if (roomType == null)
                 {
@@ -85,10 +86,10 @@ namespace TwinPalmsKPI.Controllers
                 }
             }
 
-            _repository.RoomsReport.CreateRoomsReport(roomsReportEntity);
+            _repository.RoomsReport.CreateRoomsReport(roomReportEntity);
             await _repository.SaveAsync();
-            var roomsReportToReturn = _mapper.Map<RoomsReportDto>(roomsReportEntity);
-            return CreatedAtRoute("RoomsReportById", new { id = roomsReportToReturn.Id }, roomsReportToReturn);
+            var roomReportToReturn = _mapper.Map<RoomReportDto>(roomReportEntity);
+            return CreatedAtRoute("RoomsReportById", new { id = roomReportToReturn.Id }, roomReportToReturn);
         }
 
         /// <summary>
@@ -98,7 +99,7 @@ namespace TwinPalmsKPI.Controllers
         [ServiceFilter(typeof(ValidateRoomsReportExistsAttribute))]
         public async Task<IActionResult> DeleteRoomsReport(int id)
         {
-            var roomsReport = HttpContext.Items["roomsReport"] as RoomsReport;
+            var roomsReport = HttpContext.Items["roomsReport"] as RoomReport;
             _repository.RoomsReport.DeleteRoomsReport(roomsReport);
             await _repository.SaveAsync();
             return NoContent();
@@ -112,11 +113,11 @@ namespace TwinPalmsKPI.Controllers
         [ServiceFilter(typeof(ValidateRoomsReportExistsAttribute))]
         public async Task<IActionResult> UpdateRoomsReport(int id, [FromBody] RoomsReportForUpdateDto roomsReport)
         {
-            var roomsReportEntity = HttpContext.Items["roomsReport"] as RoomsReport;
+            var roomsReportEntity = HttpContext.Items["roomsReport"] as RoomReport;
             _repository.RoomsReport.UpdateRoomsReport(roomsReportEntity);
             _mapper.Map(roomsReport, roomsReportEntity);
             await _repository.SaveAsync();
-            var roomsReportToReturn = _mapper.Map<RoomsReportDto>(roomsReportEntity);
+            var roomsReportToReturn = _mapper.Map<RoomReportDto>(roomsReportEntity);
             return CreatedAtRoute("RoomsReportById", new { id = roomsReportToReturn.Id }, roomsReportToReturn);
         }
         /// <summary>
@@ -127,7 +128,7 @@ namespace TwinPalmsKPI.Controllers
         public async Task<IActionResult> GetRoomsReport(int hotelId, [FromQuery] int[] roomTypes, DateTime fromDate, DateTime toDate)
         {
             var roomsReports = await _repository.RoomsReport.GetAllRoomsReportsDataAsync(hotelId, roomTypes, fromDate, toDate, false);
-            var roomsReportsDto = _mapper.Map<IEnumerable<RoomsReportDto>>(roomsReports);
+            var roomsReportsDto = _mapper.Map<IEnumerable<RoomReportDto>>(roomsReports);
             
             return Ok(roomsReportsDto);
         }

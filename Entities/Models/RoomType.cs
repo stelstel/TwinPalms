@@ -11,7 +11,7 @@ namespace Entities.Models
     {
         public RoomType()
         {
-            RoomsReports = new HashSet<RoomsReport>();
+            RoomReports = new HashSet<RoomReport>();
         }
 
         public int Id { get; set; }
@@ -19,6 +19,6 @@ namespace Entities.Models
         public int HotelId { get; set; }
 
         public virtual Hotel Hotel { get; set; }
-        public virtual ICollection<RoomsReport> RoomsReports { get; set; }
+        public virtual ICollection<RoomReport> RoomReports { get; set; }
     }
 }

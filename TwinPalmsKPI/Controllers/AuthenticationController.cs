@@ -21,35 +21,35 @@ namespace TwinPalmsKPI.Controllers
     [ApiController]
     public class AuthenticationController : ControllerBase
     {
-        private readonly ILoggerManager _logger; 
-        private readonly IRepositoryManager _repository; 
-        private readonly IMapper _mapper; 
+        private readonly ILoggerManager _logger;
+        private readonly IRepositoryManager _repository;
+        private readonly IMapper _mapper;
         private readonly UserManager<User> _userManager;
         private readonly IAuthenticationManager _authManager;
         private readonly IEmailSender _emailSender;
 
         public AuthenticationController(
             IRepositoryManager repository,
-            ILoggerManager logger, 
-            IMapper mapper, 
-            UserManager<User> userManager, 
+            ILoggerManager logger,
+            IMapper mapper,
+            UserManager<User> userManager,
             IAuthenticationManager authManager,
             IEmailSender emailSender)
-            {
-                _repository = repository;   
-                _logger = logger; 
-                _mapper = mapper; 
-                _userManager = userManager; 
-                _authManager = authManager;
-                _emailSender = emailSender;
-            }
+        {
+            _repository = repository;
+            _logger = logger;
+            _mapper = mapper;
+            _userManager = userManager;
+            _authManager = authManager;
+            _emailSender = emailSender;
+        }
 
-        [HttpPost]  
+        [HttpPost]
         [ServiceFilter(typeof(ValidationFilterAttribute))]
         public async Task<IActionResult> Authenticate([FromBody] UserForRegistrationDto userForRegistration)
         {
-           
-              
+
+
             var user = _mapper.Map<User>(userForRegistration);
             _logger.LogDebug("id  " + user.Id);
             foreach (var companyId in userForRegistration.Companies)
@@ -57,12 +57,12 @@ namespace TwinPalmsKPI.Controllers
                 _logger.LogDebug("company " + companyId);
 
             }
-    
-            
+
+
             var password = Password.GenerateRandomPassword();
             await _userManager.AddPasswordAsync(user, password);
-            
-            var result = await _userManager.CreateAsync(user, password);            
+
+            var result = await _userManager.CreateAsync(user, password);
             if (!result.Succeeded)
             {
                 foreach (var error in result.Errors)
@@ -75,11 +75,11 @@ namespace TwinPalmsKPI.Controllers
             //var _user = await _userManager.FindByNameAsync(user.UserName);
             var _user = await _repository.User.GetUserAsync(user.Id, trackChanges: true);
 
-            
+
             var roles = new string[] { "Basic", "Admin", "SuperAdmin" };
-           
+
             await _userManager.AddToRolesAsync(user, roles);
-           
+
             if (userForRegistration.Role == "Basic")
             {
                 await _userManager.RemoveFromRolesAsync(user, new string[] { "SuperAdmin", "Admin" });
@@ -97,8 +97,8 @@ namespace TwinPalmsKPI.Controllers
             {
                 //_logger.LogDebug("savin CompanyUsers ......");
                 await _userManager.RemoveFromRoleAsync(user, "SuperAdmin");
-                 /*var resp = await _repository.User.AddUserConnectionsAsync(user.Id, userForRegistration.Companies.ToArray(), trackChanges: true);
-                 _logger.LogDebug("resp " + resp);*/
+                /*var resp = await _repository.User.AddUserConnectionsAsync(user.Id, userForRegistration.Companies.ToArray(), trackChanges: true);
+                _logger.LogDebug("resp " + resp);*/
 
                 foreach (int companyId in userForRegistration.Companies)
                 {
@@ -112,20 +112,20 @@ namespace TwinPalmsKPI.Controllers
             // This can be used if we want to send the password directly by email
             // and use a token instead
             //var token = await _userManager.GeneratePasswordResetTokenAsync(user);
-           /* var emailAddress = !string.IsNullOrWhiteSpace(userForRegistration.NotificationEmail) ? userForRegistration.NotificationEmail
-                : user.Email;
-        
-            var message = new Message(new string[] { emailAddress }, "Welcome", "Your username is " + user.UserName + " and password is " + password);
-            _emailSender.SendEmail(message);*/
+            /* var emailAddress = !string.IsNullOrWhiteSpace(userForRegistration.NotificationEmail) ? userForRegistration.NotificationEmail
+                 : user.Email;
 
-            return StatusCode(201);
-            //return Ok();
+             var message = new Message(new string[] { emailAddress }, "Welcome", "Your username is " + user.UserName + " and password is " + password);
+             _emailSender.SendEmail(message);*/
+
+            return Created("https://localhost:44306/api/users/" + user.Id, user);
+
         }
 
         [HttpPost("login")]
         [ServiceFilter(typeof(ValidationFilterAttribute))]
         public async Task<IActionResult> Authenticate([FromBody] UserForAuthenticationDto user)
-        {            
+        {
             if (!await _authManager.ValidateUser(user))
             {
                 _logger.LogWarning($"{nameof(Authenticate)}: Authentication failed. Wrong user name or password.");
@@ -139,55 +139,55 @@ namespace TwinPalmsKPI.Controllers
                 User _user = await _userManager.FindByNameAsync(user.UserName);
                 IList<string> roles = _userManager.GetRolesAsync(_user).Result;
                 User userDb = await _repository.User.GetUserAsync(_user.Id, trackChanges: false, roles);
-                              
+
                 var authUser = _mapper.Map<UserForLoginDto>(userDb);
                 authUser.Token = token;
 
                 return Ok(authUser);
             }
         }       //TODO older login response below- delete? (Anette)
-                
+
         ////var userId = _user.Identity(FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier).Value;
-                //var roles = _userManager.GetRolesAsync(_user).Result;
+        //var roles = _userManager.GetRolesAsync(_user).Result;
 
-                //    /*var claimsRoles = User.Claims.Where(claim => claim.Type == "Role")
-                //.Select(claim => claim.Value).ToArray();*/
+        //    /*var claimsRoles = User.Claims.Where(claim => claim.Type == "Role")
+        //.Select(claim => claim.Value).ToArray();*/
 
-                //if (!roles.Contains("SuperAdmin"))
-                //{
-                //    if (roles.Contains("Admin"))
-                //    {
-                //        return Ok(new
-                //        {
-                //            Token = token,
-                //            Companies = _repository.User.GetCompaniesAsync(_user.Id, false)
+        //if (!roles.Contains("SuperAdmin"))
+        //{
+        //    if (roles.Contains("Admin"))
+        //    {
+        //        return Ok(new
+        //        {
+        //            Token = token,
+        //            Companies = _repository.User.GetCompaniesAsync(_user.Id, false)
 
-                //        });
-                //    }
-                //    else
-                //    {
-                //        return Ok(new
-                //        {
-                //            Token = token,
-                //            Outlets = _repository.User.GetOutletsAsync(_user.Id, false)
+        //        });
+        //    }
+        //    else
+        //    {
+        //        return Ok(new
+        //        {
+        //            Token = token,
+        //            Outlets = _repository.User.GetOutletsAsync(_user.Id, false)
 
-                //        });
-                //    }
-                //}
-                //else
-                //{
-                //    return Ok(new
-                //    {
-                //        Token = token,
-                //    });
-                //}
-            //}
+        //        });
+        //    }
+        //}
+        //else
+        //{
+        //    return Ok(new
+        //    {
+        //        Token = token,
+        //    });
+        //}
+        //}
         //}
 
         [HttpPost("forgot-password")]
         public async Task<IActionResult> ForgotPassword([FromBody] ForgotPasswordDto forgotPasswordInput)
         {
-            
+
             var user = await _userManager.FindByEmailAsync(forgotPasswordInput.Email);
             if (user == null)
                 return NotFound();
@@ -204,7 +204,7 @@ $"<h3>Reset password</h3><a href=https://localhost:3000/reset-password?token={to
         [HttpPost("reset-password")]
         public async Task<IActionResult> ResetPassword([FromBody] ResetPasswordDto input, [FromQuery] string token)
         {
-            
+
             if (!ModelState.IsValid)
                 return BadRequest();
             var email = input.Email;
@@ -232,16 +232,16 @@ $"<h3>Reset password</h3><a href=https://localhost:3000/reset-password?token={to
             //return Ok(User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier).Value);
             if (!ModelState.IsValid)
                 return BadRequest();
-            if(User.Identity.IsAuthenticated)
+            if (User.Identity.IsAuthenticated)
             {
                 var userId = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier).Value;
                 var user = await _userManager.FindByIdAsync(userId);
 
                 if (user == null)
                     return NotFound();
-            
-               var changePassword = await _userManager.ChangePasswordAsync(user, input.CurrentPassword, input.NewPassword);
-           
+
+                var changePassword = await _userManager.ChangePasswordAsync(user, input.CurrentPassword, input.NewPassword);
+
                 if (!changePassword.Succeeded)
                 {
                     foreach (var error in changePassword.Errors)

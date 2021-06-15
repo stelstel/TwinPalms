@@ -10,7 +10,7 @@ namespace Entities.Models
         public int WeatherId { get; set; }
         public int RoomsReportId { get; set; }
 
-        public virtual RoomsReport RoomsReport { get; set; }
+        public virtual RoomReport RoomsReport { get; set; }
         public virtual Weather Weather { get; set; }
     }
 }
