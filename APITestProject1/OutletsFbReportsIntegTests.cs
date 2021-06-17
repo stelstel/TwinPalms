@@ -25,6 +25,7 @@ namespace APITestProject1
         private List<string> notes = new List<string>();
         private List<string> eventNotes = new List<string>();
         private List<string> gsobNotes = new List<string>();
+        private List<string> userIds;
 
         // Constructor
         public OutletsFbReportsIntegTests(TestingWebAppFactory<Startup> factory)
@@ -32,11 +33,12 @@ namespace APITestProject1
             _client = factory.CreateClient();
             _client.BaseAddress = new Uri("https://localhost:44306/");
 
-            gsobs = testObjectsGsobs;
-            weathers = testObjectsWeathers;
-            notes = testObjectsNotes;
-            eventNotes = testObjectsEventNotes;
-            gsobNotes = testObjectsGSOBNotes;
+            gsobs = TestObjGsobs;
+            weathers = TestObjWeathers;
+            notes = TestObjNotes;
+            eventNotes = TestObjEventNotes;
+            gsobNotes = TestObjGSOBNotes;
+            userIds = TestObjUserIds;
         }
 
         [Fact]
@@ -69,7 +71,7 @@ namespace APITestProject1
             string URL = $"outlets/fbReports?outletIds={outletIds.ElementAt(0)}&outletIds={outletIds.ElementAt(1)}&outletIds={outletIds.ElementAt(2)}&" +
                 $"fromDate={fromDate}&toDate={toDate}";
 
-            expectedNrOfReports = 7;
+            expectedNrOfReports = TestObjNrOfReports;
 
 
             // Act
@@ -115,7 +117,7 @@ namespace APITestProject1
                 expEventNotes = eventNotes[0],
                 expGSourceOfBusinessNotes = gsobNotes[0],
                 expOutletId = 1,
-                expUserId = "35947f01-393b-442c-b815-d6d9f7d4b81e",
+                expUserId = userIds.ElementAt(0),
                 expLocalEventId = 2,
                 expDate = new DateTime(2021, 12, 2, 4, 0, 0),
                 expGsobs,
@@ -144,7 +146,7 @@ namespace APITestProject1
                 expEventNotes = eventNotes[4],
                 expGSourceOfBusinessNotes = gsobNotes[4],
                 expOutletId = 2,
-                expUserId = "b0b22e53-3ad2-4a0a-9e58-aa0a70a5a157",
+                expUserId = userIds.ElementAt(1),
                 expLocalEventId = 2,
                 expDate = new DateTime(2021, 11, 2, 4, 0, 0),
                 expGsobs,
@@ -173,7 +175,7 @@ namespace APITestProject1
                 expEventNotes = eventNotes[5],
                 expGSourceOfBusinessNotes = gsobNotes[5],
                 expOutletId = 4,
-                expUserId = "35947f01-393b-442c-b815-d6d9f7d4b81e",
+                expUserId = userIds.ElementAt(0),
                 expLocalEventId = 1,
                 expDate = new DateTime(2021, 10, 3, 3, 29, 0),
                 expGsobs,
@@ -202,7 +204,7 @@ namespace APITestProject1
                 expEventNotes = eventNotes[6],
                 expGSourceOfBusinessNotes = gsobNotes[6],
                 expOutletId = 4,
-                expUserId = "35947f01-393b-442c-b815-d6d9f7d4b81e",
+                expUserId = userIds.ElementAt(0),
                 expLocalEventId = 1,
                 expDate = new DateTime(2021, 9, 5, 2, 39, 10),
                 expGsobs,
@@ -243,7 +245,7 @@ namespace APITestProject1
                 expEventNotes = eventNotes[1],
                 expGSourceOfBusinessNotes = gsobNotes[1],
                 expOutletId = 1,
-                expUserId = "35947f01-393b-442c-b815-d6d9f7d4b81e",
+                expUserId = userIds.ElementAt(0),
                 expLocalEventId = 3,
                 expDate = new DateTime(2021, 8, 6, 1, 19, 42),
                 expGsobs,
@@ -290,7 +292,7 @@ namespace APITestProject1
                 expEventNotes = eventNotes[2],
                 expGSourceOfBusinessNotes = gsobNotes[2],
                 expOutletId = 1,
-                expUserId = "35947f01-393b-442c-b815-d6d9f7d4b81e",
+                expUserId = userIds.ElementAt(0),
                 expLocalEventId = 4,
                 expDate = new DateTime(2021, 7, 12, 1, 4, 9),
                 expGsobs,
@@ -319,7 +321,7 @@ namespace APITestProject1
                 expEventNotes = eventNotes[3],
                 expGSourceOfBusinessNotes = gsobNotes[3],
                 expOutletId = 1,
-                expUserId = "35947f01-393b-442c-b815-d6d9f7d4b81e",
+                expUserId = userIds.ElementAt(0),
                 expLocalEventId = null,
                 expDate = new DateTime(2021, 6, 22, 1, 19, 44),
                 expGsobs,

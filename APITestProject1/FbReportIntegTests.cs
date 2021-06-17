@@ -1,11 +1,16 @@
 ﻿using Contracts;
 using Entities.Models;
 using LoggerService;
+using Microsoft.IdentityModel.Protocols;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Net;
 using System.Net.Http;
+using System.Net.Http.Headers;
+using System.Text;
 using System.Threading.Tasks;
 using TwinPalmsKPI;
 using Xunit;
@@ -42,6 +47,7 @@ namespace APITestProject1
         private List<string> notes = new List<string>();
         private List<string> eventNotes = new List<string>();
         private List<string> gsobNotes = new List<string>();
+        //private string gsobJson;
 
 
         // Constructor
@@ -50,15 +56,10 @@ namespace APITestProject1
             client = factory.CreateClient();
             client.BaseAddress = new Uri("https://localhost:44306/");
 
-            userIds = new List<string>
-            {
-                "35947f01-393b-442c-b815-d6d9f7d4b81e",
-                "b0b22e53-3ad2-4a0a-9e58-aa0a70a5a157"
-            };
-
-            notes = testObjectsNotes;
-            eventNotes = testObjectsEventNotes;
-            gsobNotes = testObjectsGSOBNotes;
+            userIds = TestObjUserIds;
+            notes = TestObjNotes;
+            eventNotes = TestObjEventNotes;
+            gsobNotes = TestObjGSOBNotes;
         }
 
         //*************************************** Testing GET /api/FbReports/{id} ***********************************************
@@ -72,8 +73,7 @@ namespace APITestProject1
             string URL = $"api/FbReports/{id}";
 
             // Act
-            // FbReport responseReport = await GetOneResponse(URL); //TODO
-            FbReport responseReport = await GetResponse(URL);
+            FbReport responseReport = await GetOneResponse(URL);
 
             CheckFbReport
             (
@@ -106,8 +106,7 @@ namespace APITestProject1
             string URL = $"api/FbReports/{id}";
 
             // Act
-            // FbReport responseReport = await GetOneResponse(URL); //TODO
-            FbReport responseReport = await GetResponse(URL);
+            FbReport responseReport = await GetOneResponse(URL);
 
             CheckFbReport
             (
@@ -140,8 +139,7 @@ namespace APITestProject1
             string URL = $"api/FbReports/{id}";
 
             // Act
-            //FbReport responseReport = await GetOneResponse(URL); //TODO
-            FbReport responseReport = await GetResponse(URL);
+            FbReport responseReport = await GetOneResponse(URL);
 
             CheckFbReport
             (
@@ -174,8 +172,7 @@ namespace APITestProject1
             string URL = $"api/FbReports/{id}";
 
             // Act
-            // FbReport responseReport = await GetOneResponse(URL); //TODO
-            FbReport responseReport = await GetResponse(URL);
+            FbReport responseReport = await GetOneResponse(URL);
 
             CheckFbReport
             (
@@ -208,8 +205,7 @@ namespace APITestProject1
             string URL = $"api/FbReports/{id}";
 
             // Act
-            // FbReport responseReport = await GetOneResponse(URL); //TODO
-            FbReport responseReport = await GetResponse(URL);
+            FbReport responseReport = await GetOneResponse(URL);
 
             CheckFbReport
             (
@@ -242,8 +238,7 @@ namespace APITestProject1
             string URL = $"api/FbReports/{id}";
 
             // Act
-            // FbReport responseReport = await GetOneResponse(URL); //TODO
-            FbReport responseReport = await GetResponse(URL);
+            FbReport responseReport = await GetOneResponse(URL);
 
             CheckFbReport
             (
@@ -276,8 +271,7 @@ namespace APITestProject1
             string URL = $"api/FbReports/{id}";
 
             // Act
-            // FbReport responseReport = await GetOneResponse(URL); //TODO
-            FbReport responseReport = await GetResponse(URL);
+            FbReport responseReport = await GetOneResponse(URL);
 
             CheckFbReport
             (
@@ -310,36 +304,139 @@ namespace APITestProject1
             string URL = $"api/FbReports/{id}";
 
             // Act
-            // FbReport responseReport = await GetOneResponse(URL); //TODO
-            FbReport responseReport = await GetResponse(URL);
+            FbReport responseReport = await GetOneResponse(URL);
 
             // Assert
             Assert.Null(responseReport);
         }
 
-        // TODO
-        //[Fact]
-        // Testing GET /api/FbReports
-        //public async Task get_FbReports()
-        //{
-        //    // Arrange
-        //    string URL = $"api/FbReports";
-        //    int expNrOfReports = 7;
-        //    List<FbReport> reports = new List<FbReport>();
+        
+        [Fact]
+        // *************** Testing GET /api/FbReports. How many reports gets returned? *******************************
+        public async Task get_FbReports_length()
+        {
+            // Arrange
+            string URL = $"api/FbReports";
+            int expNrOfReports = TestObjNrOfReports;
 
-        //    // Act
-        //    //reports = await GetOneResponse(URL);
-        //    //int NrOfReports = responseReport
-        //    // Assert
+            List<FbReport> responseReports = new List<FbReport>();
+
+            // Act
+            responseReports = await GetResponseList(URL);
+            int actNrOfReports = responseReports.Count();
+
+            // Assert
+            Assert.Equal(expNrOfReports, actNrOfReports);
+        }
+
+        /*
+        [Fact]
+        // *************** Testing POST /api/FbReports *******************************
+        public async Task POST_and_DELETE_FbReport()
+        {
+            int startNrOfReports;
+            int currentNrOfReports;
+
+            // Arrange
+            string getURL = $"api/FbReports";
+            List<FbReport> responseReports = new List<FbReport>();
+            responseReports = await GetResponseList(getURL);
+            startNrOfReports = responseReports.Count();
+             
+
+            string URL = $"api/FbReports";
+            string content = "{\"tables\":1,\"food\":10000,\"beverage\":20000,\"otherIncome\":5000,\"guestsFromHotelTP\":15,\"guestsFromHotelTM\":13,\"guestsFromOutsideHotel\":10,\"isPublicHoliday\":false,\"eventNotes\":\"The DJ got everybody dancing\",\"imagePath\":\"Resources\\Images\\f2c264d7-92a8-48fd-b9d0-c9767253c245.jpg\",\"gSourceOfBusinessNotes\":\"A lot of people just dropped in at around 1:00 AM\",\"notes\":\"Lorem ipsum dolor sit amet\",\"date\":\"2021-12-02T04:00:00\",\"outletId\":1,\"userId\":\"35947f01-393b-442c-b815-d6d9f7d4b81e\",\"localEventId\":2,\"guestSourceOfBusinesses\":[{\"id\":3,\"sourceOfBusiness\":\"Facebook referral\"},{\"id\":4,\"sourceOfBusiness\":\"Google search\"}],\"weathers\":6}";
+           
+            // Act
+
+            //var httpContent =
+            //var postResponse = await _client.PostAsync("api/GuestSourceOfBusiness", httpContent); // Posting gsob
+
+            //string content = "[{test=hej}]";
+
+            var httpContent = new StringContent(content, Encoding.UTF8, "application/json");
+            //var postResponse = await _client.PostAsync("api/GuestSourceOfBusiness", httpContent); // Posting gsob
+             
+
+            await client.PostAsync(URL, httpContent);
+
+            responseReports = await GetResponseList(getURL);
+            currentNrOfReports = responseReports.Count();
 
 
-        //}
+            // Assert
+         }
+        */
 
+
+        [Fact]
+        // *************** Testing POST /api/FbReports/ *******************************
+        public async Task POST_FbReport()
+        {
+            // Arrange
+            int id = 1;
+
+            var formData = new Dictionary<string, dynamic>()
+            {
+                { "GuestSourceOfBusinesses", 
+                    "[" +
+                        "{\"GuestSourceOfBusinessId\": 1, \"GsobNrOfGuests\": 11}," +
+                        "{\"GuestSourceOfBusinessId\": 2, \"GsobNrOfGuests\": 22}" +
+                    "]" 
+                },
+
+                //{ "tables", 100 },
+                //{ "food", 214 },
+                //{ "beverage", 217217 },
+                //{ "otherIncome", 213647 },
+                //{ "guestsFromHotelTP", 14 },
+                //{ "guestsFromHotelTM", 24 },
+                //{ "guestsFromOutsideHotel", 25 },
+                { "isPublicHoliday", true },
+                //{ "imagePath", "Resources\\Images\\f2c264d7-92a8-48fd-b9d0-c9767253c245.jpg" },
+                //{ "date", "2021-06-11T17:12:32.718Z" },
+                { "date", "2021-06-11" },
+                { "outletId", 1 },
+                { "userId", "b0b22e53-3ad2-4a0a-9e58-aa0a70a5a157" },
+                //{ "localEventId", 1},
+                { "weathers", 1 }
+            };
+
+            //*-------------------------------------------------------------------
+            // Read file data
+            //FileStream fs = new FileStream("c:\\people.doc", FileMode.Open, FileAccess.Read);
+            //byte[] data = new byte[fs.Length];
+            //fs.Read(data, 0, data.Length);
+            //fs.Close();
+
+            // Generate post objects
+            Dictionary<string, object> postParameters = new Dictionary<string, object>();
+            //postParameters.Add("filename", "People.doc");
+            //postParameters.Add("fileformat", "doc");
+            //postParameters.Add("file", new FormUpload.FileParameter(data, "People.doc", "application/msword"));
+
+            foreach (var fd in formData)
+            {
+                postParameters.Add(fd.Key, fd.Value);
+            }
+
+            // Create request and receive response
+            //string postURL = "http://localhost"; ///api/FbReports
+            string postURL = $"{client.BaseAddress}api/FbReports";
+            string userAgent = "Someone";
+            HttpWebResponse webResponse = FormUpload.MultipartFormDataPost(postURL, userAgent, postParameters);
+
+            // Process response
+            //StreamReader responseReader = new StreamReader(webResponse.GetResponseStream());
+            //string fullResponse = responseReader.ReadToEnd();
+            //webResponse.Close();
+            //Response.Write(fullResponse);
+            //*-------------------------------------------------------------------
+        }
 
 
         // ************************************** GetOneResponse ****************************************************************
-        //private async Task<FbReport> GetOneResponse(string URL) // TODO
-        private async Task<FbReport> GetResponse(string URL) // TODO
+        private async Task<FbReport> GetOneResponse(string URL)
         {
             var response = await client.GetAsync(URL);
 
@@ -355,14 +452,14 @@ namespace APITestProject1
             }
         }
 
-        // ************************************** GetResponsList ****************************************************************
-        //private async Task<FbReport> GetResponsList(string URL)
-        //{
-        //    var response = await client.GetAsync(URL);
-        //    response.EnsureSuccessStatusCode();
-        //    List<FbReport> responseReport = JsonConvert.DeserializeObject<FbReport>(await response.Content.ReadAsStringAsync());
-        //    return responseReport;
-        //}
+        // ************************************** GetResponseList ****************************************************************
+        private async Task<List<FbReport>> GetResponseList(string URL)
+        {
+            var response = await client.GetAsync(URL);
+            response.EnsureSuccessStatusCode();
+            List<FbReport> responseReports = JsonConvert.DeserializeObject<List<FbReport>>(await response.Content.ReadAsStringAsync());
+            return responseReports;
+        }
 
         // *************************************** CheckFbReport *************************************************************
         private static void CheckFbReport(

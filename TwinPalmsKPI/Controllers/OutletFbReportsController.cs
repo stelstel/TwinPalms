@@ -28,7 +28,7 @@ namespace TwinPalmsKPI.Controllers
             _repository = repository;
             _logger = logger;
             _mapper = mapper;
-        }        
+        }
 
         // ****************************************** GetOutletsFbReports ****************************************************
         /// <summary>
@@ -39,8 +39,8 @@ namespace TwinPalmsKPI.Controllers
         /// 
         /// For example: to get the reports from only 2021-05-04
         /// 
-        ///     fromDate = 2021-05-04
-        ///     toDate = 2021-05-04
+        ///     fromDate = 2021-12-02
+        ///     toDate = 2021-12-02
         ///     
         /// </remarks>     
         [HttpGet("/outlets/fbReports", Name = "OutletsFbReportsByIdAndDate")]
