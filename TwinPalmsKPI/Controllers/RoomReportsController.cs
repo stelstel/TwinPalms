@@ -10,6 +10,9 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using System.IO;
+using System.Net.Http.Headers;
+
 namespace TwinPalmsKPI.Controllers
 {
     [Route("api/[controller]")]
@@ -42,17 +45,17 @@ namespace TwinPalmsKPI.Controllers
         /// <summary>
         /// Gets a single roomsReport by ID
         /// </summary>
-        [HttpGet("{id}", Name = "RoomsReporById")]
+        [HttpGet("{id}", Name = "RoomReporById")]
         public async Task<IActionResult> GetRoomsReport(/*int roomsReportId,*/ int id)
         {
-            var roomsReport = await _repository.RoomsReport.GetRoomsReportAsync(id, trackChanges: false);
-            if (roomsReport == null)
+            var roomReport = await _repository.RoomsReport.GetRoomsReportAsync(id, trackChanges: false);
+            if (roomReport == null)
             {
-                _logger.LogInfo($"RoomsReport with id {id} doesn't exist in the database.");
+                _logger.LogInfo($"RoomReport with id {id} doesn't exist in the database.");
                 return NotFound();
             }
-            var roomsReportDto = _mapper.Map<RoomReportDto>(roomsReport);
-            return Ok(roomsReportDto);
+            var roomReportDto = _mapper.Map<RoomReportDto>(roomReport);
+            return Ok(roomReportDto);
         }
 
         /// <summary>
@@ -63,7 +66,6 @@ namespace TwinPalmsKPI.Controllers
         public async Task<IActionResult> CreateRoomsReport([FromForm] RoomReportForCreationDto roomReport)
         {
             _logger.LogDebug("file " + roomReport.File);
-
             var roomReportEntity = _mapper.Map<RoomReport>(roomReport);
             if (roomReport.LocalEventId != null)
             {
@@ -85,11 +87,43 @@ namespace TwinPalmsKPI.Controllers
                     return NotFound("Room type does not exist");
                 }
             }
+            var file = roomReport.File;
+            if (file != null)
+            {
+                try
+                {
+                    var folderName = Path.Combine("Resources", "Images");
+                    var pathToSave = Path.Combine(Directory.GetCurrentDirectory(), folderName);
+                    if (file.Length > 0)
+                    {
+                        var splitFileName = ContentDispositionHeaderValue.Parse(file.ContentDisposition).FileName.Trim('"').Split('.');
+                        var fileName = Guid.NewGuid() + "." + splitFileName[1];
+                        var fullPath = Path.Combine(pathToSave, fileName);
+                        var dbPath = Path.Combine(folderName, fileName);
+                        using (var stream = new FileStream(fullPath, FileMode.Create))
+                        {
+                            file.CopyTo(stream);
+                            roomReportEntity.ImagePath = dbPath;
+                            _logger.LogInfo("entity to be created: " + roomReportEntity.ImagePath);
+                        }
+                    }
+                    else
+                    {
+                        return BadRequest();
+                    }
+                }
+                catch (Exception ex)
+                {
+                    return StatusCode(500, $"Internal server error: {ex}");
+                }
+            }
+
 
             _repository.RoomsReport.CreateRoomsReport(roomReportEntity);
             await _repository.SaveAsync();
-            var roomReportToReturn = _mapper.Map<RoomReportDto>(roomReportEntity);
-            return CreatedAtRoute("RoomsReportById", new { id = roomReportToReturn.Id }, roomReportToReturn);
+            //var roomReportToReturn = _mapper.Map<RoomReportDto>(roomReportEntity);
+            //return CreatedAtRoute("RoomReportById", new { id = roomReportToReturn.Id }, roomReportToReturn);
+            return Ok(201);
         }
 
         /// <summary>
