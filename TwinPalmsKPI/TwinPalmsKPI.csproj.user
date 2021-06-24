@@ -3,6 +3,7 @@
   <PropertyGroup>
     <ShowAllFiles>true</ShowAllFiles>
     <ActiveDebugProfile>IIS Express</ActiveDebugProfile>
+    <NameOfLastUsedPublishProfile>C:\Users\anett\source\repos\TwinPalmsKPI_Github\TwinPalmsKPI\Properties\PublishProfiles\TwinPalmsApi - Web Deploy1.pubxml</NameOfLastUsedPublishProfile>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
     <DebuggerFlavor>ProjectDebugger</DebuggerFlavor>

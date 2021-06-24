@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+This file is used by the publish/package process of your Web project. You can customize the behavior of this process
+by editing this MSBuild file. In order to learn more about this please visit https://go.microsoft.com/fwlink/?LinkID=208121. 
+-->
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <TimeStampOfAssociatedLegacyPublishXmlFile />
+    <EncryptedPassword>AQAAANCMnd8BFdERjHoAwE/Cl+sBAAAACRAu9XNJq0a9hBLwtYFC7gAAAAACAAAAAAAQZgAAAAEAACAAAABiWM/9U0/J2WCF178afsiqPgRqM6QA4NRQ3AXBhwBrhQAAAAAOgAAAAAIAACAAAADrpM1wGJXGjH1ay2DjkPr+KPKyGEE7TRPmOaMV7YHkr4AAAAANAsDdD652KMP/b2yqLK+/43VLn+G6UpSD9/eMpWIko3bTDTNrLAXwyutspjDxYvwtjQElbRtyc2u7bR+YTyLWB1QyKJXcX4LDTF8Tmou+C01zWDEut5CVGTQqgQEIwFtrF5RA6CQoli9mYsJAn0FujZR3X9VLwK0Ed2jN6k8IPEAAAACATtyVdMRRu/ZdntWiE/IFF56O0zWsYYAZQJY10ZlMzp6CaQkZG3FG99oPIIHyQQCUNrRnyTOnKhyY1zfQ1nIB</EncryptedPassword>
+    <History>True|2021-06-22T14:55:13.9930561Z;True|2021-06-22T16:37:12.6088070+02:00;True|2021-06-22T16:35:15.3950519+02:00;True|2021-06-22T16:22:59.0795525+02:00;True|2021-06-22T16:16:19.2951728+02:00;True|2021-06-22T14:48:24.1813512+02:00;True|2021-06-22T14:44:57.5589333+02:00;True|2021-06-22T14:12:22.1383060+02:00;True|2021-06-22T14:08:22.3923432+02:00;False|2021-06-22T12:15:19.1667466+02:00;False|2021-06-22T12:09:18.6608346+02:00;</History>
+  </PropertyGroup>
+  <ItemGroup>
+    <DestinationConnectionStrings Include="sqlConnection">
+      <Value>Data Source=tcp:twinpalms-db2-server.database.windows.net,1433%3bInitial Catalog=TwinPalmsReportManagement%3bUser Id=twinpalmsadmin%40twinpalms-db2-server%3bPassword=qwer1234!</Value>
+    </DestinationConnectionStrings>
+  </ItemGroup>
+  <ItemGroup>
+    <EFMigrations Include="Entities.RepositoryContext">
+      <Value>Data Source=tcp:twinpalms-db2-server.database.windows.net,1433%3bInitial Catalog=TwinPalmsReportManagement%3bUser Id=twinpalmsadmin%40twinpalms-db2-server%3bPassword=qwer1234!</Value>
+    </EFMigrations>
+  </ItemGroup>
+</Project>
