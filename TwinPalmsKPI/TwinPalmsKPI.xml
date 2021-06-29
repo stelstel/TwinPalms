@@ -235,6 +235,14 @@
                 
             </remarks>     
         </member>
+        <member name="M:TwinPalmsKPI.Controllers.OutletsFbReportsController.GetOutletsOverview">
+            <summary>
+            Gets YTD, MTD and yesterdays revenue
+            </summary>
+            <remarks>
+            Gets YTD, MTD and yesterdays revenue based on when the request came
+            </remarks>     
+        </member>
         <member name="M:TwinPalmsKPI.Controllers.OutletsController.GetOutlets">
             <summary>
             Gets a list of all Outlets

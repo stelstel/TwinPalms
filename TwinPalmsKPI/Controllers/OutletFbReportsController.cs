@@ -11,6 +11,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Text;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.Extensions.Hosting;
 
 namespace TwinPalmsKPI.Controllers
 {
@@ -22,12 +24,14 @@ namespace TwinPalmsKPI.Controllers
         private readonly IRepositoryManager _repository;
         private readonly ILoggerManager _logger;
         private readonly IMapper _mapper;
+        private readonly IWebHostEnvironment env;
 
-        public OutletsFbReportsController(IRepositoryManager repository, ILoggerManager logger, IMapper mapper)
+        public OutletsFbReportsController(IRepositoryManager repository, ILoggerManager logger, IMapper mapper, IWebHostEnvironment environment)
         {
             _repository = repository;
             _logger = logger;
             _mapper = mapper;
+            env = environment;
         }
 
         // ****************************************** GetOutletsFbReports ****************************************************
@@ -59,7 +63,7 @@ namespace TwinPalmsKPI.Controllers
             {
                 outletIdCounter++;
 
-                if (await _repository.FbReport.GetFbReportAsync(oi, false) == null)
+                if (await _repository.Outlet.GetOutletAsync(oi, false) == null)
                 {
                     _logger.LogInfo($"Outlet with id {oi} doesn't exist in the database.");
                     return NotFound();
@@ -104,6 +108,152 @@ namespace TwinPalmsKPI.Controllers
 
             return Ok(outletFbReportsToReturn);
         }
+
+        // ****************************************** GetOutletsOverview ****************************************************
+        /// <summary>
+        /// Gets YTD, MTD and yesterdays revenue
+        /// </summary>
+        /// <remarks>
+        /// Gets YTD, MTD and yesterdays revenue based on when the request came
+        /// </remarks>     
+        [HttpGet("/outlets/overview", Name = "OutletsOverview")]
+        public async Task<IActionResult> GetOutletsOverview()
+        {
+            // Reports filed before 5am are treated as fbreport for the day before.
+            // Request for toDate are reports including that date.
+            DateTime now = DateTime.UtcNow;
+            DateTime today = new DateTime(now.Year, now.Month, now.Day, 0, 0, 0);
+            DateTime yesterday = today.AddDays(-1);
+            DateTime startOfYear = new DateTime(now.Year, 1, 1, 0, 0, 0);
+            DateTime startOfMonth = new DateTime(now.Year, now.Month, 1, 0, 0, 0);
+            
+            StringBuilder sbOutletIds = new StringBuilder(); // This is used for error reporting
+
+            int outletIdCounter = 0;
+
+            // Getting outlet ids from DB
+            List<int> outletIdsList = new List<int>();
+
+            List<Outlet> outletReports = (List<Outlet>)await _repository.Outlet.GetAllOutletsAsync(trackChanges: false);
+
+            foreach (var or in outletReports)
+            {
+                outletIdsList.Add(or.Id);
+            }
+
+            int[] outletIds = outletIdsList.ToArray();
+
+            // Adding outlet ids to sbOutletIds for error reporting
+            foreach (var oi in outletIds)
+            {
+                outletIdCounter++;
+
+                sbOutletIds.Append($"{oi}");
+
+                if (outletIdCounter < outletIds.Count())
+                {
+                    sbOutletIds.Append($", ");
+                }
+            }
+
+
+            // YTD = Revenue YearToDate?
+            List<FbReport> YTDOutletFbReports;
+
+            if (env.IsDevelopment())
+            {
+                YTDOutletFbReports = (List<FbReport>)await _repository.FbReport.GetAllOutletFbReportsForOutlets(outletIds, startOfYear, new DateTime(now.Year, 12, 31, 23, 23, 59), trackChanges: false); // TODO change back to today
+            }
+            else
+            { 
+                YTDOutletFbReports = (List<FbReport>)await _repository.FbReport.GetAllOutletFbReportsForOutlets(outletIds, startOfYear, today, trackChanges: false); // TODO change back to today
+            }
+
+            if (YTDOutletFbReports.Count() == 0)
+            {
+                _logger.LogInfo($"No reports for Outlet with ids {sbOutletIds.ToString()} found in the database between dates {startOfYear} and {today}.");
+                return NotFound();
+            }
+
+            var YTDs = new Dictionary<int, int?>();
+
+            foreach (var ofbr in YTDOutletFbReports)
+            {
+                if (!YTDs.ContainsKey(ofbr.OutletId))
+                {
+                    YTDs.Add(ofbr.OutletId, 0);
+                }
+                
+                YTDs[ofbr.OutletId] += ofbr.Food;
+                YTDs[ofbr.OutletId] += ofbr.Beverage;
+                YTDs[ofbr.OutletId] += ofbr.OtherIncome;
+            }
+
+            // MTD = Revenue MonthToDate?
+            var MTDOutletFbReports = await _repository.FbReport.GetAllOutletFbReportsForOutlets(outletIds, startOfMonth, today /*new DateTime(now.Year, 12, 31, 23, 23, 59)*/, trackChanges: false); // TODO change back to today
+
+            if (MTDOutletFbReports.Count() == 0)
+            {
+                _logger.LogInfo($"No reports for Outlet with ids {sbOutletIds.ToString()} found in the database between dates {startOfMonth} and {today}.");
+
+                if (!env.IsDevelopment())
+                {
+                    return NotFound();
+                }
+            }
+
+            var MTDs = new Dictionary<int, int?>();
+
+            foreach (var ofbr in MTDOutletFbReports)
+            {
+                if (!MTDs.ContainsKey(ofbr.OutletId))
+                {
+                    MTDs.Add(ofbr.OutletId, 0);
+                }
+
+                MTDs[ofbr.OutletId] += ofbr.Food;
+                MTDs[ofbr.OutletId] += ofbr.Beverage;
+                MTDs[ofbr.OutletId] += ofbr.OtherIncome;
+            }
+
+            // Revenue Yesterday
+            var YesterdayOutletFbReports = await _repository.FbReport.GetAllOutletFbReportsForOutlets(outletIds, yesterday, today /*new DateTime(now.Year, 12, 31, 23, 23, 59)*/, trackChanges: false); // TODO change back to today
+
+            if (YesterdayOutletFbReports.Count() == 0)
+            {
+                _logger.LogInfo($"No reports for Outlet with ids {sbOutletIds.ToString()} found in the database between dates {yesterday} and {today}.");
+
+                if (!env.IsDevelopment())
+                {
+                    return NotFound();
+                }
+            }
+
+            var yesterdaysRevs = new Dictionary<int, int?>();
+
+            foreach (var ofbr in YesterdayOutletFbReports)
+            {
+                if (!yesterdaysRevs.ContainsKey(ofbr.OutletId))
+                {
+                    MTDs.Add(ofbr.OutletId, 0);
+                }
+
+                yesterdaysRevs[ofbr.OutletId] += ofbr.Food;
+                yesterdaysRevs[ofbr.OutletId] += ofbr.Beverage;
+                yesterdaysRevs[ofbr.OutletId] += ofbr.OtherIncome;
+            }
+
+            // Adding to dto for return
+            var revenues = new RevenueOverViewDto
+            {
+                YTDs = YTDs,
+                MTDs = MTDs,
+                yesterdaysRevs = yesterdaysRevs
+            };
+
+            return Ok(revenues);
+        }
     }
 }
 
+  
