@@ -109,11 +109,11 @@ namespace TwinPalmsKPI
                 // Normal path
                 fileProvider = new PhysicalFileProvider(Path.Combine(Directory.GetCurrentDirectory(), @"Resources"));
             }
-            else
-            {
-                // Local path used for testing
-                fileProvider = new PhysicalFileProvider(Path.Combine("C:\\Users\\elev\\Source\\Repos\\TwinPalmsKPI\\TwinPalmsKPI\\", @"Resources"));
-            }
+            //else
+            //{
+            //    // Local path used for testing
+            //    fileProvider = new PhysicalFileProvider(Path.Combine("C:\\Users\\elev\\Source\\Repos\\TwinPalmsKPI\\TwinPalmsKPI\\", @"Resources"));
+            //}
 
             app.UseStaticFiles(new StaticFileOptions()
             {
