@@ -154,6 +154,147 @@ namespace Entities.Configuration
                     LocalEventId = 1
                 }
             );
+
+            int numberOfSeededReports = 1000;
+            int id = 8;
+            var rand = new Random();
+            int tables = 0;
+            int food = 0;
+            int beverage = 0;
+            int otherIncome = 0;
+            int guestsFromHotelTP = 0;
+            int guestsFromHotelTM = 0;
+            int guestsFromOutsideHotel = 0;
+            bool isPublicHoliday;
+            int loremWords = 0;
+            string eventNotes = "";
+
+            string[] lorem = {
+                "lorem",
+                "ipsum",
+                "dolor",
+                "sit",
+                "amet",
+                "consectetur",
+                "adipiscing",
+                "elit",
+                "sed",
+                "do",
+                "eiusmod",
+                "tempor",
+                "incididunt",
+                "ut",
+                "labore",
+                "et",
+                "dolore",
+                "magna",
+                "aliqua"
+            };
+
+            string gSourceOfBusinessNotes = "";
+            string notes = "";
+            DateTime date;
+            int outletId = 0;
+            string userId = "";
+            
+            string[] userIds = 
+            {
+                "68a89c2e-ac33-4e56-9b03-a9ef49d28995",
+                "7c8a42a1-e82c-4e2a-b944-67aec243d2fb",
+                "b0b22e53-3ad2-4a0a-9e58-aa0a70a5a157",
+                "35947f01-393b-442c-b815-d6d9f7d4b81e"
+            };
+
+            for (int i = 0; i < numberOfSeededReports; i++)
+            {
+                tables = rand.Next(25, 201);
+                food = rand.Next(5000, 100001);
+                beverage = rand.Next(5000, 120001);
+                otherIncome = rand.Next(2000, 50001);
+                guestsFromHotelTP = rand.Next(0, 101);
+                guestsFromHotelTM = rand.Next(0, 101);
+                guestsFromOutsideHotel = rand.Next(0, 101);
+
+                if (rand.Next(1, 101) > 70)
+                {
+                    isPublicHoliday = true;
+                }
+                else
+                {
+                    isPublicHoliday = false;
+                }
+
+                loremWords = rand.Next(3, 9);
+                eventNotes = "";
+
+                for (int j = 0; j < loremWords; j++)
+                {
+                    eventNotes += lorem[rand.Next(0, 19)] + " ";
+                }
+
+                eventNotes = eventNotes.TrimEnd();
+
+                loremWords = rand.Next(3, 9);
+                gSourceOfBusinessNotes = "";
+
+                for (int j = 0; j < loremWords; j++)
+                {
+                    gSourceOfBusinessNotes += lorem[rand.Next(0, 19)] + " ";
+                }
+
+                gSourceOfBusinessNotes = gSourceOfBusinessNotes.TrimEnd();
+
+                loremWords = rand.Next(3, 9);
+                notes = "";
+
+                for (int j = 0; j < loremWords; j++)
+                {
+                    notes += lorem[rand.Next(0, 19)] + " ";
+                }
+
+                notes = notes.TrimEnd();
+
+                date = new DateTime
+                (
+                    2021,
+                    rand.Next(1, 13),
+                    rand.Next(1, 29),
+                    rand.Next(0, 24),
+                    rand.Next(0, 60),
+                    rand.Next(0, 60)
+                );
+
+                outletId = rand.Next(1, 13);
+
+                userId = userIds[rand.Next(0, 4)];
+                                                
+                int localEventId = 0;
+
+                localEventId = rand.Next(1, 5);
+
+                builder.HasData
+                (
+                    new FbReport
+                    {
+                        Id = id++,
+                        Tables = tables,
+                        Food = food,
+                        Beverage = beverage,
+                        OtherIncome = otherIncome,
+                        GuestsFromHotelTP = guestsFromHotelTP,
+                        GuestsFromHotelTM = guestsFromHotelTM,
+                        GuestsFromOutsideHotel = guestsFromOutsideHotel,
+                        IsPublicHoliday = isPublicHoliday,
+                        EventNotes = eventNotes,
+                        GSourceOfBusinessNotes = gSourceOfBusinessNotes,
+                        Notes = notes,
+                        Date = date,
+                        OutletId = outletId,
+                        UserId = userId,
+                        LocalEventId = localEventId
+                    }
+                );
+            }
         }
     }
 }
