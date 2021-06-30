@@ -6,9 +6,9 @@ using System.ComponentModel.DataAnnotations;
 
 namespace Entities.Models
 {
-    public partial class RoomsReport
+    public partial class RoomReport
     {
-        public RoomsReport()
+        public RoomReport()
         {
             WeatherRoomsReports = new HashSet<WeatherRoomsReport>();
         }
@@ -21,6 +21,7 @@ namespace Entities.Models
         public string Notes { get; set; }
         public DateTime Date { get; set; }
         public string LoggerId { get; set; }
+        public string ImagePath { get; set; }
         public int RoomTypeId { get; set; }
         public int? LocalEventId { get; set; }
         public DateTime CreatedAt { get; set; } = DateTime.Now;

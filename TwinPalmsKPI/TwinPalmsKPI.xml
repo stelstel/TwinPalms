@@ -230,9 +230,17 @@
             
             For example: to get the reports from only 2021-05-04
             
-                fromDate = 2021-05-04
-                toDate = 2021-05-04
+                fromDate = 2021-12-02
+                toDate = 2021-12-02
                 
+            </remarks>     
+        </member>
+        <member name="M:TwinPalmsKPI.Controllers.OutletsFbReportsController.GetOutletsOverview">
+            <summary>
+            Gets YTD, MTD and yesterdays revenue
+            </summary>
+            <remarks>
+            Gets Year to Date, Month to Date and yesterdays revenue based on when the request came
             </remarks>     
         </member>
         <member name="M:TwinPalmsKPI.Controllers.OutletsController.GetOutlets">
@@ -260,27 +268,27 @@
             Updates a Outlet by ID
             </summary>
         </member>
-        <member name="M:TwinPalmsKPI.Controllers.RoomsReportController.GetRoomsReport(System.Int32)">
+        <member name="M:TwinPalmsKPI.Controllers.RoomReportsController.GetRoomsReport(System.Int32)">
             <summary>
             Gets a single roomsReport by ID
             </summary>
         </member>
-        <member name="M:TwinPalmsKPI.Controllers.RoomsReportController.CreateRoomsReport(Entities.DataTransferObjects.RoomsReportForCreationDto)">
+        <member name="M:TwinPalmsKPI.Controllers.RoomReportsController.CreateRoomsReport(Entities.DataTransferObjects.RoomReportForCreationDto)">
             <summary>
             Creates a new roomsReport
             </summary>
         </member>
-        <member name="M:TwinPalmsKPI.Controllers.RoomsReportController.DeleteRoomsReport(System.Int32)">
+        <member name="M:TwinPalmsKPI.Controllers.RoomReportsController.DeleteRoomsReport(System.Int32)">
             <summary>
             Deletes a roomsReport by ID
             </summary>
         </member>
-        <member name="M:TwinPalmsKPI.Controllers.RoomsReportController.UpdateRoomsReport(System.Int32,Entities.DataTransferObjects.RoomsReportForUpdateDto)">
+        <member name="M:TwinPalmsKPI.Controllers.RoomReportsController.UpdateRoomsReport(System.Int32,Entities.DataTransferObjects.RoomsReportForUpdateDto)">
             <summary>
             Updates a roomsReport by ID
             </summary>
         </member>
-        <member name="M:TwinPalmsKPI.Controllers.RoomsReportController.GetRoomsReport(System.Int32,System.Int32[],System.DateTime,System.DateTime)">
+        <member name="M:TwinPalmsKPI.Controllers.RoomReportsController.GetRoomsReport(System.Int32,System.Int32[],System.DateTime,System.DateTime)">
             <summary>
             Gets a list of all roomsReports
             </summary>

@@ -12,6 +12,7 @@ using System.Text;
 using System.Threading.Tasks;
 using TwinPalmsKPI;
 using Xunit;
+using static APITestProject1.testObjects;
 
 namespace APITestProject1
 {
@@ -24,7 +25,6 @@ namespace APITestProject1
         {
             _client = factory.CreateClient();
             _client.BaseAddress = new Uri("https://localhost:44306/");
-            
         }
   
         [Fact]
@@ -32,18 +32,12 @@ namespace APITestProject1
         public async Task get_all_seeded_sobs()
         {
             // Arrange ********************************
-            List<string> sobs = new List<string>{
-                "Hotel Website",
-                "Hungry Hub",
-                "Facebook referral",
-                "Google search",
-                "Instagram referral",
-                "Hotel referral",
-                "Other Hotel referral",
-                "Agent referral",
-                "Walk in",
-                "Other"
-            };
+            List<string> sobs = new List<string>();
+            
+            foreach (var togsob in testObjects.TestObjGsobs)
+            {
+                sobs.Add(togsob.SourceOfBusiness);
+            }
 
             List<int> responseIds = new List<int>();
             List<string> responseSobs = new List<string>();

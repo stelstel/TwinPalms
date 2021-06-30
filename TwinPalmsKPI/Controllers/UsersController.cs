@@ -102,6 +102,27 @@ namespace TwinPalmsKPI.Controllers
         public async Task<IActionResult> UpdateUser(string id, [FromBody] UserForUpdateDto user)
         {
             var userEntity = HttpContext.Items["user"] as User;
+            
+            if (user.Role == "Basic")
+            {
+                userEntity.OutletUsers.Clear();
+                userEntity.HotelUsers.Clear();
+                
+                foreach (var outletId in user.Outlets)
+                    userEntity.OutletUsers.Add(new OutletUser { OutletId = outletId, UserId = id });
+                
+
+                foreach (var hotelId in user.Hotels)
+                    userEntity.HotelUsers.Add(new HotelUser { HotelId = hotelId, UserId = id });
+                    
+                
+            } 
+            else
+            {
+                userEntity.CompanyUsers.Clear();
+                foreach (var companyId in user.Companies)
+                    userEntity.CompanyUsers.Add(new CompanyUser { CompanyId = companyId, UserId = id });
+            }
             _repository.User.UpdateUser(userEntity);
             _mapper.Map(user, userEntity);
             await _repository.SaveAsync();

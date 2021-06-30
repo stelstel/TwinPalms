@@ -39,8 +39,7 @@ namespace TwinPalmsKPI.Controllers
         /// <summary>
         /// Gets a list of all fbReports
         /// </summary>
-        // TODO Add Authorize
-        [HttpGet(Name = "GetFbReports")/*, Authorize(Roles = "Administrator, Manager")*/] 
+        [HttpGet(Name = "GetFbReports")/*, Authorize(Roles = "Administrator, Manager")*/] // TODO Add Authorize
         public async Task<IActionResult> GetFbReports()
         {
             var fbReports = await _repository.FbReport.GetAllFbReportsAsync(trackChanges: false);
@@ -63,9 +62,6 @@ namespace TwinPalmsKPI.Controllers
             }
             
             var fbReportDto = _mapper.Map<FbReportDto>(fbReport);
-            
-            // This is already in fbReportDto
-            //fbReportDto.ImageUrl = string.Format("data:image/jpg;base64,{0}", Convert.ToBase64String(fbReportDto.Image.Data));
             
             // Adding weathers
             fbReportDto.Weathers = fbReport.WeatherFbReports.Select(fbwr => fbwr.Weather).ToList();
@@ -98,7 +94,7 @@ namespace TwinPalmsKPI.Controllers
         /// ]
         /// </remarks>
         [HttpPost, DisableRequestSizeLimit]
-        /*[Authorize(Roles = "Basic")]*/
+        /*[Authorize(Roles = "Basic")]*/ //TODO authorize
 
         [ServiceFilter(typeof(ValidationFilterAttribute))]
         public async Task<IActionResult> CreateFbReport([FromForm]FbReportForCreationDto fbReport)
@@ -113,7 +109,6 @@ namespace TwinPalmsKPI.Controllers
                 }
             }
 
-            // var serializeGsob = JsonSerializer.Serialize(formCollection["guestSourceOfBusinesses"]); ///////////////////////////// TODO remove?
             _logger.LogDebug($"serialized: {formCollection["guestSourceOfBusinesses"]}");
             
             var gsobsFromRequest = JsonSerializer.Deserialize<IEnumerable<GsobDto>>(formCollection["guestSourceOfBusinesses"]).ToList();
@@ -127,16 +122,6 @@ namespace TwinPalmsKPI.Controllers
                 {
                     _logger.LogDebug($"nr of guests: {item.GsobNrOfGuests}, gsob Id: {item.GuestSourceOfBusinessId}");
                 }
-            }
-
-            if (!ModelState.IsValid)
-            {
-                foreach (var error in ModelState.Values.SelectMany(v => v.Errors))
-                {
-                    ModelState.TryAddModelError(error.ErrorMessage, error.ErrorMessage);
-                }
-
-                return BadRequest(ModelState);
             }
 
             if (env.IsDevelopment())
@@ -159,42 +144,40 @@ namespace TwinPalmsKPI.Controllers
             
             var file = fbReport.File;
             var fbReportEntity = _mapper.Map<FbReport>(fbReport);
-            
-            if (!ModelState.IsValid)
+
+            if (file != null)
             {
-                var errors = ModelState.Values.SelectMany(v => v.Errors);
-                return BadRequest(errors);
-            }
-            try
-            {
-                var folderName = Path.Combine("Resources", "Images");
-                var pathToSave = Path.Combine(Directory.GetCurrentDirectory(), folderName);
-                if (file.Length > 0)
+                try
                 {
-                    var splitFileName = ContentDispositionHeaderValue.Parse(file.ContentDisposition).FileName.Trim('"').Split('.');
-                    var fileName = Guid.NewGuid() + "." + splitFileName[1];
-                    var fullPath = Path.Combine(pathToSave, fileName);
-                    var dbPath = Path.Combine(folderName, fileName);
-                    using (var stream = new FileStream(fullPath, FileMode.Create))
+                    var folderName = Path.Combine("Resources", "Images");
+                    var pathToSave = Path.Combine(Directory.GetCurrentDirectory(), folderName);
+                    if (file.Length > 0)
                     {
-                        file.CopyTo(stream);
-                        fbReportEntity.ImagePath = dbPath;
-                        _logger.LogInfo("entity to be created: " + fbReportEntity.ImagePath);
-                        _repository.FbReport.CreateFbReport(fbReportEntity);
-                        //await _repository.SaveAsync(); TODO: May we delete? This caused fbreports to be saved before validation- wrongful reports gets saved.
+                        var splitFileName = ContentDispositionHeaderValue.Parse(file.ContentDisposition).FileName.Trim('"').Split('.');
+                        var fileName = Guid.NewGuid() + "." + splitFileName[1];
+                        var fullPath = Path.Combine(pathToSave, fileName);
+                        var dbPath = Path.Combine(folderName, fileName);
+                        using (var stream = new FileStream(fullPath, FileMode.Create))
+                        {
+                            file.CopyTo(stream);
+                            fbReportEntity.ImagePath = dbPath;
+                            _logger.LogInfo("entity to be created: " + fbReportEntity.ImagePath);
+                        }
+                    }
+                    else
+                    {
+                        return BadRequest();
                     }
                 }
-                else
+                catch (Exception ex)
                 {
-                    return BadRequest();
+                    return StatusCode(500, $"Internal server error: {ex}");
                 }
             }
-            catch (Exception ex)
-            {
-                return StatusCode(500, $"Internal server error: {ex}");
-            }
+            
+            _repository.FbReport.CreateFbReport(fbReportEntity);
 
-            /*********************************** Validate related models **************************************/
+            /*********************************** Validate related entitiies *****************************************/
             await ValidateWeathers(fbReport, fbReportEntity);
            
             var gsobsFromDb = 

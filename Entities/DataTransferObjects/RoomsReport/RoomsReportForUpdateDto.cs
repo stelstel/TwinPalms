@@ -1,6 +1,6 @@
 ﻿namespace Entities.DataTransferObjects
 {
-    public class RoomsReportForUpdateDto : RoomsReportForManipulationDto
+    public class RoomsReportForUpdateDto : RoomReportForManipulationDto
     {
 
     }

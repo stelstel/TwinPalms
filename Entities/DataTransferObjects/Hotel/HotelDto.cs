@@ -18,6 +18,7 @@ namespace Entities.DataTransferObjects
         public int Id { get; set; }
         public string Name { get; set; }
         public int CompanyId { get; set; }
+        public IEnumerable<RoomTypeDto> RoomTypes { get; set; }
 
         // TODO
         //public virtual Company Company { get; set; }

@@ -24,7 +24,7 @@ namespace Entities.Models
         [JsonIgnore]
         public virtual ICollection<OutletUser> OutletUsers { get; set; }
         [JsonIgnore]
-        public virtual ICollection<RoomsReport> RoomsReports { get; set; }
+        public virtual ICollection<RoomReport> RoomReports { get; set; }
         [JsonIgnore]
         public virtual ICollection<UserRole> UserRoles { get; set; }
         /*[JsonIgnore]*/
