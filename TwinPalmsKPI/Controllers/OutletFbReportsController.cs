@@ -114,7 +114,7 @@ namespace TwinPalmsKPI.Controllers
         /// Gets YTD, MTD and yesterdays revenue
         /// </summary>
         /// <remarks>
-        /// Gets YTD, MTD and yesterdays revenue based on when the request came
+        /// Gets Year to Date, Month to Date and yesterdays revenue based on when the request came
         /// </remarks>     
         [HttpGet("/outlets/overview", Name = "OutletsOverview")]
         public async Task<IActionResult> GetOutletsOverview()
@@ -177,17 +177,18 @@ namespace TwinPalmsKPI.Controllers
 
             var YTDs = new Dictionary<int, int?>();
 
-            foreach (var ofbr in YTDOutletFbReports)
+            foreach (var yofbr in YTDOutletFbReports)
             {
-                if (!YTDs.ContainsKey(ofbr.OutletId))
+                if (!YTDs.ContainsKey(yofbr.OutletId))
                 {
-                    YTDs.Add(ofbr.OutletId, 0);
+                    YTDs.Add(yofbr.OutletId, 0);
                 }
                 
-                YTDs[ofbr.OutletId] += ofbr.Food;
-                YTDs[ofbr.OutletId] += ofbr.Beverage;
-                YTDs[ofbr.OutletId] += ofbr.OtherIncome;
+                YTDs[yofbr.OutletId] += yofbr.Food;
+                YTDs[yofbr.OutletId] += yofbr.Beverage;
+                YTDs[yofbr.OutletId] += yofbr.OtherIncome;
             }
+
 
             // MTD = Revenue MonthToDate?
             var MTDOutletFbReports = await _repository.FbReport.GetAllOutletFbReportsForOutlets(outletIds, startOfMonth, today /*new DateTime(now.Year, 12, 31, 23, 23, 59)*/, trackChanges: false); // TODO change back to today
@@ -204,19 +205,20 @@ namespace TwinPalmsKPI.Controllers
 
             var MTDs = new Dictionary<int, int?>();
 
-            foreach (var ofbr in MTDOutletFbReports)
+            foreach (var mofbr in MTDOutletFbReports)
             {
-                if (!MTDs.ContainsKey(ofbr.OutletId))
+                if (!MTDs.ContainsKey(mofbr.OutletId))
                 {
-                    MTDs.Add(ofbr.OutletId, 0);
+                    MTDs.Add(mofbr.OutletId, 0);
                 }
 
-                MTDs[ofbr.OutletId] += ofbr.Food;
-                MTDs[ofbr.OutletId] += ofbr.Beverage;
-                MTDs[ofbr.OutletId] += ofbr.OtherIncome;
+                MTDs[mofbr.OutletId] += mofbr.Food;
+                MTDs[mofbr.OutletId] += mofbr.Beverage;
+                MTDs[mofbr.OutletId] += mofbr.OtherIncome;
             }
 
-            // Revenue Yesterday
+
+            // Yesterdays revenue
             var YesterdayOutletFbReports = await _repository.FbReport.GetAllOutletFbReportsForOutlets(outletIds, yesterday, today /*new DateTime(now.Year, 12, 31, 23, 23, 59)*/, trackChanges: false); // TODO change back to today
 
             if (YesterdayOutletFbReports.Count() == 0)
@@ -231,16 +233,16 @@ namespace TwinPalmsKPI.Controllers
 
             var yesterdaysRevs = new Dictionary<int, int?>();
 
-            foreach (var ofbr in YesterdayOutletFbReports)
+            foreach (var ydofbr in YesterdayOutletFbReports)
             {
-                if (!yesterdaysRevs.ContainsKey(ofbr.OutletId))
+                if (!yesterdaysRevs.ContainsKey(ydofbr.OutletId))
                 {
-                    MTDs.Add(ofbr.OutletId, 0);
+                    MTDs.Add(ydofbr.OutletId, 0);
                 }
 
-                yesterdaysRevs[ofbr.OutletId] += ofbr.Food;
-                yesterdaysRevs[ofbr.OutletId] += ofbr.Beverage;
-                yesterdaysRevs[ofbr.OutletId] += ofbr.OtherIncome;
+                yesterdaysRevs[ydofbr.OutletId] += ydofbr.Food;
+                yesterdaysRevs[ydofbr.OutletId] += ydofbr.Beverage;
+                yesterdaysRevs[ydofbr.OutletId] += ydofbr.OtherIncome;
             }
 
             // Adding to dto for return
@@ -255,5 +257,3 @@ namespace TwinPalmsKPI.Controllers
         }
     }
 }
-
-  

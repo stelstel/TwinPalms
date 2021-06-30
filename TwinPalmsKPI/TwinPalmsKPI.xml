@@ -240,7 +240,7 @@
             Gets YTD, MTD and yesterdays revenue
             </summary>
             <remarks>
-            Gets YTD, MTD and yesterdays revenue based on when the request came
+            Gets Year to Date, Month to Date and yesterdays revenue based on when the request came
             </remarks>     
         </member>
         <member name="M:TwinPalmsKPI.Controllers.OutletsController.GetOutlets">
