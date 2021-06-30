@@ -156,7 +156,7 @@ namespace Entities.Configuration
             );
 
             int numberOfSeededReports = 1000;
-            int id = 8;
+            int id = 8; // Since we already have 7 hard coded reports above
             var rand = new Random();
             int tables = 0;
             int food = 0;
@@ -168,7 +168,8 @@ namespace Entities.Configuration
             bool isPublicHoliday;
             int loremWords = 0;
             string eventNotes = "";
-
+            
+            // Just some latin words to use in the notes
             string[] lorem = {
                 "lorem",
                 "ipsum",
@@ -215,7 +216,8 @@ namespace Entities.Configuration
                 guestsFromHotelTM = rand.Next(0, 101);
                 guestsFromOutsideHotel = rand.Next(0, 101);
 
-                if (rand.Next(1, 101) > 70)
+                // 15% chance of being public holiday
+                if (rand.Next(1, 101) > 85)
                 {
                     isPublicHoliday = true;
                 }
@@ -224,9 +226,12 @@ namespace Entities.Configuration
                     isPublicHoliday = false;
                 }
 
+                // How many words will the note contain? Between 3 and 8
                 loremWords = rand.Next(3, 9);
+
                 eventNotes = "";
 
+                // Which words will the note contain?
                 for (int j = 0; j < loremWords; j++)
                 {
                     eventNotes += lorem[rand.Next(0, 19)] + " ";
@@ -254,6 +259,7 @@ namespace Entities.Configuration
 
                 notes = notes.TrimEnd();
 
+                // Random date and time, year 2121
                 date = new DateTime
                 (
                     2021,
@@ -269,7 +275,6 @@ namespace Entities.Configuration
                 userId = userIds[rand.Next(0, 4)];
                                                 
                 int localEventId = 0;
-
                 localEventId = rand.Next(1, 5);
 
                 builder.HasData
