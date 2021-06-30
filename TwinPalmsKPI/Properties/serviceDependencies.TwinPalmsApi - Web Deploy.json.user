@@ -1,0 +1,50 @@
+{
+  "dependencies": {
+    "mssql1": {
+      "restored": false,
+      "restoreTime": "2021-06-30T12:59:49.3169429Z"
+    }
+  },
+  "parameters": {
+    "TwinPalmsApi.resourceGroupName": {
+      "Name": "TwinPalmsApi.resourceGroupName",
+      "Type": "resourceGroup",
+      "Value": "TwinPalmsRG"
+    },
+    "TwinPalmsApi.resourceGroupLocation": {
+      "Name": "TwinPalmsApi.resourceGroupLocation",
+      "Type": null,
+      "Value": "westeurope"
+    },
+    "TwinPalmsApi.resourceName": {
+      "Name": "TwinPalmsApi.resourceName",
+      "Type": null,
+      "Value": "TwinPalmsApi"
+    },
+    "mssql1.resourceGroupLocation": {
+      "Name": "mssql1.resourceGroupLocation",
+      "Type": "location",
+      "Value": "westeurope"
+    },
+    "mssql1.subscriptionId": {
+      "Name": "mssql1.subscriptionId",
+      "Type": "subscription",
+      "Value": "6e729995-db03-49ee-8d69-9cd8d8d532a1"
+    },
+    "mssql1.resourceGroupName": {
+      "Name": "mssql1.resourceGroupName",
+      "Type": "resourceGroup",
+      "Value": "TwinPalmsRG"
+    },
+    "TwinPalmsApi.subscriptionId": {
+      "Name": "TwinPalmsApi.subscriptionId",
+      "Type": "subscription",
+      "Value": "6e729995-db03-49ee-8d69-9cd8d8d532a1"
+    },
+    "subscriptionId": {
+      "Name": "subscriptionId",
+      "Type": "subscription",
+      "Value": "6e729995-db03-49ee-8d69-9cd8d8d532a1"
+    }
+  }
+}
