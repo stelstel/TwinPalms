@@ -126,7 +126,7 @@ namespace TwinPalmsKPI.Controllers
             DateTime yesterday = today.AddDays(-1);
             DateTime startOfYear = new DateTime(now.Year, 1, 1, 0, 0, 0);
             DateTime startOfMonth = new DateTime(now.Year, now.Month, 1, 0, 0, 0);
-            
+
             StringBuilder sbOutletIds = new StringBuilder(); // This is used for error reporting
 
             int outletIdCounter = 0;
@@ -165,7 +165,7 @@ namespace TwinPalmsKPI.Controllers
                 YTDOutletFbReports = (List<FbReport>)await _repository.FbReport.GetAllOutletFbReportsForOutlets(outletIds, startOfYear, new DateTime(now.Year, 12, 31, 23, 23, 59), trackChanges: false); // TODO change back to today
             }
             else
-            { 
+            {
                 YTDOutletFbReports = (List<FbReport>)await _repository.FbReport.GetAllOutletFbReportsForOutlets(outletIds, startOfYear, today, trackChanges: false); // TODO change back to today
             }
 
@@ -183,7 +183,7 @@ namespace TwinPalmsKPI.Controllers
                 {
                     YTDs.Add(yofbr.OutletId, 0);
                 }
-                
+
                 YTDs[yofbr.OutletId] += yofbr.Food;
                 YTDs[yofbr.OutletId] += yofbr.Beverage;
                 YTDs[yofbr.OutletId] += yofbr.OtherIncome;
@@ -245,13 +245,36 @@ namespace TwinPalmsKPI.Controllers
                 yesterdaysRevs[ydofbr.OutletId] += ydofbr.OtherIncome;
             }
 
-            // Adding to dto for return
-            var revenues = new RevenueOverViewDto
+            //MonthlyRevenues
+            int[,] revs1Outlet1Month = new int[12, 2]; //[x][0] = outlet id, [x][1] = revenue 
+
+            for (int monthCounter = 0; monthCounter < 12; monthCounter++)
             {
-                YTDs = YTDs,
-                MTDs = MTDs,
-                yesterdaysRevs = yesterdaysRevs
-            };
+                int[] tempOutletId = { 1 };
+                var MonthlyOutletFbReports = await _repository.FbReport.GetAllOutletFbReportsForOutlets(
+                    tempOutletId, 
+                    new DateTime(now.Year, (monthCounter + 1), 1, 0, 0, 0), 
+                    new DateTime(now.Year, (monthCounter + 1), DateTime.DaysInMonth(now.Year, monthCounter + 1), 23, 59, 59).AddHours(1.1),
+                    trackChanges: false); // TODO change 
+
+                revs1Outlet1Month[monthCounter, 0] = tempOutletId[0];
+
+                foreach (var mor in MonthlyOutletFbReports)
+                {
+                    revs1Outlet1Month[monthCounter, 1] += (int)mor.Food;
+                    revs1Outlet1Month[monthCounter, 1] += (int)mor.Beverage;
+                    revs1Outlet1Month[monthCounter, 1] += (int)mor.OtherIncome;
+                }
+              }
+
+               // Adding to dto for return
+            var revenues = new RevenueOverViewDto
+                {
+                    YTDs = YTDs,
+                    MTDs = MTDs,
+                    YesterdaysRevs = yesterdaysRevs
+                   // MonthlyRevs = revs1Outlet1Month
+                };
 
             return Ok(revenues);
         }

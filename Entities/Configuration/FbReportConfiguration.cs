@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using System;
+using System.Text;
 
 namespace Entities.Configuration
 {
@@ -206,6 +207,10 @@ namespace Entities.Configuration
                 "35947f01-393b-442c-b815-d6d9f7d4b81e"
             };
 
+            StringBuilder sbEventNotes = new StringBuilder();
+            StringBuilder sbGsobNotes = new StringBuilder();
+            StringBuilder sbNotes = new StringBuilder();
+
             for (int i = 0; i < numberOfSeededReports; i++)
             {
                 tables = rand.Next(25, 201);
@@ -230,36 +235,43 @@ namespace Entities.Configuration
                 loremWords = rand.Next(3, 9);
 
                 eventNotes = "";
+                sbEventNotes.Clear();
 
                 // Which words will the note contain? 19 words to choose from
                 for (int j = 0; j < loremWords; j++)
                 {
-                    eventNotes += lorem[rand.Next(0, 19)] + " ";
+                    sbEventNotes.Append(lorem[rand.Next(0, 19)] + " ");
                 }
 
+                eventNotes = sbEventNotes.ToString();
                 eventNotes = eventNotes.TrimEnd();
 
                 loremWords = rand.Next(3, 9);
+                sbGsobNotes.Clear();
                 gSourceOfBusinessNotes = "";
+
 
                 for (int j = 0; j < loremWords; j++)
                 {
-                    gSourceOfBusinessNotes += lorem[rand.Next(0, 19)] + " ";
+                    sbGsobNotes.Append(lorem[rand.Next(0, 19)] + " ");
                 }
 
+                gSourceOfBusinessNotes = sbGsobNotes.ToString();
                 gSourceOfBusinessNotes = gSourceOfBusinessNotes.TrimEnd();
 
                 loremWords = rand.Next(3, 9);
+                sbNotes.Clear();
                 notes = "";
 
                 for (int j = 0; j < loremWords; j++)
                 {
-                    notes += lorem[rand.Next(0, 19)] + " ";
+                    sbNotes.Append(lorem[rand.Next(0, 19)] + " ");
                 }
 
+                notes = sbNotes.ToString();
                 notes = notes.TrimEnd();
 
-                // Random date and time, all during year 2121
+                // Random date and time, all during the year 2121
                 date = new DateTime
                 (
                     2021,               // Year
