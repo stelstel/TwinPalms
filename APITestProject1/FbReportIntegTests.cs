@@ -296,11 +296,11 @@ namespace APITestProject1
         }
 
         [Fact]
-        // Testing GET /api/FbReports/999. Since no FbReport exists with Id 999 the return from GetOneResponse should be null
-        public async Task get_FbReport_999()
+        // Testing GET /api/FbReports/9999. Since no FbReport exists with Id 999 the return from GetOneResponse should be null
+        public async Task get_FbReport_9999()
         {
             // Arrange
-            int id = 999;
+            int id = 9999;
             string URL = $"api/FbReports/{id}";
 
             // Act

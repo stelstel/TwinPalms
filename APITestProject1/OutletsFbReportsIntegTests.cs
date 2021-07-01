@@ -61,14 +61,26 @@ namespace APITestProject1
             string expUserId;
             int? expLocalEventId;
             DateTime expDate;
-            List<int> outletIds = new List<int> { 1, 2, 4 };
-            DateTime fromDate = new DateTime(2021, 01, 01);
+            List<int> outletIds = new List<int> { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12 };
+            DateTime fromDate = new DateTime(2020, 12, 31);
             DateTime toDate = new DateTime(2022, 01, 01);
             List<GuestSourceOfBusiness> expGsobs = new List<GuestSourceOfBusiness>();
             List<int> expGsobNrOfGuests = new List<int>();
             List<Weather> expWeathers = new List<Weather>();
 
-            string URL = $"outlets/fbReports?outletIds={outletIds.ElementAt(0)}&outletIds={outletIds.ElementAt(1)}&outletIds={outletIds.ElementAt(2)}&" +
+            string URL = $"outlets/fbReports?" +
+                $"outletIds={outletIds.ElementAt(0)}&" +
+                $"outletIds={outletIds.ElementAt(1)}&" +
+                $"outletIds={outletIds.ElementAt(2)}&" +
+                $"outletIds={outletIds.ElementAt(3)}&" +
+                $"outletIds={outletIds.ElementAt(4)}&" +
+                $"outletIds={outletIds.ElementAt(5)}&" +
+                $"outletIds={outletIds.ElementAt(6)}&" +
+                $"outletIds={outletIds.ElementAt(7)}&" +
+                $"outletIds={outletIds.ElementAt(8)}&" +
+                $"outletIds={outletIds.ElementAt(9)}&" +
+                $"outletIds={outletIds.ElementAt(10)}&" +
+                $"outletIds={outletIds.ElementAt(11)}&" +
                 $"fromDate={fromDate}&toDate={toDate}";
 
             expectedNrOfReports = TestObjNrOfReports;
@@ -77,7 +89,7 @@ namespace APITestProject1
             // Act
             var response = await _client.GetAsync(URL);
             response.EnsureSuccessStatusCode();
-            var responseString = JArray.Parse(await response.Content.ReadAsStringAsync());
+            var responseString = JArray.Parse(await response.Content.ReadAsStringAsync()); // TODO. Sort by ???
             int actualNrOfReports = responseString.Count();
 
 

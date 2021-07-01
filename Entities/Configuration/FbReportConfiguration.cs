@@ -231,7 +231,7 @@ namespace Entities.Configuration
 
                 eventNotes = "";
 
-                // Which words will the note contain?
+                // Which words will the note contain? 19 words to choose from
                 for (int j = 0; j < loremWords; j++)
                 {
                     eventNotes += lorem[rand.Next(0, 19)] + " ";
@@ -259,15 +259,15 @@ namespace Entities.Configuration
 
                 notes = notes.TrimEnd();
 
-                // Random date and time, year 2121
+                // Random date and time, all during year 2121
                 date = new DateTime
                 (
-                    2021,
-                    rand.Next(1, 13),
-                    rand.Next(1, 29),
-                    rand.Next(0, 24),
-                    rand.Next(0, 60),
-                    rand.Next(0, 60)
+                    2021,               // Year
+                    rand.Next(1, 13),   // Month
+                    rand.Next(1, 29),   // Date
+                    rand.Next(0, 24),   // Hour
+                    rand.Next(0, 60),   // Minute
+                    rand.Next(0, 60)    // Second
                 );
 
                 outletId = rand.Next(1, 13);

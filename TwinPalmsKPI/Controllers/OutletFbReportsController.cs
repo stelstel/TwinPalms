@@ -237,7 +237,7 @@ namespace TwinPalmsKPI.Controllers
             {
                 if (!yesterdaysRevs.ContainsKey(ydofbr.OutletId))
                 {
-                    MTDs.Add(ydofbr.OutletId, 0);
+                    yesterdaysRevs.Add(ydofbr.OutletId, 0);
                 }
 
                 yesterdaysRevs[ydofbr.OutletId] += ydofbr.Food;
