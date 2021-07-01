@@ -246,35 +246,45 @@ namespace TwinPalmsKPI.Controllers
             }
 
             //MonthlyRevenues
-            int[,] revs1Outlet1Month = new int[12, 2]; //[x][0] = outlet id, [x][1] = revenue 
+            int[,] revs1Outlet1Month = new int[12, 2]; // [x][0] = outlet id, [x][1] = revenue
+            List<int[,]> revsAllOutletsAllMonths = new List<int[,]>();
+            int[] tempOutletId = { 0 };
 
-            for (int monthCounter = 0; monthCounter < 12; monthCounter++)
+            for (int outletCounter = 1; outletCounter <= outletIdCounter; outletCounter++)
             {
-                int[] tempOutletId = { 1 };
-                var MonthlyOutletFbReports = await _repository.FbReport.GetAllOutletFbReportsForOutlets(
-                    tempOutletId, 
-                    new DateTime(now.Year, (monthCounter + 1), 1, 0, 0, 0), 
-                    new DateTime(now.Year, (monthCounter + 1), DateTime.DaysInMonth(now.Year, monthCounter + 1), 23, 59, 59).AddHours(1.1),
-                    trackChanges: false); // TODO change 
-
-                revs1Outlet1Month[monthCounter, 0] = tempOutletId[0];
-
-                foreach (var mor in MonthlyOutletFbReports)
+                for (int monthCounter = 0; monthCounter < 12; monthCounter++)
                 {
-                    revs1Outlet1Month[monthCounter, 1] += (int)mor.Food;
-                    revs1Outlet1Month[monthCounter, 1] += (int)mor.Beverage;
-                    revs1Outlet1Month[monthCounter, 1] += (int)mor.OtherIncome;
+                    tempOutletId[0] = outletCounter;
+
+                    var MonthlyOutletFbReports = await _repository.FbReport.GetAllOutletFbReportsForOutlets(
+                        tempOutletId,
+                        new DateTime(now.Year, (monthCounter + 1), 1, 0, 0, 0),
+                        new DateTime(now.Year, (monthCounter + 1), DateTime.DaysInMonth(now.Year, monthCounter + 1), 23, 59, 59).AddHours(5.1),
+                        trackChanges: false
+                    ); 
+
+                    revs1Outlet1Month[monthCounter, 0] = tempOutletId[0];
+
+                    // Adding revenue for all the month
+                    foreach (var mor in MonthlyOutletFbReports)
+                    {
+                        revs1Outlet1Month[monthCounter, 1] += (int)mor.Food;
+                        revs1Outlet1Month[monthCounter, 1] += (int)mor.Beverage;
+                        revs1Outlet1Month[monthCounter, 1] += (int)mor.OtherIncome;
+                    }
                 }
-              }
 
-               // Adding to dto for return
+                revsAllOutletsAllMonths.Add((int[,])revs1Outlet1Month.Clone());
+            }
+
+            // Adding to dto for return
             var revenues = new RevenueOverViewDto
-                {
-                    YTDs = YTDs,
-                    MTDs = MTDs,
-                    YesterdaysRevs = yesterdaysRevs
-                   // MonthlyRevs = revs1Outlet1Month
-                };
+            {
+                YTDs = YTDs,
+                MTDs = MTDs,
+                YesterdaysRevs = yesterdaysRevs,
+                RevsAllOutletsAllMonths = revsAllOutletsAllMonths
+            };
 
             return Ok(revenues);
         }
