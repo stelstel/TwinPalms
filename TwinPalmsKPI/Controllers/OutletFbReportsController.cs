@@ -246,8 +246,18 @@ namespace TwinPalmsKPI.Controllers
             }
 
             //MonthlyRevenues
-            int[,] revs1Outlet1Month = new int[12, 2]; // [x][0] = outlet id, [x][1] = revenue
-            List<int[,]> revsAllOutletsAllMonths = new List<int[,]>();
+            int[,] revs1Outlet1Month = new int[12, 2]; // [x, 0] = outlet id, [x, 1] = revenue
+
+
+            int[][] revsAllOutletsAllMonthsXXX = new int[outletIdCounter][]; // [x][0] = month, [x][1] = revenue that month
+
+            for (int i = 0; i < outletIdCounter; i++)
+            {
+                revsAllOutletsAllMonthsXXX[i] = new int[2];
+            }
+
+            List<Dictionary<int, int>> revsAllOutletsAllMonths = new List<Dictionary<int, int>>();
+            
             int[] tempOutletId = { 0 };
 
             for (int outletCounter = 1; outletCounter <= outletIdCounter; outletCounter++)
@@ -261,9 +271,12 @@ namespace TwinPalmsKPI.Controllers
                         new DateTime(now.Year, (monthCounter + 1), 1, 0, 0, 0),
                         new DateTime(now.Year, (monthCounter + 1), DateTime.DaysInMonth(now.Year, monthCounter + 1), 23, 59, 59).AddHours(5.1),
                         trackChanges: false
-                    ); 
+                    );
 
-                    revs1Outlet1Month[monthCounter, 0] = tempOutletId[0];
+                    revs1Outlet1Month[monthCounter, 0] = (int)tempOutletId.GetValue(0);
+
+                    // Copy first 3 elements in source to target.
+                    // Array.Copy(tempOutletId, 0, revs1Outlet1Month[monthCounter, 0], 0, 1);
 
                     // Adding revenue for all the month
                     foreach (var mor in MonthlyOutletFbReports)
@@ -274,7 +287,8 @@ namespace TwinPalmsKPI.Controllers
                     }
                 }
 
-                revsAllOutletsAllMonths.Add((int[,])revs1Outlet1Month.Clone());
+                revsAllOutletsAllMonthsXXX[outletCounter - 1][0] = revs1Outlet1Month[outletCounter - 1, 0];
+                revsAllOutletsAllMonthsXXX[outletCounter - 1][1] = revs1Outlet1Month[outletCounter - 1, 1];
             }
 
             // Adding to dto for return
@@ -283,7 +297,7 @@ namespace TwinPalmsKPI.Controllers
                 YTDs = YTDs,
                 MTDs = MTDs,
                 YesterdaysRevs = yesterdaysRevs,
-                RevsAllOutletsAllMonths = revsAllOutletsAllMonths
+                RevsAllOutletsAllMonths = revsAllOutletsAllMonthsXXX
             };
 
             return Ok(revenues);
