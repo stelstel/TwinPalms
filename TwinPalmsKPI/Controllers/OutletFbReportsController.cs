@@ -246,6 +246,7 @@ namespace TwinPalmsKPI.Controllers
                 yesterdaysRevs[ydofbr.OutletId] += ydofbr.OtherIncome;
             }
 
+
             //MonthlyRevenues
             List<MonthlyRevenue> monthlyRevenues = new List<MonthlyRevenue>();
             int[,] revs1Outlet1Month = new int[12, 2]; // [x, 0] = outlet id, [x, 1] = revenue
@@ -257,20 +258,8 @@ namespace TwinPalmsKPI.Controllers
             {
                 revsAllOutlets1Month[i] = new int[3];
             }
-
-            // [x][0] = month, 
-            //int[][] revsAllOutletsAllMonth = new int[12][];
-
-            //for (int i = 0; i < 12; i++)
-            //{
-            //    revsAllOutletsAllMonth[i] = new int[3];
-            //}
-
-            //List<Dictionary<int, int>> revsAllOutletsAllMonths = new List<Dictionary<int, int>>();
             
             int[] tempOutletId = { 0 };
-
-            //int monthCounterB = 0; 
 
             for (int outletCounter = 1; outletCounter <= outletIdCounter; outletCounter++)
             {
@@ -305,9 +294,6 @@ namespace TwinPalmsKPI.Controllers
                     revsAllOutlets1Month[outletCounter - 1][1] = revs1Outlet1Month[outletCounter - 1, 0];
                     revsAllOutlets1Month[outletCounter - 1][2] = revs1Outlet1Month[outletCounter - 1, 1];
                 }
-
-                //revsAllOutletsAllMonth[monthCounterB][outletCounter - 1] = revsAllOutlets1Month[outletCounter - 1][2];
-
             }
 
             // Adding to dto for return
