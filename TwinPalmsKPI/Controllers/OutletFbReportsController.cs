@@ -13,6 +13,7 @@ using System.Threading.Tasks;
 using System.Text;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Hosting;
+using TwinPalmsKPI.Helpers;
 
 namespace TwinPalmsKPI.Controllers
 {
@@ -246,6 +247,7 @@ namespace TwinPalmsKPI.Controllers
             }
 
             //MonthlyRevenues
+            List<MonthlyRevenue> monthlyRevenues = new List<MonthlyRevenue>();
             int[,] revs1Outlet1Month = new int[12, 2]; // [x, 0] = outlet id, [x, 1] = revenue
 
             // [x][0] = month, [x][1] = outlet, [x][2] = revenue that month
@@ -257,18 +259,18 @@ namespace TwinPalmsKPI.Controllers
             }
 
             // [x][0] = month, 
-            int[][] revsAllOutletsAllMonth = new int[12][];
+            //int[][] revsAllOutletsAllMonth = new int[12][];
 
-            for (int i = 0; i < 12; i++)
-            {
-                revsAllOutletsAllMonth[i] = new int[3];
-            }
+            //for (int i = 0; i < 12; i++)
+            //{
+            //    revsAllOutletsAllMonth[i] = new int[3];
+            //}
 
-            List<Dictionary<int, int>> revsAllOutletsAllMonths = new List<Dictionary<int, int>>();
+            //List<Dictionary<int, int>> revsAllOutletsAllMonths = new List<Dictionary<int, int>>();
             
             int[] tempOutletId = { 0 };
 
-            int monthCounterB = 0; 
+            //int monthCounterB = 0; 
 
             for (int outletCounter = 1; outletCounter <= outletIdCounter; outletCounter++)
             {
@@ -293,26 +295,37 @@ namespace TwinPalmsKPI.Controllers
                         revs1Outlet1Month[monthCounter, 1] += (int)mor.OtherIncome;
                     }
 
+                    MonthlyRevenue monthlyRevenue = new MonthlyRevenue();
+                    monthlyRevenue.Month = monthCounter + 1;
+                    monthlyRevenue.OutletId = outletCounter;
+                    monthlyRevenue.Revenue = revs1Outlet1Month[monthCounter, 1];
+                    monthlyRevenues.Add(monthlyRevenue);
+
                     revsAllOutlets1Month[outletCounter - 1][0] = monthCounter;
                     revsAllOutlets1Month[outletCounter - 1][1] = revs1Outlet1Month[outletCounter - 1, 0];
                     revsAllOutlets1Month[outletCounter - 1][2] = revs1Outlet1Month[outletCounter - 1, 1];
                 }
 
-                revsAllOutletsAllMonth[monthCounterB][outletCounter - 1] = revsAllOutlets1Month[outletCounter - 1][2];
+                //revsAllOutletsAllMonth[monthCounterB][outletCounter - 1] = revsAllOutlets1Month[outletCounter - 1][2];
 
             }
 
             // Adding to dto for return
-            var revenues = new RevenueOverViewDto
+            List<RevenueOverViewDto> revs = new List<RevenueOverViewDto>();
+            
+            foreach (var mr in monthlyRevenues)
             {
-                YTDs = YTDs,
-                MTDs = MTDs,
-                YesterdaysRevs = yesterdaysRevs,
-                RevsAllOutlets1Month = revsAllOutlets1Month,
-                RevsAllOutletsAllMonths = revsAllOutlets1Month
-            };
+                var revenue = new RevenueOverViewDto
+                {
+                    Month = mr.Month,
+                    OutletId = mr.OutletId,
+                    Revenue = mr.Revenue
+                };
 
-            return Ok(revenues);
+                revs.Add(revenue);
+            }
+
+            return Ok(revs);
         }
     }
 }
