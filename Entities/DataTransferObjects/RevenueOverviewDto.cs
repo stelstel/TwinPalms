@@ -7,6 +7,7 @@ namespace Entities.DataTransferObjects
         public int Month { get; set; }
         public int OutletId { get; set; }
         public int Revenue { get; set; }
-        //public List<MontlyRevenue> monthlyRevenues { get; set; }
+        public List<int> Revenues { get; set; }
+
     }
 }

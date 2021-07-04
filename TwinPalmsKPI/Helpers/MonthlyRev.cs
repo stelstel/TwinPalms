@@ -5,12 +5,9 @@ using System.Threading.Tasks;
 
 namespace TwinPalmsKPI.Helpers
 {
-    public class MonthlyRevenue
+    public class MonthlyRev
     {
-    
-        public int Month { get; set; }
         public int OutletId { get; set; }
-        public int Revenue { get; set; }
-        public List<int> Revenues { get; set; }
+        public List<int[][]> Revenues { get; set; } //[month][revenue]
     }
 }

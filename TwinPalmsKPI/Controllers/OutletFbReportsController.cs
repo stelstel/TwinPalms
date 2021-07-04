@@ -247,18 +247,64 @@ namespace TwinPalmsKPI.Controllers
             }
 
 
+
             //MonthlyRevenues
-            List<MonthlyRevenue> monthlyRevenues = new List<MonthlyRevenue>();
+
+            //************************************ NYTT FÖRSÖK START ************************************
+            //
+            // example:
+            //      obj = {
+            //          outletId1 : {jan: 100, feb: 100, mar: 100, apr: 11}...
+            //
+
+            // loopa outlets
+            for (int outletCounter = 1; outletCounter <= outletIdCounter; outletCounter++)
+            {
+                MonthlyRevDto monthlyRev = new MonthlyRevDto();
+                int? rev1Month;
+                // loopa månader{
+                for (int monthCounter = 0; monthCounter < 12; monthCounter++)
+                {
+                    int[] outlId = new int[1];
+                    outlId[0] = outletCounter;
+                        //int sampleID = new int[1];
+                    // Få data från DB
+                    var MonthlyRevsFromDB = await _repository.FbReport.GetAllOutletFbReportsForOutlets(
+                        outlId,
+                        new DateTime(now.Year, (monthCounter + 1), 1, 0, 0, 0).AddHours(5.1),
+                        new DateTime(now.Year, (monthCounter + 1), DateTime.DaysInMonth(now.Year, monthCounter + 1), 23, 59, 59).AddHours(5.1),
+                        trackChanges: false
+                    );
+
+                    rev1Month = 0;
+
+                    // Räkna ut rev för hela månaden (en for loop till?)
+                    foreach (var mr in MonthlyRevsFromDB)
+                    {
+                        rev1Month += mr.Food;
+                        rev1Month += mr.Beverage;
+                        rev1Month += mr.OtherIncome;
+                    }
+
+                    // Få in detta någonstans
+                }
+            }
+
+                //************************************ NYTT FÖRSÖK END ************************************
+
+
+                List<MonthlyRevenue> monthlyRevenues = new List<MonthlyRevenue>();
             int[,] revs1Outlet1Month = new int[12, 2]; // [x, 0] = outlet id, [x, 1] = revenue
 
             // [x][0] = month, [x][1] = outlet, [x][2] = revenue that month
-            int[][] revsAllOutlets1Month = new int[outletIdCounter][];
+            //int[][] revsAllOutlets1Month = new int[outletIdCounter][];
 
-            for (int i = 0; i < outletIdCounter; i++)
-            {
-                revsAllOutlets1Month[i] = new int[3];
-            }
-            
+            //for (int i = 0; i < outletIdCounter; i++)
+            //{
+            //    revsAllOutlets1Month[i] = new int[3];
+            //}
+
+
             int[] tempOutletId = { 0 };
 
             for (int outletCounter = 1; outletCounter <= outletIdCounter; outletCounter++)
@@ -290,28 +336,57 @@ namespace TwinPalmsKPI.Controllers
                     monthlyRevenue.Revenue = revs1Outlet1Month[monthCounter, 1];
                     monthlyRevenues.Add(monthlyRevenue);
 
-                    revsAllOutlets1Month[outletCounter - 1][0] = monthCounter;
-                    revsAllOutlets1Month[outletCounter - 1][1] = revs1Outlet1Month[outletCounter - 1, 0];
-                    revsAllOutlets1Month[outletCounter - 1][2] = revs1Outlet1Month[outletCounter - 1, 1];
+                    //revsAllOutlets1Month[outletCounter - 1][0] = monthCounter;
+                    //revsAllOutlets1Month[outletCounter - 1][1] = revs1Outlet1Month[outletCounter - 1, 0];
+                    //revsAllOutlets1Month[outletCounter - 1][2] = revs1Outlet1Month[outletCounter - 1, 1];
                 }
             }
 
             // Adding to dto for return
             List<RevenueOverViewDto> revs = new List<RevenueOverViewDto>();
-            
-            foreach (var mr in monthlyRevenues)
-            {
-                var revenue = new RevenueOverViewDto
-                {
-                    Month = mr.Month,
-                    OutletId = mr.OutletId,
-                    Revenue = mr.Revenue
-                };
+            List<int> revRevs = new List<int>();
 
-                revs.Add(revenue);
+            //foreach (var mr in monthlyRevenues)
+            //{
+            int revTemp = 0;
+
+            for (int month = 1; month <= 12; month++)
+            {
+                     
+                for (int outlId = 1; outlId <= outletIdCounter; outlId++)
+                {
+                    var revenue = new RevenueOverViewDto();
+                    //revenue.Month = month;
+                    //revenue.OutletId = outlId;
+
+                    foreach (var mr in monthlyRevenues)
+                    {
+                        if (mr.OutletId == outlId && mr.Month == month)
+                        {
+                            revRevs.Add(mr.Revenue);
+                        }
+
+                        //revenue.Revenues = revRevs.ToList<int>();
+                        revTemp = 0;
+                    }
+                
+                    revs.Add(revenue);
+                }
             }
 
-            return Ok(revs);
+            return null;
         }
+
+        //        {
+        //            Month = mr.Month,
+        //            OutletId = mr.OutletId,
+        //            Revenue = mr.Revenue
+        //        };
+
+        //        revs.Add(revenue);
+        //    //}
+
+        //    return Ok(revs);
+        //}
     }
 }
