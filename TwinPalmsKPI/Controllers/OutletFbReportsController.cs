@@ -260,14 +260,19 @@ namespace TwinPalmsKPI.Controllers
             // loopa outlets
             for (int outletCounter = 1; outletCounter <= outletIdCounter; outletCounter++)
             {
-                MonthlyRevDto monthlyRev = new MonthlyRevDto();
+                MonthlyRevDto monthlyRev = new MonthlyRevDto()
+                {
+                    Revenues = new List<int[][]>() 
+                };
+
                 int? rev1Month;
+                
                 // loopa månader{
                 for (int monthCounter = 0; monthCounter < 12; monthCounter++)
                 {
                     int[] outlId = new int[1];
                     outlId[0] = outletCounter;
-                        //int sampleID = new int[1];
+                        
                     // Få data från DB
                     var MonthlyRevsFromDB = await _repository.FbReport.GetAllOutletFbReportsForOutlets(
                         outlId,
@@ -277,8 +282,9 @@ namespace TwinPalmsKPI.Controllers
                     );
 
                     rev1Month = 0;
-
-                    // Räkna ut rev för hela månaden (en for loop till?)
+                    monthlyRev.OutletId = outletCounter;
+                    
+                    // Loop through reports. Räkna ut rev för hela månaden (en for loop till?)
                     foreach (var mr in MonthlyRevsFromDB)
                     {
                         rev1Month += mr.Food;
@@ -286,11 +292,17 @@ namespace TwinPalmsKPI.Controllers
                         rev1Month += mr.OtherIncome;
                     }
 
-                    // Få in detta någonstans
+                    int[][] mRevTempArray = new int[1][];
+                    mRevTempArray[0] = new int[2];
+
+                    mRevTempArray[0][0] = monthCounter;
+                    mRevTempArray[0][1] = (int)rev1Month;
+
+                    monthlyRev.Revenues.Add(mRevTempArray);
                 }
             }
 
-                //************************************ NYTT FÖRSÖK END ************************************
+            //************************************ NYTT FÖRSÖK END ************************************
 
 
                 List<MonthlyRevenue> monthlyRevenues = new List<MonthlyRevenue>();
