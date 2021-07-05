@@ -237,10 +237,10 @@
         </member>
         <member name="M:TwinPalmsKPI.Controllers.OutletsFbReportsController.GetOutletsOverview">
             <summary>
-            Gets YTD, MTD and yesterdays revenue
+            Gets YTD, MTD, yesterdays revenue and monthly overview
             </summary>
             <remarks>
-            Gets Year to Date, Month to Date and yesterdays revenue based on when the request came
+            Gets Year to Date, Month to Date, yesterdays revenue and monthly overview based on when the request came
             </remarks>     
         </member>
         <member name="M:TwinPalmsKPI.Controllers.OutletsController.GetOutlets">
