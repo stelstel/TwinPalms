@@ -312,6 +312,14 @@ namespace TwinPalmsKPI.Controllers
                 yearlyRev.MonthlyRevs.Add(monthlyRev);
             }
 
+            // Adding to dto for return
+            var revenues = new RevenueOverViewDto
+            {
+                YTDs = YTDs,
+                MTDs = MTDs,
+                yesterdaysRevs = yesterdaysRevs
+            };
+
             return Ok(yearlyRev);
 
             //************************************ NYTT FÖRSÖK END ************************************
