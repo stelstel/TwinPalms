@@ -313,14 +313,15 @@ namespace TwinPalmsKPI.Controllers
             }
 
             // Adding to dto for return
-            var revenues = new RevenueOverViewDto
+            var revenueOverview = new RevenueOverviewDto
             {
                 YTDs = YTDs,
                 MTDs = MTDs,
-                yesterdaysRevs = yesterdaysRevs
+                YesterdaysRevs = yesterdaysRevs,
+                YearlyRev = yearlyRev
             };
 
-            return Ok(yearlyRev);
+            return Ok(revenueOverview);
 
             //************************************ NYTT FÖRSÖK END ************************************
 
