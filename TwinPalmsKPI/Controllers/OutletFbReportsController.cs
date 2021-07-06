@@ -17,7 +17,6 @@ using TwinPalmsKPI.Helpers;
 
 namespace TwinPalmsKPI.Controllers
 {
-    //[Route("api/[controller]")]
     [Route("api/")]
     [ApiController]
     public class OutletsFbReportsController : ControllerBase
@@ -116,6 +115,9 @@ namespace TwinPalmsKPI.Controllers
         /// </summary>
         /// <remarks>
         /// Gets Year to Date, Month to Date, yesterdays revenue and monthly overview based on when the request came
+        /// 
+        /// Note that the months in the montly overview (yearlyRev) are numbered 0-11. Thus month 0=January, month 1=february etc.
+        /// 
         /// </remarks>     
         [HttpGet("/outlets/overview", Name = "OutletsOverview")]
         public async Task<IActionResult> GetOutletsOverview()
@@ -134,7 +136,6 @@ namespace TwinPalmsKPI.Controllers
 
             // Getting outlet ids from DB
             List<int> outletIdsList = new List<int>();
-
             List<Outlet> outletReports = (List<Outlet>)await _repository.Outlet.GetAllOutletsAsync(trackChanges: false);
 
             foreach (var or in outletReports)
@@ -243,7 +244,7 @@ namespace TwinPalmsKPI.Controllers
             //MonthlyRevenues
             YearlyRevDto yearlyRev = new YearlyRevDto()
             {
-                                MonthlyRevs = new List<MonthlyRevDto>() // Initialize List
+                MonthlyRevs = new List<MonthlyRevDto>() // Initialize List
             };
 
             // loop outlets

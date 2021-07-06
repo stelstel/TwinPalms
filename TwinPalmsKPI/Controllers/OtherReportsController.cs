@@ -1,15 +1,13 @@
 ﻿using AutoMapper;
-using TwinPalmsKPI.ActionFilters;
 using Contracts;
 using Entities.DataTransferObjects;
 using Entities.Models;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
+using TwinPalmsKPI.ActionFilters;
+
 namespace TwinPalmsKPI.Controllers
 {
     [Route("api/[controller]")]
