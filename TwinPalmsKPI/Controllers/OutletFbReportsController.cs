@@ -1,23 +1,20 @@
 ﻿using AutoMapper;
-using TwinPalmsKPI.ActionFilters;
 using Contracts;
 using Entities.DataTransferObjects;
 using Entities.Models;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Hosting;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 using System.Text;
-using Microsoft.AspNetCore.Hosting;
-using Microsoft.Extensions.Hosting;
+using System.Threading.Tasks;
 using TwinPalmsKPI.Helpers;
 
 namespace TwinPalmsKPI.Controllers
 {
-    //[Route("api/[controller]")]
     [Route("api/")]
     [ApiController]
     public class OutletsFbReportsController : ControllerBase
@@ -26,13 +23,16 @@ namespace TwinPalmsKPI.Controllers
         private readonly ILoggerManager _logger;
         private readonly IMapper _mapper;
         private readonly IWebHostEnvironment env;
+        private readonly IConfiguration config;
 
-        public OutletsFbReportsController(IRepositoryManager repository, ILoggerManager logger, IMapper mapper, IWebHostEnvironment environment)
+        public OutletsFbReportsController(IRepositoryManager repository, ILoggerManager logger,
+            IMapper mapper, IWebHostEnvironment environment, IConfiguration configuration)
         {
             _repository = repository;
             _logger = logger;
             _mapper = mapper;
             env = environment;
+            config = configuration;
         }
 
         // ****************************************** GetOutletsFbReports ****************************************************
@@ -99,9 +99,11 @@ namespace TwinPalmsKPI.Controllers
                 IsPublicHoliday = o.IsPublicHoliday,
                 EventNotes = o.EventNotes,
                 GSourceOfBusinessNotes = o.GSourceOfBusinessNotes,
+                Notes = o.Notes,
                 OutletId = o.OutletId,
                 UserId = o.UserId,
                 LocalEventId = o.LocalEventId,
+                Imagepath = o.ImagePath,
                 GuestSourceOfBusinesses = o.FbReportGuestSourceOfBusinesses.Select(f => f.GuestSourceOfBusiness).ToList(),
                 GsobNrOfGuest = o.FbReportGuestSourceOfBusinesses.Select(f => f.GsobNrOfGuests).ToList(),
                 Weathers = o.WeatherFbReports.Select(w => w.Weather).ToList()
@@ -116,6 +118,9 @@ namespace TwinPalmsKPI.Controllers
         /// </summary>
         /// <remarks>
         /// Gets Year to Date, Month to Date, yesterdays revenue and monthly overview based on when the request came
+        /// 
+        /// Note that the months in the montly overview (yearlyRev) are numbered 0-11. Thus month 0=January, month 1=february etc.
+        /// 
         /// </remarks>     
         [HttpGet("/outlets/overview", Name = "OutletsOverview")]
         public async Task<IActionResult> GetOutletsOverview()
@@ -127,14 +132,11 @@ namespace TwinPalmsKPI.Controllers
             DateTime yesterday = today.AddDays(-1).AddHours(5.1);
             DateTime startOfYear = new DateTime(now.Year, 1, 1, 0, 0, 0).AddHours(5.1);
             DateTime startOfMonth = new DateTime(now.Year, now.Month, 1, 0, 0, 0).AddHours(5.1);
-
             StringBuilder sbOutletIds = new StringBuilder(); // This is used for error reporting
-
             int outletIdCounter = 0;
 
             // Getting outlet ids from DB
             List<int> outletIdsList = new List<int>();
-
             List<Outlet> outletReports = (List<Outlet>)await _repository.Outlet.GetAllOutletsAsync(trackChanges: false);
 
             foreach (var or in outletReports)
@@ -143,6 +145,10 @@ namespace TwinPalmsKPI.Controllers
             }
 
             int[] outletIds = outletIdsList.ToArray();
+
+            // Deleting older images from DB
+            //DeleteImages deleteImages = new DeleteImages(_repository, _logger, env, config); TODO uncomment
+            //deleteImages.DelImgs(outletIds);
 
             // Adding outlet ids to sbOutletIds for error reporting
             foreach (var oi in outletIds)
@@ -243,7 +249,7 @@ namespace TwinPalmsKPI.Controllers
             //MonthlyRevenues
             YearlyRevDto yearlyRev = new YearlyRevDto()
             {
-                                MonthlyRevs = new List<MonthlyRevDto>() // Initialize List
+                MonthlyRevs = new List<MonthlyRevDto>() // Initialize List
             };
 
             // loop outlets

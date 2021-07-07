@@ -241,6 +241,9 @@
             </summary>
             <remarks>
             Gets Year to Date, Month to Date, yesterdays revenue and monthly overview based on when the request came
+            
+            Note that the months in the montly overview (yearlyRev) are numbered 0-11. Thus month 0=January, month 1=february etc.
+            
             </remarks>     
         </member>
         <member name="M:TwinPalmsKPI.Controllers.OutletsController.GetOutlets">
