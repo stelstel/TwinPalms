@@ -43,6 +43,17 @@ namespace Entities.Configuration
 
             }, new User
             {
+                Id = "2e9cf852-89a3-4951-b32e-a2328e513d2a",
+                FirstName = "Admin2",
+                LastName = "Admin2",
+                UserName = "admin2",
+                Email = "admin2@twinpalms",
+                NormalizedEmail = "ADMIN2@TWINPALMS",
+                EmailConfirmed = true
+
+            },
+            new User
+            {
                 Id = "b0b22e53-3ad2-4a0a-9e58-aa0a70a5a157",
                 FirstName = "Basic1",
                 LastName = "Basic1",

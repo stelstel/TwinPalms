@@ -33,7 +33,7 @@ namespace Entities.Configuration
                 },
                 new CompanyUser
                 {
-                    UserId = "7c8a42a1-e82c-4e2a-b944-67aec243d2fb",
+                    UserId = "2e9cf852-89a3-4951-b32e-a2328e513d2a",
                     CompanyId = 2
                 },
                 new CompanyUser
