@@ -4,6 +4,7 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Configuration;
 using System;
 using AutoMapper;
+using System.Threading.Tasks;
 
 namespace TwinPalmsKPI.Helpers
 {
@@ -24,7 +25,7 @@ namespace TwinPalmsKPI.Helpers
             config = configuration;
         }
 
-        public async void DelImgs(int[] outletIds)
+        public async Task DelImgs(int[] outletIds)
         // Deletes all images between dateForFirstDelete and theFuture
         {
             int weeksToKeepImages = config.GetValue<int>("DeleteImagesConfiguration:WeeksToKeepImages");
@@ -50,7 +51,7 @@ namespace TwinPalmsKPI.Helpers
                 foreach (var rep in reports)
                 {
                     // Find image name and delete it
-                    rep.ImagePath = "bengt";
+                    rep.ImagePath = "bengt"; // TODO change
                     _repository.FbReport.UpdateFbReport(rep);
                 }
 
@@ -58,11 +59,8 @@ namespace TwinPalmsKPI.Helpers
             }
             catch (Exception ex) 
             {
-
                 string str = ex.ToString();
-
             }
-
  
             /*
             var fbReportEntity = HttpContext.Items["fbReport"] as FbReport;

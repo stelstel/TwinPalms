@@ -147,8 +147,8 @@ namespace TwinPalmsKPI.Controllers
             int[] outletIds = outletIdsList.ToArray();
 
             // Deleting older images from DB
-            //DeleteImages deleteImages = new DeleteImages(_repository, _logger, env, config); TODO uncomment
-            //deleteImages.DelImgs(outletIds);
+            DeleteImages deleteImages = new DeleteImages(_repository, _logger, env, config);
+            deleteImages.DelImgs(outletIds);
 
             // Adding outlet ids to sbOutletIds for error reporting
             foreach (var oi in outletIds)
