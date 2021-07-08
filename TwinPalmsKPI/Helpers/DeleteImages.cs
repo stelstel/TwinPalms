@@ -11,16 +11,14 @@ namespace TwinPalmsKPI.Helpers
     public class DeleteImages
     {
         private readonly IRepositoryManager _repository;
-        private readonly ILoggerManager _logger;
+        //private readonly ILoggerManager _logger;
         //private readonly IMapper _mapper;
         private readonly IWebHostEnvironment env;
         private readonly IConfiguration config;
 
-        public DeleteImages(IRepositoryManager repository, ILoggerManager logger,
-            /*IMapper mapper,*/ IWebHostEnvironment environment, IConfiguration configuration)
+        public DeleteImages(IRepositoryManager repository, IWebHostEnvironment environment, IConfiguration configuration)
         {
             _repository = repository;
-            _logger = logger;
             env = environment;
             config = configuration;
         }
@@ -45,14 +43,16 @@ namespace TwinPalmsKPI.Helpers
             }
             try
             { 
-
                 var reports = await _repository.FbReport.GetAllOutletFbReportsForOutlets(outletIds, dateForFirstDelete, theFuture, trackChanges: false);
+
+                var temp = _repository;
 
                 foreach (var rep in reports)
                 {
                     // Find image name and delete it
-                    rep.ImagePath = "bengt"; // TODO change
-                    _repository.FbReport.UpdateFbReport(rep);
+
+                    rep.ImagePath = "deleted"; // TODO change
+                    //_repository.FbReport.UpdateFbReport(rep);
                 }
 
                 await _repository.SaveAsync();
