@@ -51,12 +51,7 @@ namespace TwinPalmsKPI.Controllers
 
 
             var user = _mapper.Map<User>(userForRegistration);
-            _logger.LogDebug("id  " + user.Id);
-            foreach (var companyId in userForRegistration.Companies)
-            {
-                _logger.LogDebug("company " + companyId);
 
-            }
 
 
             var password = Password.GenerateRandomPassword();
@@ -83,40 +78,54 @@ namespace TwinPalmsKPI.Controllers
             if (userForRegistration.Role == "Basic")
             {
                 await _userManager.RemoveFromRolesAsync(user, new string[] { "SuperAdmin", "Admin" });
-                //_repository.User.AddUserConnectionsAsync(user.Id, userForRegistration.Outlets.ToArray(), userForRegistration.Hotels.ToArray(), trackChanges: true);
-                foreach (var hotelId in userForRegistration.Hotels)
-                {
-                    _user.HotelUsers.Add(new HotelUser { HotelId = hotelId, UserId = user.Id });
-                }
-                foreach (int outletId in userForRegistration.Outlets)
-                {
-                    _user.OutletUsers.Add(new OutletUser { OutletId = outletId, UserId = user.Id });
-                }
+
+                
+                
+                    foreach (var hotelId in userForRegistration.Hotels)
+                    {
+                        _user.HotelUsers.Add(new HotelUser { HotelId = hotelId, UserId = user.Id });
+                    }
+                
+
+                
+                    foreach (int outletId in userForRegistration.Outlets)
+                    {
+                        _user.OutletUsers.Add(new OutletUser { OutletId = outletId, UserId = user.Id });
+                    }
+                
             }
             else
             {
-                //_logger.LogDebug("savin CompanyUsers ......");
                 await _userManager.RemoveFromRoleAsync(user, "SuperAdmin");
-                /*var resp = await _repository.User.AddUserConnectionsAsync(user.Id, userForRegistration.Companies.ToArray(), trackChanges: true);
-                _logger.LogDebug("resp " + resp);*/
 
-                foreach (int companyId in userForRegistration.Companies)
-                {
-
-                    user.CompanyUsers.Add(new CompanyUser { CompanyId = companyId, UserId = user.Id });
-
-                }
+                
+                    foreach (int companyId in userForRegistration.Companies)
+                    {
+                        user.CompanyUsers.Add(new CompanyUser { CompanyId = companyId, UserId = user.Id });
+                    }
+                
             }
-            await _repository.SaveAsync();
 
             // This can be used if we want to send the password directly by email
             // and use a token instead
             //var token = await _userManager.GeneratePasswordResetTokenAsync(user);
-            /* var emailAddress = !string.IsNullOrWhiteSpace(userForRegistration.NotificationEmail) ? userForRegistration.NotificationEmail
-                 : user.Email;
+            var emailAddress = !string.IsNullOrWhiteSpace(userForRegistration.NotificationEmail) ? userForRegistration.NotificationEmail
+                : user.Email;
 
-             var message = new Message(new string[] { emailAddress }, "Welcome", "Your username is " + user.UserName + " and password is " + password);
-             _emailSender.SendEmail(message);*/
+            var message = new Message(new string[] { emailAddress }, "Welcome", "Your username is " + user.UserName + " and password is " + password);
+
+            try
+            {
+                await _repository.SaveAsync();
+                _emailSender.SendEmail(message);
+
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError($"Email Server Error {ex.Message}");
+                return StatusCode(500, "Internal Server Error. Email could not be sent!");
+               
+            }
 
             return Created("https://localhost:44306/api/users/" + user.Id, user);
 
