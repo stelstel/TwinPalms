@@ -187,7 +187,7 @@ namespace TwinPalmsKPI.Controllers
                         }
                         catch (IOException ioExp)
                         {
-                            _logger.LogDebug(ioExp.Message);
+                            _logger.LogError(ioExp.Message);
                         }
                     }
 
@@ -270,7 +270,7 @@ namespace TwinPalmsKPI.Controllers
 
 
             // Yesterdays revenue
-            var YesterdayOutletFbReports = await _repository.FbReport.GetAllOutletFbReportsForOutlets(outletIds, yesterday, today /*new DateTime(now.Year, 12, 31, 23, 23, 59)*/, trackChanges: false); // TODO change back to today
+            var YesterdayOutletFbReports = await _repository.FbReport.GetAllOutletFbReportsForOutlets(outletIds, yesterday, today, trackChanges: false); // TODO change back to today
 
             if (YesterdayOutletFbReports.Count() == 0)
             {
