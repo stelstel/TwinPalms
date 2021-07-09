@@ -369,8 +369,10 @@ namespace APITestProject1
         */
 
 
+        /*
         [Fact]
         // *************** Testing POST /api/FbReports/ *******************************
+
         public async Task POST_FbReport()
         {
             // Arrange
@@ -433,6 +435,8 @@ namespace APITestProject1
             //Response.Write(fullResponse);
             //*-------------------------------------------------------------------
         }
+        */
+        
 
 
         // ************************************** GetOneResponse ****************************************************************
