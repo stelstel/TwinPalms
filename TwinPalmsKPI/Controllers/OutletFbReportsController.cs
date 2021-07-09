@@ -147,11 +147,9 @@ namespace TwinPalmsKPI.Controllers
 
             int[] outletIds = outletIdsList.ToArray();
 
-            // Deleting older images from DB
-            //DeleteImages deleteImages = new DeleteImages(_repository, _logger, env, config);
-            //deleteImages.DelImgs(outletIds);
-            ///////////////////////////////////////////////////////////
-
+            
+            
+            // Deleting older images from DB --------------------------------------------------------------- START
             int weeksToKeepImages = config.GetValue<int>("DeleteImagesConfiguration:WeeksToKeepImages");
             DateTime theFuture = new DateTime(3021, 1, 1);
 
@@ -170,9 +168,7 @@ namespace TwinPalmsKPI.Controllers
             try
             {
                 var reports = await _repository.FbReport.GetAllOutletFbReportsForOutlets(outletIds, dateForFirstDelete, theFuture, trackChanges: true);
-                //var folderName = Path.Combine("Resources", "Images");
-                //var pathToSave = Path.Combine(Directory.GetCurrentDirectory(), folderName);
-
+                
                 foreach (var rep in reports)
                 {
                     // Find image name and delete it
@@ -187,11 +183,6 @@ namespace TwinPalmsKPI.Controllers
                             {
                                 // If file found, delete it    
                                 System.IO.File.Delete(file);
-                                _logger.LogDebug($"File {file} deleted.");
-                            }
-                            else
-                            {
-                                _logger.LogDebug("File not found");
                             }
                         }
                         catch (IOException ioExp)
@@ -199,17 +190,17 @@ namespace TwinPalmsKPI.Controllers
                             _logger.LogDebug(ioExp.Message);
                         }
                     }
-                    // Find and change the ImagePath field in FbReport DB table 
-                    // rep.ImagePath = "deleted"; // Doesn't work
-                    //_repository.FbReport.UpdateFbReport(rep); // Doesn't work
+
+                    // TODO Find and change the ImagePath field in FbReport DB table 
                 }
             }
             catch (Exception ex)
             {
                 string str = ex.ToString();
             }
+            // Deleting older images from DB ----------------------------------------------------------------- END
 
-            ///////////////////////////////////////////////////////////
+
             // Adding outlet ids to sbOutletIds for error reporting
             foreach (var oi in outletIds)
             {
