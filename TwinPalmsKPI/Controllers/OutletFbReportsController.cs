@@ -180,17 +180,24 @@ namespace TwinPalmsKPI.Controllers
             {
                 if (!YTDs.ContainsKey(yofbr.OutletId))
                 {
+                    // Add key just once
                     YTDs.Add(yofbr.OutletId, 0);
                 }
 
                 YTDs[yofbr.OutletId] += yofbr.Food;
                 YTDs[yofbr.OutletId] += yofbr.Beverage;
                 YTDs[yofbr.OutletId] += yofbr.OtherIncome;
+
+                // Avoid null
+                if (YTDs[yofbr.OutletId] == null)
+                {
+                    YTDs[yofbr.OutletId] = 0;
+                }
             }
 
 
             // MTD = Revenue MonthToDate?
-            var MTDOutletFbReports = await _repository.FbReport.GetAllOutletFbReportsForOutlets(outletIds, startOfMonth, today /*new DateTime(now.Year, 12, 31, 23, 23, 59)*/, trackChanges: false); // TODO change back to today
+            var MTDOutletFbReports = await _repository.FbReport.GetAllOutletFbReportsForOutlets(outletIds, startOfMonth, today , trackChanges: false);
 
             if (MTDOutletFbReports.Count() == 0)
             {
@@ -214,6 +221,12 @@ namespace TwinPalmsKPI.Controllers
                 MTDs[mofbr.OutletId] += mofbr.Food;
                 MTDs[mofbr.OutletId] += mofbr.Beverage;
                 MTDs[mofbr.OutletId] += mofbr.OtherIncome;
+
+                // Avoid null
+                if (MTDs[mofbr.OutletId] == null)
+                {
+                    MTDs[mofbr.OutletId] = 0;
+                }
             }
 
 
@@ -242,6 +255,12 @@ namespace TwinPalmsKPI.Controllers
                 yesterdaysRevs[ydofbr.OutletId] += ydofbr.Food;
                 yesterdaysRevs[ydofbr.OutletId] += ydofbr.Beverage;
                 yesterdaysRevs[ydofbr.OutletId] += ydofbr.OtherIncome;
+
+                // Avoid null
+                if (yesterdaysRevs[ydofbr.OutletId] == null)
+                {
+                    yesterdaysRevs[ydofbr.OutletId] = 0;
+                }
             }
 
 
