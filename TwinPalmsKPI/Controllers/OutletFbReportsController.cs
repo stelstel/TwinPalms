@@ -147,60 +147,8 @@ namespace TwinPalmsKPI.Controllers
 
             int[] outletIds = outletIdsList.ToArray();
 
+            await DeleteOldImages(outletIds);
             
-            
-            // Deleting older images from DB --------------------------------------------------------------- START
-            int weeksToKeepImages = config.GetValue<int>("DeleteImagesConfiguration:WeeksToKeepImages");
-            DateTime theFuture = new DateTime(3021, 1, 1);
-
-            int daysToKeepImages = weeksToKeepImages * 7;
-
-            DateTime dateForFirstDelete = new DateTime();
-
-            if (env.IsDevelopment())
-            {
-                dateForFirstDelete = DateTime.UtcNow.AddDays(-1);
-            }
-            else if (env.IsProduction())
-            {
-                dateForFirstDelete = DateTime.UtcNow.AddDays(daysToKeepImages);
-            }
-            try
-            {
-                var reports = await _repository.FbReport.GetAllOutletFbReportsForOutlets(outletIds, dateForFirstDelete, theFuture, trackChanges: true);
-                
-                foreach (var rep in reports)
-                {
-                    // Find image name and delete it
-                    if (rep.ImagePath != null && rep.ImagePath.Length > 39)
-                    {
-                        var file = rep.ImagePath;
-
-                        try
-                        {
-                            // Check if file exists with its full path    
-                            if (System.IO.File.Exists(file))
-                            {
-                                // If file found, delete it    
-                                System.IO.File.Delete(file);
-                            }
-                        }
-                        catch (IOException ioExp)
-                        {
-                            _logger.LogError(ioExp.Message);
-                        }
-                    }
-
-                    // TODO Find and change the ImagePath field in FbReport DB table 
-                }
-            }
-            catch (Exception ex)
-            {
-                string str = ex.ToString();
-            }
-            // Deleting older images from DB ----------------------------------------------------------------- END
-
-
             // Adding outlet ids to sbOutletIds for error reporting
             foreach (var oi in outletIds)
             {
@@ -313,20 +261,20 @@ namespace TwinPalmsKPI.Controllers
                 };
 
                 int? rev1Month;
-                
+
                 // loop months
                 for (int monthCounter = 0; monthCounter < 12; monthCounter++)
                 {
                     int[] outlId = new int[1];
                     outlId[0] = outletCounter;
 
-                   // Get data from DB
-                   var MonthlyRevsFromDB = await _repository.FbReport.GetAllOutletFbReportsForOutlets(
-                       outlId,
-                       new DateTime(now.Year, (monthCounter + 1), 1, 0, 0, 0).AddHours(5.1),
-                       new DateTime(now.Year, (monthCounter + 1), DateTime.DaysInMonth(now.Year, monthCounter + 1), 23, 59, 59).AddHours(5.1),
-                       trackChanges: false
-                   );
+                    // Get data from DB
+                    var MonthlyRevsFromDB = await _repository.FbReport.GetAllOutletFbReportsForOutlets(
+                        outlId,
+                        new DateTime(now.Year, (monthCounter + 1), 1, 0, 0, 0).AddHours(5.1),
+                        new DateTime(now.Year, (monthCounter + 1), DateTime.DaysInMonth(now.Year, monthCounter + 1), 23, 59, 59).AddHours(5.1),
+                        trackChanges: false
+                    );
 
                     int[][] mRevTempArray = new int[1][];
                     mRevTempArray[0] = new int[2];
@@ -370,6 +318,59 @@ namespace TwinPalmsKPI.Controllers
             };
 
             return Ok(revenueOverview);
+
+            //************************************************ DeleteOldImages ******************************************
+            async Task DeleteOldImages(int[] outletIds)
+            {
+                int weeksToKeepImages = config.GetValue<int>("DeleteImagesConfiguration:WeeksToKeepImages");
+                DateTime theFuture = new DateTime(3021, 1, 1);
+
+                int daysToKeepImages = weeksToKeepImages * 7;
+
+                DateTime dateForFirstDelete = new DateTime();
+
+                if (env.IsDevelopment())
+                {
+                    dateForFirstDelete = DateTime.UtcNow.AddDays(-1);
+                }
+                else if (env.IsProduction())
+                {
+                    dateForFirstDelete = DateTime.UtcNow.AddDays(daysToKeepImages);
+                }
+                try
+                {
+                    var reports = await _repository.FbReport.GetAllOutletFbReportsForOutlets(outletIds, dateForFirstDelete, theFuture, trackChanges: true);
+
+                    foreach (var rep in reports)
+                    {
+                        // Find image name and delete it
+                        if (rep.ImagePath != null && rep.ImagePath.Length > 39)
+                        {
+                            var file = rep.ImagePath;
+
+                            try
+                            {
+                                // Check if file exists with its full path    
+                                if (System.IO.File.Exists(file))
+                                {
+                                    // If file found, delete it    
+                                    System.IO.File.Delete(file);
+                                }
+                            }
+                            catch (IOException ioExp)
+                            {
+                                _logger.LogError(ioExp.Message);
+                            }
+                        }
+
+                        // TODO Find and change the ImagePath field in FbReport DB table 
+                    }
+                }
+                catch (Exception ex)
+                {
+                    string str = ex.ToString();
+                }
+            }
         }
     }
 }
