@@ -147,60 +147,8 @@ namespace TwinPalmsKPI.Controllers
 
             int[] outletIds = outletIdsList.ToArray();
 
+            await DeleteOldImages(outletIds);
             
-            
-            // Deleting older images from DB --------------------------------------------------------------- START
-            int weeksToKeepImages = config.GetValue<int>("DeleteImagesConfiguration:WeeksToKeepImages");
-            DateTime theFuture = new DateTime(3021, 1, 1);
-
-            int daysToKeepImages = weeksToKeepImages * 7;
-
-            DateTime dateForFirstDelete = new DateTime();
-
-            if (env.IsDevelopment())
-            {
-                dateForFirstDelete = DateTime.UtcNow.AddDays(-1);
-            }
-            else if (env.IsProduction())
-            {
-                dateForFirstDelete = DateTime.UtcNow.AddDays(daysToKeepImages);
-            }
-            try
-            {
-                var reports = await _repository.FbReport.GetAllOutletFbReportsForOutlets(outletIds, dateForFirstDelete, theFuture, trackChanges: true);
-                
-                foreach (var rep in reports)
-                {
-                    // Find image name and delete it
-                    if (rep.ImagePath != null && rep.ImagePath.Length > 39)
-                    {
-                        var file = rep.ImagePath;
-
-                        try
-                        {
-                            // Check if file exists with its full path    
-                            if (System.IO.File.Exists(file))
-                            {
-                                // If file found, delete it    
-                                System.IO.File.Delete(file);
-                            }
-                        }
-                        catch (IOException ioExp)
-                        {
-                            _logger.LogError(ioExp.Message);
-                        }
-                    }
-
-                    // TODO Find and change the ImagePath field in FbReport DB table 
-                }
-            }
-            catch (Exception ex)
-            {
-                string str = ex.ToString();
-            }
-            // Deleting older images from DB ----------------------------------------------------------------- END
-
-
             // Adding outlet ids to sbOutletIds for error reporting
             foreach (var oi in outletIds)
             {
@@ -232,17 +180,24 @@ namespace TwinPalmsKPI.Controllers
             {
                 if (!YTDs.ContainsKey(yofbr.OutletId))
                 {
+                    // Add key just once
                     YTDs.Add(yofbr.OutletId, 0);
                 }
 
                 YTDs[yofbr.OutletId] += yofbr.Food;
                 YTDs[yofbr.OutletId] += yofbr.Beverage;
                 YTDs[yofbr.OutletId] += yofbr.OtherIncome;
+
+                // Avoid null
+                if (YTDs[yofbr.OutletId] == null)
+                {
+                    YTDs[yofbr.OutletId] = 0;
+                }
             }
 
 
             // MTD = Revenue MonthToDate?
-            var MTDOutletFbReports = await _repository.FbReport.GetAllOutletFbReportsForOutlets(outletIds, startOfMonth, today /*new DateTime(now.Year, 12, 31, 23, 23, 59)*/, trackChanges: false); // TODO change back to today
+            var MTDOutletFbReports = await _repository.FbReport.GetAllOutletFbReportsForOutlets(outletIds, startOfMonth, today , trackChanges: false);
 
             if (MTDOutletFbReports.Count() == 0)
             {
@@ -266,6 +221,12 @@ namespace TwinPalmsKPI.Controllers
                 MTDs[mofbr.OutletId] += mofbr.Food;
                 MTDs[mofbr.OutletId] += mofbr.Beverage;
                 MTDs[mofbr.OutletId] += mofbr.OtherIncome;
+
+                // Avoid null
+                if (MTDs[mofbr.OutletId] == null)
+                {
+                    MTDs[mofbr.OutletId] = 0;
+                }
             }
 
 
@@ -294,6 +255,12 @@ namespace TwinPalmsKPI.Controllers
                 yesterdaysRevs[ydofbr.OutletId] += ydofbr.Food;
                 yesterdaysRevs[ydofbr.OutletId] += ydofbr.Beverage;
                 yesterdaysRevs[ydofbr.OutletId] += ydofbr.OtherIncome;
+
+                // Avoid null
+                if (yesterdaysRevs[ydofbr.OutletId] == null)
+                {
+                    yesterdaysRevs[ydofbr.OutletId] = 0;
+                }
             }
 
 
@@ -313,20 +280,20 @@ namespace TwinPalmsKPI.Controllers
                 };
 
                 int? rev1Month;
-                
+
                 // loop months
                 for (int monthCounter = 0; monthCounter < 12; monthCounter++)
                 {
                     int[] outlId = new int[1];
                     outlId[0] = outletCounter;
 
-                   // Get data from DB
-                   var MonthlyRevsFromDB = await _repository.FbReport.GetAllOutletFbReportsForOutlets(
-                       outlId,
-                       new DateTime(now.Year, (monthCounter + 1), 1, 0, 0, 0).AddHours(5.1),
-                       new DateTime(now.Year, (monthCounter + 1), DateTime.DaysInMonth(now.Year, monthCounter + 1), 23, 59, 59).AddHours(5.1),
-                       trackChanges: false
-                   );
+                    // Get data from DB
+                    var MonthlyRevsFromDB = await _repository.FbReport.GetAllOutletFbReportsForOutlets(
+                        outlId,
+                        new DateTime(now.Year, (monthCounter + 1), 1, 0, 0, 0).AddHours(5.1),
+                        new DateTime(now.Year, (monthCounter + 1), DateTime.DaysInMonth(now.Year, monthCounter + 1), 23, 59, 59).AddHours(5.1),
+                        trackChanges: false
+                    );
 
                     int[][] mRevTempArray = new int[1][];
                     mRevTempArray[0] = new int[2];
@@ -370,6 +337,59 @@ namespace TwinPalmsKPI.Controllers
             };
 
             return Ok(revenueOverview);
+
+            //************************************************ DeleteOldImages ******************************************
+            async Task DeleteOldImages(int[] outletIds)
+            {
+                int weeksToKeepImages = config.GetValue<int>("DeleteImagesConfiguration:WeeksToKeepImages");
+                DateTime theFuture = new DateTime(3021, 1, 1);
+
+                int daysToKeepImages = weeksToKeepImages * 7;
+
+                DateTime dateForFirstDelete = new DateTime();
+
+                if (env.IsDevelopment())
+                {
+                    dateForFirstDelete = DateTime.UtcNow.AddDays(-1);
+                }
+                else if (env.IsProduction())
+                {
+                    dateForFirstDelete = DateTime.UtcNow.AddDays(daysToKeepImages);
+                }
+                try
+                {
+                    var reports = await _repository.FbReport.GetAllOutletFbReportsForOutlets(outletIds, dateForFirstDelete, theFuture, trackChanges: true);
+
+                    foreach (var rep in reports)
+                    {
+                        // Find image name and delete it
+                        if (rep.ImagePath != null && rep.ImagePath.Length > 39)
+                        {
+                            var file = rep.ImagePath;
+
+                            try
+                            {
+                                // Check if file exists with its full path    
+                                if (System.IO.File.Exists(file))
+                                {
+                                    // If file found, delete it    
+                                    System.IO.File.Delete(file);
+                                }
+                            }
+                            catch (IOException ioExp)
+                            {
+                                _logger.LogError(ioExp.Message);
+                            }
+                        }
+
+                        // TODO Find and change the ImagePath field in FbReport DB table 
+                    }
+                }
+                catch (Exception ex)
+                {
+                    string str = ex.ToString();
+                }
+            }
         }
     }
 }
