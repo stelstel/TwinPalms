@@ -114,16 +114,18 @@ namespace TwinPalmsKPI.Controllers
 
             var message = new Message(new string[] { emailAddress }, "Welcome", "Your username is " + user.UserName + " and password is " + password);
 
+            await _repository.SaveAsync();
+            
             try
             {
-                await _repository.SaveAsync();
-                _emailSender.SendEmail(message);
+               _emailSender.SendEmail(message);
 
             }
             catch (Exception ex)
             {
+                var errorMessage = $"The user credentials are:\n Username: {user.UserName}\n Password: {password}";
                 _logger.LogError($"Email Server Error {ex.Message}");
-                return StatusCode(500, "Internal Server Error. Email could not be sent!");
+                return StatusCode(500, errorMessage);
                
             }
 
@@ -154,44 +156,7 @@ namespace TwinPalmsKPI.Controllers
 
                 return Ok(authUser);
             }
-        }       //TODO older login response below- delete? (Anette)
-
-        ////var userId = _user.Identity(FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier).Value;
-        //var roles = _userManager.GetRolesAsync(_user).Result;
-
-        //    /*var claimsRoles = User.Claims.Where(claim => claim.Type == "Role")
-        //.Select(claim => claim.Value).ToArray();*/
-
-        //if (!roles.Contains("SuperAdmin"))
-        //{
-        //    if (roles.Contains("Admin"))
-        //    {
-        //        return Ok(new
-        //        {
-        //            Token = token,
-        //            Companies = _repository.User.GetCompaniesAsync(_user.Id, false)
-
-        //        });
-        //    }
-        //    else
-        //    {
-        //        return Ok(new
-        //        {
-        //            Token = token,
-        //            Outlets = _repository.User.GetOutletsAsync(_user.Id, false)
-
-        //        });
-        //    }
-        //}
-        //else
-        //{
-        //    return Ok(new
-        //    {
-        //        Token = token,
-        //    });
-        //}
-        //}
-        //}
+        }       
 
         [HttpPost("forgot-password")]
         public async Task<IActionResult> ForgotPassword([FromBody] ForgotPasswordDto forgotPasswordInput)
