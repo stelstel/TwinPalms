@@ -44,7 +44,7 @@ namespace TwinPalmsKPI.Controllers
             _emailSender = emailSender;
         }
 
-        [HttpPost]
+        [HttpPost, Authorize(Roles = "SuperAdmin")]
         [ServiceFilter(typeof(ValidationFilterAttribute))]
         public async Task<IActionResult> Authenticate([FromBody] UserForRegistrationDto userForRegistration)
         {
@@ -112,7 +112,7 @@ namespace TwinPalmsKPI.Controllers
             var emailAddress = !string.IsNullOrWhiteSpace(userForRegistration.NotificationEmail) ? userForRegistration.NotificationEmail
                 : user.Email;
 
-            var message = new Message(new string[] { emailAddress }, "Welcome", "Your username is " + user.UserName + " and password is " + password);
+            var message = new Message(new string[] { emailAddress }, "Welcome", "Your username is " + user.UserName + " and your password is " + password);
 
             await _repository.SaveAsync();
             
@@ -123,9 +123,9 @@ namespace TwinPalmsKPI.Controllers
             }
             catch (Exception ex)
             {
-                var errorMessage = $"The user credentials are:\n Username: {user.UserName}\n Password: {password}";
+                var errorMessage = $"The user credentials are:\n Email: {user.Email}\n Username: {user.UserName}\n Password: {password}";
                 _logger.LogError($"Email Server Error {ex.Message}");
-                return StatusCode(500, errorMessage);
+                return StatusCode(503, errorMessage);
                
             }
 
@@ -175,7 +175,7 @@ $"<h3>Reset password</h3><a href=https://localhost:3000/reset-password?token={to
             return Ok();
         }
 
-        [HttpPost("reset-password")]
+        [HttpPost("reset-password"), Authorize]
         public async Task<IActionResult> ResetPassword([FromBody] ResetPasswordDto input, [FromQuery] string token)
         {
 
