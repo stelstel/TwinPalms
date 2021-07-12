@@ -2,6 +2,7 @@
 using Contracts;
 using Entities.DataTransferObjects;
 using Entities.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
@@ -12,7 +13,6 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using TwinPalmsKPI.Helpers;
 
 namespace TwinPalmsKPI.Controllers
 {
@@ -49,7 +49,7 @@ namespace TwinPalmsKPI.Controllers
         ///     toDate = 2021-12-02
         ///     
         /// </remarks>     
-        [HttpGet("/outlets/fbReports", Name = "OutletsFbReportsByIdAndDate")]
+        [HttpGet("/outlets/fbReports", Name = "OutletsFbReportsByIdAndDate"), Authorize(Roles = "Admin")]
         public async Task<IActionResult> GetOutletsFbReports( [FromQuery] int[] outletIds, DateTime fromDate, DateTime toDate)
         {
             // Reports filed before 5am are treated as fbreport for the day before.
@@ -123,7 +123,7 @@ namespace TwinPalmsKPI.Controllers
         /// Note that the months in the montly overview (yearlyRev) are numbered 0-11. Thus month 0=January, month 1=february etc.
         /// 
         /// </remarks>     
-        [HttpGet("/outlets/overview", Name = "OutletsOverview")]
+        [HttpGet("/outlets/overview", Name = "OutletsOverview"), Authorize(Roles = "Admin")]
         public async Task<IActionResult> GetOutletsOverview()
         {
             // Reports filed before 5am are treated as fbreport for the day before.

@@ -30,8 +30,7 @@ namespace TwinPalmsKPI.Controllers
         /// <summary>
         /// Gets a list of all Outlets
         /// </summary>
-        // TODO Add Authorize
-        [HttpGet(Name = "GetOutlets")/*, Authorize(Roles = "Administrator, Manager")*/] 
+        [HttpGet(Name = "GetOutlets"), Authorize] 
         public async Task<IActionResult> GetOutlets()
         {
             var outlets = await _repository.Outlet.GetAllOutletsAsync(trackChanges: false);
@@ -42,7 +41,7 @@ namespace TwinPalmsKPI.Controllers
         /// <summary>
         /// Gets a single Outlet by ID
         /// </summary>
-        [HttpGet("{id}", Name = "OutletById")]
+        [HttpGet("{id}", Name = "OutletById"), Authorize(Roles = "Admin")]
         public async Task<IActionResult> GetOutlet(int id)
         {
             var outlet = await _repository.Outlet.GetOutletAsync(id, trackChanges: false);
@@ -58,7 +57,7 @@ namespace TwinPalmsKPI.Controllers
         /// <summary>
         /// Creates a new Outlet
         /// </summary>
-        [HttpPost]
+        [HttpPost, Authorize(Roles = "SuperAdmin")]
         [ServiceFilter(typeof(ValidationFilterAttribute))]
         public async Task<IActionResult> CreateOutlet([FromBody] OutletForCreationDto outlet)
         {
@@ -102,7 +101,7 @@ namespace TwinPalmsKPI.Controllers
         /// <summary>
         /// Deletes a Outlet by ID
         /// </summary>
-        [HttpDelete("{id}")]
+        [HttpDelete("{id}"), Authorize(Roles = "SuperAdmin")]
         [ServiceFilter(typeof(ValidateOutletExistsAttribute))]
         public async Task<IActionResult> DeleteOutlet(int id)
         {
@@ -115,7 +114,7 @@ namespace TwinPalmsKPI.Controllers
         /// <summary>
         /// Updates a Outlet by ID
         /// </summary>
-        [HttpPut("{id}")]
+        [HttpPut("{id}"), Authorize(Roles = "Admin")]
         [ServiceFilter(typeof(ValidationFilterAttribute))]
         [ServiceFilter(typeof(ValidateOutletExistsAttribute))]
         public async Task<IActionResult> UpdateOutlet(int id, [FromBody] OutletForUpdateDto outlet)

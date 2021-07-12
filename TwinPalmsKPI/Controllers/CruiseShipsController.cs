@@ -28,10 +28,9 @@ namespace TwinPalmsKPI.Controllers
         }
 
         /// <summary>
-        /// Gets a list of all companies
+        /// Gets a list of all cruise ships
         /// </summary>
-        // TODO Add Authorize
-        [HttpGet(Name = "GetCruiseShips")/*, Authorize(Roles = "Administrator, Manager")*/] 
+        [HttpGet(Name = "GetCruiseShips"), Authorize] 
         public async Task<IActionResult> GetCruiseShips()
         {
             var cruiseShips = await _repository.CruiseShip.GetAllCruiseShipsAsync(trackChanges: false);
@@ -40,10 +39,10 @@ namespace TwinPalmsKPI.Controllers
         }
 
         /// <summary>
-        /// Gets a single cruiseShip by ID
+        /// Gets a single cruise ship by ID
         /// </summary>
-        [HttpGet("{id}", Name = "CruiseShipById")]
-        public async Task<IActionResult> GetCruiseShip(/*int cruiseShipId,*/ int id)
+        [HttpGet("{id}", Name = "CruiseShipById"), Authorize(Roles = "Admin")]
+        public async Task<IActionResult> GetCruiseShip(int id)
         {
             var cruiseShip = await _repository.CruiseShip.GetCruiseShipAsync(id, trackChanges: false);
             if (cruiseShip == null)
@@ -56,9 +55,9 @@ namespace TwinPalmsKPI.Controllers
         }
 
         /// <summary>
-        /// Creates a new cruiseShip
+        /// Creates a new cruise ship
         /// </summary>
-        [HttpPost]
+        [HttpPost, Authorize(Roles = "SuperAdmin")]
         [ServiceFilter(typeof(ValidationFilterAttribute))]
         public async Task<IActionResult> CreateCruiseShip([FromBody] CruiseShipForCreationDto cruiseShip)
         {
@@ -70,9 +69,9 @@ namespace TwinPalmsKPI.Controllers
         }
 
         /// <summary>
-        /// Deletes a cruiseShip by ID
+        /// Deletes a cruise ship by ID
         /// </summary>
-        [HttpDelete("{id}")]
+        [HttpDelete("{id}"), Authorize(Roles = "SuperAdmin")]
         [ServiceFilter(typeof(ValidateCruiseShipExistsAttribute))]
         public async Task<IActionResult> DeleteCruiseShip(int id)
         {
@@ -83,9 +82,9 @@ namespace TwinPalmsKPI.Controllers
         }
 
         /// <summary>
-        /// Updates a cruiseShip by ID
+        /// Updates a cruise ship by ID
         /// </summary>
-        [HttpPut("{id}")]
+        [HttpPut("{id}"), Authorize(Roles = "SuperAdmin")]
         [ServiceFilter(typeof(ValidationFilterAttribute))]
         [ServiceFilter(typeof(ValidateCruiseShipExistsAttribute))]
         public async Task<IActionResult> UpdateCruiseShip(int id, [FromBody] CruiseShipForUpdateDto cruiseShip)

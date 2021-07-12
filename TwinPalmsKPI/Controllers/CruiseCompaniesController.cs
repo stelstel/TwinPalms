@@ -30,8 +30,7 @@ namespace TwinPalmsKPI.Controllers
         /// <summary>
         /// Gets a list of all companies
         /// </summary>
-        // TODO Add Authorize
-        [HttpGet(Name = "GetCruiseCompanies")/*, Authorize(Roles = "Administrator, Manager")*/] 
+        [HttpGet(Name = "GetCruiseCompanies"), Authorize(Roles = "Admin")] 
         public async Task<IActionResult> GetCruiseCompanies()
         {
             var cruiseCompanies = await _repository.CruiseCompany.GetAllCruiseCompaniesAsync(trackChanges: false);
@@ -42,7 +41,7 @@ namespace TwinPalmsKPI.Controllers
         /// <summary>
         /// Gets a single cruiseCompany by ID
         /// </summary>
-        [HttpGet("{id}", Name = "CruiseCompanyById")]
+        [HttpGet("{id}", Name = "CruiseCompanyById"), Authorize(Roles = "Admin")]
         public async Task<IActionResult> GetCruiseCompany(/*int cruiseCompanyId,*/ int id)
         {
             var cruiseCompany = await _repository.CruiseCompany.GetCruiseCompanyAsync(id, trackChanges: false);
@@ -58,7 +57,7 @@ namespace TwinPalmsKPI.Controllers
         /// <summary>
         /// Creates a new cruiseCompany
         /// </summary>
-        [HttpPost]
+        [HttpPost, Authorize(Roles = "SuperAdmin")]
         [ServiceFilter(typeof(ValidationFilterAttribute))]
         public async Task<IActionResult> CreateCruiseCompany([FromBody] CruiseCompanyForCreationDto cruiseCompany)
         {
@@ -72,7 +71,7 @@ namespace TwinPalmsKPI.Controllers
         /// <summary>
         /// Deletes a cruiseCompany by ID
         /// </summary>
-        [HttpDelete("{id}")]
+        [HttpDelete("{id}"), Authorize(Roles = "SuperAdmin")]
         [ServiceFilter(typeof(ValidateCruiseCompanyExistsAttribute))]
         public async Task<IActionResult> DeleteCruiseCompany(int id)
         {
@@ -85,7 +84,7 @@ namespace TwinPalmsKPI.Controllers
         /// <summary>
         /// Updates a cruiseCompany by ID
         /// </summary>
-        [HttpPut("{id}")]
+        [HttpPut("{id}"), Authorize(Roles = "SuperAdmin")]
         [ServiceFilter(typeof(ValidationFilterAttribute))]
         [ServiceFilter(typeof(ValidateCruiseCompanyExistsAttribute))]
         public async Task<IActionResult> UpdateCruiseCompany(int id, [FromBody] CruiseCompanyForUpdateDto cruiseCompany)

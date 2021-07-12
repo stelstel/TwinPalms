@@ -175,14 +175,13 @@ $"<h3>Reset password</h3><a href=https://localhost:3000/reset-password?token={to
             return Ok();
         }
 
-        [HttpPost("reset-password"), Authorize]
+        [HttpPost("reset-password")]
         public async Task<IActionResult> ResetPassword([FromBody] ResetPasswordDto input, [FromQuery] string token)
         {
 
             if (!ModelState.IsValid)
                 return BadRequest();
             var email = input.Email;
-            _logger.LogDebug("Enail: " + email);
             var user = await _userManager.FindByEmailAsync(email);
             if (user == null)
                 return NotFound(email);
@@ -203,7 +202,6 @@ $"<h3>Reset password</h3><a href=https://localhost:3000/reset-password?token={to
         [Authorize]
         public async Task<IActionResult> ChangePassword([FromBody] ChangePasswordDto input)
         {
-            //return Ok(User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier).Value);
             if (!ModelState.IsValid)
                 return BadRequest();
             if (User.Identity.IsAuthenticated)

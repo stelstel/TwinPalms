@@ -30,8 +30,7 @@ namespace TwinPalmsKPI.Controllers
         /// <summary>
         /// Gets a list of all Hotels
         /// </summary>
-        // TODO Add Authorize
-        [HttpGet(Name = "GetHotels")/*, Authorize(Roles = "Administrator, Manager")*/] 
+        [HttpGet(Name = "GetHotels"), Authorize] 
         public async Task<IActionResult> GetHotels()
         {
             var hotels = await _repository.Hotel.GetAllHotelsAsync(trackChanges: false);
@@ -42,7 +41,7 @@ namespace TwinPalmsKPI.Controllers
         /// <summary>
         /// Gets a single Hotel by ID
         /// </summary>
-        [HttpGet("{id}", Name = "HotelById")]
+        [HttpGet("{id}", Name = "HotelById"), Authorize(Roles = "Admin")]
         public async Task<IActionResult> GetHotel(/*int hotelId,*/ int id)
         {
             var hotel = await _repository.Hotel.GetHotelAsync(id, trackChanges: false);
@@ -58,7 +57,7 @@ namespace TwinPalmsKPI.Controllers
         /// <summary>
         /// Creates a new Hotel
         /// </summary>
-        [HttpPost]
+        [HttpPost, Authorize(Roles = "SuperAdmin")]
         [ServiceFilter(typeof(ValidationFilterAttribute))]
         public async Task<IActionResult> CreateHotel([FromBody] HotelForCreationDto hotel)
         {
@@ -72,7 +71,7 @@ namespace TwinPalmsKPI.Controllers
         /// <summary>
         /// Deletes a Hotel by ID
         /// </summary>
-        [HttpDelete("{id}")]
+        [HttpDelete("{id}"), Authorize(Roles = "SuperAdmin")]
         [ServiceFilter(typeof(ValidateHotelExistsAttribute))]
         public async Task<IActionResult> DeleteHotel(int id)
         {
@@ -85,7 +84,7 @@ namespace TwinPalmsKPI.Controllers
         /// <summary>
         /// Updates a Hotel by ID
         /// </summary>
-        [HttpPut("{id}")]
+        [HttpPut("{id}"), Authorize(Roles = "SuperAdmin")]
         [ServiceFilter(typeof(ValidationFilterAttribute))]
         [ServiceFilter(typeof(ValidateHotelExistsAttribute))]
         public async Task<IActionResult> UpdateHotel(int id, [FromBody] HotelForUpdateDto hotel)

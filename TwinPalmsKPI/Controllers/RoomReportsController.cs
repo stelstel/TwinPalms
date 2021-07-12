@@ -33,20 +33,21 @@ namespace TwinPalmsKPI.Controllers
         /// <summary>
         /// Gets a list of all roomsReports
         /// </summary>
-        // TODO Add Authorize
-       /* [HttpGet(Name = "GetRoomsReport")*//*, Authorize(Roles = "Administrator, Manager")*//*]
-        public async Task<IActionResult> GetRoomsReport()
+
+        [HttpGet(), Authorize(Roles = "Admin")]
+        public async Task<IActionResult> GetRoomsReport(int hotelId, [FromQuery] int[] roomTypes, DateTime fromDate, DateTime toDate)
         {
-            var roomsReports = await _repository.RoomsReport.GetAllRoomsReportsAsync(trackChanges: false);
-            var roomsReportsDto = _mapper.Map<IEnumerable<RoomsReportDto>>(roomsReports);
+            var roomsReports = await _repository.RoomsReport.GetAllRoomsReportsDataAsync(hotelId, roomTypes, fromDate, toDate, false);
+            var roomsReportsDto = _mapper.Map<IEnumerable<RoomReportDto>>(roomsReports);
+
             return Ok(roomsReportsDto);
-        }*/
+        }
 
         /// <summary>
         /// Gets a single roomsReport by ID
         /// </summary>
-        [HttpGet("{id}", Name = "RoomReporById")]
-        public async Task<IActionResult> GetRoomsReport(/*int roomsReportId,*/ int id)
+        [HttpGet("{id}", Name = "RoomReporById"), Authorize(Roles = "Admin")]
+        public async Task<IActionResult> GetRoomsReport(int id)
         {
             var roomReport = await _repository.RoomsReport.GetRoomsReportAsync(id, trackChanges: false);
             if (roomReport == null)
@@ -61,11 +62,11 @@ namespace TwinPalmsKPI.Controllers
         /// <summary>
         /// Creates a new roomsReport
         /// </summary>
-        [HttpPost]
+        [HttpPost, Authorize(Roles = "Basic")]
         [ServiceFilter(typeof(ValidationFilterAttribute))]
         public async Task<IActionResult> CreateRoomsReport([FromForm] RoomReportForCreationDto roomReport)
         {
-            _logger.LogDebug("file " + roomReport.File);
+            
             var roomReportEntity = _mapper.Map<RoomReport>(roomReport);
             if (roomReport.LocalEventId != null)
             {
@@ -104,7 +105,7 @@ namespace TwinPalmsKPI.Controllers
                         {
                             file.CopyTo(stream);
                             roomReportEntity.ImagePath = dbPath;
-                            _logger.LogInfo("entity to be created: " + roomReportEntity.ImagePath);
+                           
                         }
                     }
                     else
@@ -129,7 +130,7 @@ namespace TwinPalmsKPI.Controllers
         /// <summary>
         /// Deletes a roomsReport by ID
         /// </summary>
-        [HttpDelete("{id}")]
+        [HttpDelete("{id}"), Authorize(Roles = "Admin")]
         [ServiceFilter(typeof(ValidateRoomsReportExistsAttribute))]
         public async Task<IActionResult> DeleteRoomsReport(int id)
         {
@@ -142,7 +143,7 @@ namespace TwinPalmsKPI.Controllers
         /// <summary>
         /// Updates a roomsReport by ID
         /// </summary>
-        [HttpPut("{id}")]
+        [HttpPut("{id}"), Authorize(Roles = "Admin")]
         [ServiceFilter(typeof(ValidationFilterAttribute))]
         [ServiceFilter(typeof(ValidateRoomsReportExistsAttribute))]
         public async Task<IActionResult> UpdateRoomsReport(int id, [FromBody] RoomsReportForUpdateDto roomsReport)
@@ -154,17 +155,6 @@ namespace TwinPalmsKPI.Controllers
             var roomsReportToReturn = _mapper.Map<RoomReportDto>(roomsReportEntity);
             return CreatedAtRoute("RoomsReportById", new { id = roomsReportToReturn.Id }, roomsReportToReturn);
         }
-        /// <summary>
-        /// Gets a list of all roomsReports
-        /// </summary>
-        // TODO Add Authorize
-        [HttpGet()/*, Authorize(Roles = "Administrator, Manager")*/]
-        public async Task<IActionResult> GetRoomsReport(int hotelId, [FromQuery] int[] roomTypes, DateTime fromDate, DateTime toDate)
-        {
-            var roomsReports = await _repository.RoomsReport.GetAllRoomsReportsDataAsync(hotelId, roomTypes, fromDate, toDate, false);
-            var roomsReportsDto = _mapper.Map<IEnumerable<RoomReportDto>>(roomsReports);
-            
-            return Ok(roomsReportsDto);
-        }
+       
     }
 }

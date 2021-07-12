@@ -56,27 +56,27 @@
         </member>
         <member name="M:TwinPalmsKPI.Controllers.CruiseShipsController.GetCruiseShips">
             <summary>
-            Gets a list of all companies
+            Gets a list of all cruise ships
             </summary>
         </member>
         <member name="M:TwinPalmsKPI.Controllers.CruiseShipsController.GetCruiseShip(System.Int32)">
             <summary>
-            Gets a single cruiseShip by ID
+            Gets a single cruise ship by ID
             </summary>
         </member>
         <member name="M:TwinPalmsKPI.Controllers.CruiseShipsController.CreateCruiseShip(Entities.DataTransferObjects.CruiseShipForCreationDto)">
             <summary>
-            Creates a new cruiseShip
+            Creates a new cruise ship
             </summary>
         </member>
         <member name="M:TwinPalmsKPI.Controllers.CruiseShipsController.DeleteCruiseShip(System.Int32)">
             <summary>
-            Deletes a cruiseShip by ID
+            Deletes a cruise ship by ID
             </summary>
         </member>
         <member name="M:TwinPalmsKPI.Controllers.CruiseShipsController.UpdateCruiseShip(System.Int32,Entities.DataTransferObjects.CruiseShipForUpdateDto)">
             <summary>
-            Updates a cruiseShip by ID
+            Updates a cruise ship by ID
             </summary>
         </member>
         <member name="M:TwinPalmsKPI.Controllers.FbReportsController.GetFbReports">
@@ -271,6 +271,11 @@
             Updates a Outlet by ID
             </summary>
         </member>
+        <member name="M:TwinPalmsKPI.Controllers.RoomReportsController.GetRoomsReport(System.Int32,System.Int32[],System.DateTime,System.DateTime)">
+            <summary>
+            Gets a list of all roomsReports
+            </summary>
+        </member>
         <member name="M:TwinPalmsKPI.Controllers.RoomReportsController.GetRoomsReport(System.Int32)">
             <summary>
             Gets a single roomsReport by ID
@@ -289,11 +294,6 @@
         <member name="M:TwinPalmsKPI.Controllers.RoomReportsController.UpdateRoomsReport(System.Int32,Entities.DataTransferObjects.RoomsReportForUpdateDto)">
             <summary>
             Updates a roomsReport by ID
-            </summary>
-        </member>
-        <member name="M:TwinPalmsKPI.Controllers.RoomReportsController.GetRoomsReport(System.Int32,System.Int32[],System.DateTime,System.DateTime)">
-            <summary>
-            Gets a list of all roomsReports
             </summary>
         </member>
         <member name="M:TwinPalmsKPI.Controllers.UsersController.GetUsers">

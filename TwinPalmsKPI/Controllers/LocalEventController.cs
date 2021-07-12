@@ -30,7 +30,6 @@ namespace TwinPalmsKPI.Controllers
         /// <summary>
         /// Gets a list of all LocalEvents
         /// </summary>
-        // TODO Add Authorize
         [HttpGet(Name = "GetLocalEvents"), Authorize] 
         public async Task<IActionResult> GetLocalEvents()
         {
@@ -82,7 +81,6 @@ namespace TwinPalmsKPI.Controllers
             
             List<FbReport> fbReportsFromDb = (List<FbReport>)await _repository.FbReport.GetAllFbReportsAsync(trackChanges: false);
 
-            //fbReportsFromDb.Find(fbr => fbr.LocalEventId == id)
 
             if (!ModelState.IsValid)
             {
@@ -111,7 +109,7 @@ namespace TwinPalmsKPI.Controllers
         /// <summary>
         /// Updates a LocalEvent by ID
         /// </summary>
-        [HttpPut("{id}")]
+        [HttpPut("{id}"), Authorize(Roles = "SuperAdmin")]
         [ServiceFilter(typeof(ValidationFilterAttribute))]
         [ServiceFilter(typeof(ValidateLocalEventExistsAttribute))]
         public async Task<IActionResult> UpdateLocalEvent(int id, [FromBody] LocalEventForUpdateDto localEvent)
