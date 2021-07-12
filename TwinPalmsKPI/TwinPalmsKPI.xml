@@ -241,6 +241,7 @@
             </summary>
             <remarks>
             Gets Year to Date, Month to Date, yesterdays revenue and monthly overview based on when the request came
+            Deletes older images
             
             Note that the months in the montly overview (yearlyRev) are numbered 0-11. Thus month 0=January, month 1=february etc.
             

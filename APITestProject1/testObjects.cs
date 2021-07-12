@@ -45,7 +45,8 @@ namespace APITestProject1
 
         public static List<string> TestObjEventNotes = new List<string>
         {
-            "The DJ got everybody dancing",                                         // 0
+            //"The DJ got everybody dancing",                                         // 0
+            "sit sed elit et ipsum sit ipsum ipsum",
             "The DJ was really good",                                               // 1
             "The Flamenco dance lesson was quite nice, had many people dancing",    // 2
             "The DJ was a star",                                                    // 3
@@ -56,7 +57,8 @@ namespace APITestProject1
 
         public static List<string> TestObjGSOBNotes = new List<string>
         {
-            "A lot of people just dropped in at around 1:00 AM",    //0
+            //"A lot of people just dropped in at around 1:00 AM",    //0
+            "ipsum sit tempor et",                                  //0
             "A lot of people came from Google Search",              //1
             "Instagram",                                            //2
             null,                                                   //3
@@ -71,5 +73,5 @@ namespace APITestProject1
                 "35947f01-393b-442c-b815-d6d9f7d4b81e",
                 "b0b22e53-3ad2-4a0a-9e58-aa0a70a5a157"
             };
-}
+    }
 }

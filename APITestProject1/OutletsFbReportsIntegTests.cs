@@ -41,7 +41,7 @@ namespace APITestProject1
             userIds = TestObjUserIds;
         }
 
-        /*
+        
         [Fact]
         //*************************************** testing GET api/outlets/fbReports ***********************************************
         public async Task get_OutletFbReports()
@@ -63,7 +63,7 @@ namespace APITestProject1
             int? expLocalEventId;
             DateTime expDate;
             List<int> outletIds = new List<int> { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12 };
-            DateTime fromDate = new DateTime(2020, 12, 31);
+            DateTime fromDate = new DateTime(2020, 01, 01);
             DateTime toDate = new DateTime(2022, 01, 01);
             List<GuestSourceOfBusiness> expGsobs = new List<GuestSourceOfBusiness>();
             List<int> expGsobNrOfGuests = new List<int>();
@@ -90,7 +90,7 @@ namespace APITestProject1
             // Act
             var response = await _client.GetAsync(URL);
             response.EnsureSuccessStatusCode();
-            var responseString = JArray.Parse(await response.Content.ReadAsStringAsync()); // TODO. Sort by ???
+            var responseString = JArray.Parse(await response.Content.ReadAsStringAsync());
             int actualNrOfReports = responseString.Count();
 
 
@@ -119,26 +119,27 @@ namespace APITestProject1
 
             CheckFbReport
             (
-                expectedTables = 1,
-                expFood = 10000,
-                expBeverage = 20000,
-                expOtherIncome = 5000,
-                expGuestsFromHotelTP = 15,
-                expGuestsFromHotelTM = 13,
-                expguestsFromOutsideHotel = 10,
+                expectedTables = 169,
+                expFood = 19487,
+                expBeverage = 100248,
+                expOtherIncome = 48962,
+                expGuestsFromHotelTP = 43,
+                expGuestsFromHotelTM = 1,
+                expguestsFromOutsideHotel = 60,
                 expIsPublicHoliday = false,
                 expEventNotes = eventNotes[0],
                 expGSourceOfBusinessNotes = gsobNotes[0],
-                expOutletId = 1,
+                expOutletId = 6,
                 expUserId = userIds.ElementAt(0),
                 expLocalEventId = 2,
-                expDate = new DateTime(2021, 12, 2, 4, 0, 0),
+                expDate = new DateTime(2021, 01, 02, 3, 40, 45),
                 expGsobs,
                 expGsobNrOfGuests,
                 expWeathers,
                 report0
             );
 
+            /*
             // Check 2 ------
             var report1 = responseString[406];
 
@@ -342,8 +343,8 @@ namespace APITestProject1
                 expWeathers,
                 report6
             );
+            */
         }
-        */
 
         // *************************************** CheckFbReport *************************************************************
         private static void CheckFbReport(

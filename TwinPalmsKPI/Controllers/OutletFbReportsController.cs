@@ -87,6 +87,13 @@ namespace TwinPalmsKPI.Controllers
                 return NotFound();
             }
 
+            var X = outletFbReports.ElementAt(0).FbReportGuestSourceOfBusinesses.Select(f => f.GuestSourceOfBusiness).ToList(); //TODO REMOVE ///////////////
+            var Y = outletFbReports.ElementAt(1).FbReportGuestSourceOfBusinesses.Select(f => f.GuestSourceOfBusiness).ToList(); //TODO REMOVE ///////////////
+            var Z = outletFbReports.ElementAt(2).FbReportGuestSourceOfBusinesses.Select(f => f.GuestSourceOfBusiness).ToList(); //TODO REMOVE ///////////////
+            var XX = outletFbReports.ElementAt(3).FbReportGuestSourceOfBusinesses.Select(f => f.GuestSourceOfBusiness).ToList(); //TODO REMOVE ///////////////
+            var YY = outletFbReports.ElementAt(4).FbReportGuestSourceOfBusinesses.Select(f => f.GuestSourceOfBusiness).ToList(); //TODO REMOVE ///////////////
+            var ZZ = outletFbReports.ElementAt(5).FbReportGuestSourceOfBusinesses.Select(f => f.GuestSourceOfBusiness).ToList(); //TODO REMOVE ///////////////
+
             var outletFbReportsToReturn = outletFbReports.Select(o => new
             {
                 Tables = o.Tables,
@@ -119,6 +126,7 @@ namespace TwinPalmsKPI.Controllers
         /// </summary>
         /// <remarks>
         /// Gets Year to Date, Month to Date, yesterdays revenue and monthly overview based on when the request came
+        /// Deletes older images
         /// 
         /// Note that the months in the montly overview (yearlyRev) are numbered 0-11. Thus month 0=January, month 1=february etc.
         /// 
@@ -231,7 +239,7 @@ namespace TwinPalmsKPI.Controllers
 
 
             // Yesterdays revenue
-            var YesterdayOutletFbReports = await _repository.FbReport.GetAllOutletFbReportsForOutlets(outletIds, yesterday, today, trackChanges: false); // TODO change back to today
+            var YesterdayOutletFbReports = await _repository.FbReport.GetAllOutletFbReportsForOutlets(outletIds, yesterday, today, trackChanges: false);
 
             if (YesterdayOutletFbReports.Count() == 0)
             {
@@ -356,6 +364,7 @@ namespace TwinPalmsKPI.Controllers
                 {
                     dateForFirstDelete = DateTime.UtcNow.AddDays(daysToKeepImages);
                 }
+
                 try
                 {
                     var reports = await _repository.FbReport.GetAllOutletFbReportsForOutlets(outletIds, dateForFirstDelete, theFuture, trackChanges: true);
@@ -382,12 +391,12 @@ namespace TwinPalmsKPI.Controllers
                             }
                         }
 
-                        // TODO Find and change the ImagePath field in FbReport DB table 
+                        // UNDONE Find and change the ImagePath field in FbReport DB table to null
                     }
                 }
                 catch (Exception ex)
                 {
-                    string str = ex.ToString();
+                    _logger.LogError(ex.ToString());
                 }
             }
         }
