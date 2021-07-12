@@ -87,13 +87,6 @@ namespace TwinPalmsKPI.Controllers
                 return NotFound();
             }
 
-            var X = outletFbReports.ElementAt(0).FbReportGuestSourceOfBusinesses.Select(f => f.GuestSourceOfBusiness).ToList(); //TODO REMOVE ///////////////
-            var Y = outletFbReports.ElementAt(1).FbReportGuestSourceOfBusinesses.Select(f => f.GuestSourceOfBusiness).ToList(); //TODO REMOVE ///////////////
-            var Z = outletFbReports.ElementAt(2).FbReportGuestSourceOfBusinesses.Select(f => f.GuestSourceOfBusiness).ToList(); //TODO REMOVE ///////////////
-            var XX = outletFbReports.ElementAt(3).FbReportGuestSourceOfBusinesses.Select(f => f.GuestSourceOfBusiness).ToList(); //TODO REMOVE ///////////////
-            var YY = outletFbReports.ElementAt(4).FbReportGuestSourceOfBusinesses.Select(f => f.GuestSourceOfBusiness).ToList(); //TODO REMOVE ///////////////
-            var ZZ = outletFbReports.ElementAt(5).FbReportGuestSourceOfBusinesses.Select(f => f.GuestSourceOfBusiness).ToList(); //TODO REMOVE ///////////////
-
             var outletFbReportsToReturn = outletFbReports.Select(o => new
             {
                 Tables = o.Tables,
