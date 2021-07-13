@@ -15,11 +15,11 @@ namespace TwinPalmsKPI
         {
             var host = CreateHostBuilder(args).Build();
 
-                var services = host.Services.CreateScope().ServiceProvider;
-                   /*var context = services.GetRequiredService<RepositoryContext>();
-                    context.Database.EnsureCreated();*/
-                    var userManager = services.GetRequiredService<UserManager<User>>();
-                    await ContextSeed.AddUserPasswordAsync(userManager);
+            var services = host.Services.CreateScope().ServiceProvider;
+            /*var context = services.GetRequiredService<RepositoryContext>();
+             context.Database.EnsureCreated();*/
+            var userManager = services.GetRequiredService<UserManager<User>>();
+            await ContextSeed.AddUserPasswordAsync(userManager);
 
             host.Run();
 
@@ -34,4 +34,3 @@ namespace TwinPalmsKPI
                         });
     }
 }
-    

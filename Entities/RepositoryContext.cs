@@ -1,18 +1,22 @@
 ﻿using Entities.Configuration;
 using Entities.Models;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Hosting;
 
 namespace Entities
 { 
     public class RepositoryContext : IdentityDbContext<User, Role, string, IdentityUserClaim<string>, UserRole, IdentityUserLogin<string>,
         IdentityRoleClaim<string>, IdentityUserToken<string>>
     {
-        public RepositoryContext(DbContextOptions options)
+        private readonly Microsoft.AspNetCore.Hosting.IWebHostEnvironment _env;
+
+        public RepositoryContext(DbContextOptions options, IWebHostEnvironment environment)
             :base(options)
         {
-
+            _env = environment;
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -33,7 +37,13 @@ namespace Entities
             modelBuilder.ApplyConfiguration(new WeatherConfiguration());
 
             modelBuilder.ApplyConfiguration(new GuestSourceOfBusinessConfiguration());
-            modelBuilder.ApplyConfiguration(new FbReportConfiguration());
+
+            if (_env.IsDevelopment())
+            {
+                modelBuilder.ApplyConfiguration(new FbReportConfiguration());
+            }
+            
+
             modelBuilder.ApplyConfiguration(new OtherReportConfiguration());
 
             //modelBuilder.ApplyConfiguration(new EmployeeConfiguration());

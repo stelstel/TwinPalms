@@ -55,7 +55,7 @@ namespace TwinPalmsKPI.Controllers
             // Reports filed before 5am are treated as fbreport for the day before.
             // Request for toDate are reports including that date.
             var fbrStart = fromDate.AddHours(5);
-            var fbrEnd = toDate.AddHours(5).AddDays(1);
+            var fbrEnd = toDate.AddHours(4).AddMinutes(59).AddDays(1);
 
             StringBuilder sbOutletIds = new StringBuilder();
 
@@ -130,10 +130,10 @@ namespace TwinPalmsKPI.Controllers
             // Reports filed before 5am are treated as fbreport for the day before.
             // Request for toDate are reports including that date.
             DateTime now = DateTime.UtcNow;
-            DateTime today = new DateTime(now.Year, now.Month, now.Day, 0, 0, 0).AddHours(5.1);
-            DateTime yesterday = today.AddDays(-1).AddHours(5.1);
-            DateTime startOfYear = new DateTime(now.Year, 1, 1, 0, 0, 0).AddHours(5.1);
-            DateTime startOfMonth = new DateTime(now.Year, now.Month, 1, 0, 0, 0).AddHours(5.1);
+            DateTime today = new DateTime(now.Year, now.Month, now.Day, 0, 0, 0).AddHours(5);
+            DateTime yesterday = today.AddDays(-1).AddHours(5);
+            DateTime startOfYear = new DateTime(now.Year, 1, 1, 0, 0, 0).AddHours(5);
+            DateTime startOfMonth = new DateTime(now.Year, now.Month, 1, 0, 0, 0).AddHours(5);
             StringBuilder sbOutletIds = new StringBuilder(); // This is used for error reporting
             int outletIdCounter = 0;
 
@@ -294,8 +294,8 @@ namespace TwinPalmsKPI.Controllers
                     // Get data from DB
                     var MonthlyRevsFromDB = await _repository.FbReport.GetAllOutletFbReportsForOutlets(
                         outlId,
-                        new DateTime(now.Year, (monthCounter + 1), 1, 0, 0, 0).AddHours(5.1),
-                        new DateTime(now.Year, (monthCounter + 1), DateTime.DaysInMonth(now.Year, monthCounter + 1), 23, 59, 59).AddHours(5.1),
+                        new DateTime(now.Year, (monthCounter + 1), 1, 0, 0, 0).AddHours(5),
+                        new DateTime(now.Year, (monthCounter + 1), DateTime.DaysInMonth(now.Year, monthCounter + 1), 23, 59, 59).AddHours(5),
                         trackChanges: false
                     );
 
