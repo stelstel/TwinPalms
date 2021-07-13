@@ -118,7 +118,7 @@
         </member>
         <member name="M:TwinPalmsKPI.Controllers.FbReportsController.UpdateFbReport(System.Int32,Entities.DataTransferObjects.FbReportForUpdateDto)">
             <summary>
-            Updates a fbReport by ID
+            Updates a fbReport by ID. Doesn't work completely
             </summary>
         </member>
         <member name="M:TwinPalmsKPI.Controllers.GuestSourceOfBusinessController.GetGuestSourceOfBusinesses">
