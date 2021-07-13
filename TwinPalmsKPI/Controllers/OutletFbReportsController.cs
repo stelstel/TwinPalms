@@ -186,25 +186,14 @@ namespace TwinPalmsKPI.Controllers
                 }
 
                 // Avoid null
-                if (yofbr.Food == null)
-                {
-                    yofbr.Food = 0;
-                }
-
-                if (yofbr.Beverage == null)
-                {
-                    yofbr.Beverage = 0;
-                }
+                Dictionary<string, int> foodBevOther = avoidNull(yofbr);
                 
-                if (yofbr.OtherIncome == null)
-                {
-                    yofbr.OtherIncome = 0;
-                }
-
+                yofbr.Food = foodBevOther["Food"];
+                yofbr.Beverage = foodBevOther["Beverage"];
+                yofbr.OtherIncome = foodBevOther["OtherIncome"];
+                
                 YTDs[yofbr.OutletId] += yofbr.Food;
-
                 YTDs[yofbr.OutletId] += yofbr.Beverage;
-
                 YTDs[yofbr.OutletId] += yofbr.OtherIncome;
             }
 
@@ -232,20 +221,11 @@ namespace TwinPalmsKPI.Controllers
                 }
 
                 // Avoid null
-                if (mofbr.Food == null)
-                {
-                    mofbr.Food = 0;
-                }
+                Dictionary<string, int> foodBevOther = avoidNull(mofbr);
 
-                if (mofbr.Beverage == null)
-                {
-                    mofbr.Beverage = 0;
-                }
-
-                if (mofbr.OtherIncome == null)
-                {
-                    mofbr.OtherIncome = 0;
-                }
+                mofbr.Food = foodBevOther["Food"];
+                mofbr.Beverage = foodBevOther["Beverage"];
+                mofbr.OtherIncome = foodBevOther["OtherIncome"];
 
                 MTDs[mofbr.OutletId] += mofbr.Food;
                 MTDs[mofbr.OutletId] += mofbr.Beverage;
@@ -276,20 +256,11 @@ namespace TwinPalmsKPI.Controllers
                 }
 
                 // Avoid null
-                if (ydofbr.Food == null)
-                {
-                    ydofbr.Food = 0;
-                }
+                Dictionary<string, int> foodBevOther = avoidNull(ydofbr);
 
-                if (ydofbr.Beverage == null)
-                {
-                    ydofbr.Beverage = 0;
-                }
-
-                if (ydofbr.OtherIncome == null)
-                {
-                    ydofbr.OtherIncome = 0;
-                }
+                ydofbr.Food = foodBevOther["Food"];
+                ydofbr.Beverage = foodBevOther["Beverage"];
+                ydofbr.OtherIncome = foodBevOther["OtherIncome"];
 
                 yesterdaysRevs[ydofbr.OutletId] += ydofbr.Food;
                 yesterdaysRevs[ydofbr.OutletId] += ydofbr.Beverage;
@@ -339,6 +310,13 @@ namespace TwinPalmsKPI.Controllers
                         // Loop through reports
                         foreach (var mr in MonthlyRevsFromDB)
                         {
+                            // Avoid null
+                            Dictionary<string, int> foodBevOther = avoidNull(mr);
+
+                            mr.Food = foodBevOther["Food"];
+                            mr.Beverage = foodBevOther["Beverage"];
+                            mr.OtherIncome = foodBevOther["OtherIncome"];
+
                             rev1Month += mr.Food;
                             rev1Month += mr.Beverage;
                             rev1Month += mr.OtherIncome;
@@ -424,6 +402,42 @@ namespace TwinPalmsKPI.Controllers
                     _logger.LogError(ex.ToString());
                 }
             }
+        }
+
+        //************************************** avoidNull ***************************************************
+        // Converts null to 0
+        private static Dictionary<string, int> avoidNull(FbReport FbRep)
+        {
+            Dictionary<string, int> FoodBevOther = new Dictionary<string, int>();
+
+            if (FbRep.Food == null)
+            {
+                FoodBevOther["Food"] = 0;
+            }
+            else
+            {
+                FoodBevOther["Food"] = (int)FbRep.Food;
+            }
+
+            if (FbRep.Beverage == null)
+            {
+                FoodBevOther["Beverage"] = 0;
+            }
+            else
+            {
+                FoodBevOther["Beverage"] = (int)FbRep.Beverage;
+            }
+
+            if (FbRep.OtherIncome == null)
+            {
+                FoodBevOther["OtherIncome"] = 0;
+            }
+            else
+            {
+                FoodBevOther["OtherIncome"] = (int)FbRep.OtherIncome;
+            }
+
+            return FoodBevOther;
         }
     }
 }
