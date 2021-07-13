@@ -11,6 +11,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Authorization;
 
 namespace TwinPalmsKPI.Controllers
 {
@@ -33,7 +34,7 @@ namespace TwinPalmsKPI.Controllers
         /// <summary>
         /// Gets a list of all users
         /// </summary>
-        [HttpGet(Name = "GetUsers")]
+        [HttpGet(Name = "GetUsers"), Authorize(Roles="SuperAdmin")]
         public async Task<IActionResult> GetUsers()
         {
             var users = await _repository.User.GetUsersAsync(trackChanges: false);           
@@ -45,7 +46,7 @@ namespace TwinPalmsKPI.Controllers
         /// <summary>
         /// Gets user by ID
         /// </summary>
-        [HttpGet("{id}", Name = "UserById")]
+        [HttpGet("{id}", Name = "UserById"), Authorize(Roles = "SuperAdmin")]
         public async Task<IActionResult> GetUser(string id)
         {          
             var userDb = await _repository.User.GetUserAsync(id, trackChanges: false);
@@ -60,28 +61,9 @@ namespace TwinPalmsKPI.Controllers
         }
 
         /// <summary>
-        /// Gets a list of all users
-        /// </summary>
-        /*[HttpGet(Name = "GetUsers")]
-        public async Task<IActionResult> GetUsers()
-        {
-            var users = await _repository.User.GetUsersAsync(trackChanges: false);
-            foreach (var user in users)
-            {
-               await _userManager.GetRolesAsync(user);
-            }
-            
-
-            var userDtos = _mapper.Map<IEnumerable<UserDto>>(users);
-
-
-            return Ok(users); 
-        }*/
-
-        /// <summary>
         /// Deletes user by ID
         /// </summary>
-        [HttpDelete("{id}")]
+        [HttpDelete("{id}"), Authorize(Roles = "SuperAdmin")]
         [ServiceFilter(typeof(ValidateUserExistsAttribute))]
         public async Task<IActionResult> DeleteUser(string id)
         {
@@ -96,7 +78,7 @@ namespace TwinPalmsKPI.Controllers
         /// <summary>
         /// Updates user by ID
         /// </summary>
-        [HttpPut("{id}")]
+        [HttpPut("{id}"), Authorize(Roles = "SuperAdmin")]
         [ServiceFilter(typeof(ValidationFilterAttribute))]
         [ServiceFilter(typeof(ValidateUserExistsAttribute))]
         public async Task<IActionResult> UpdateUser(string id, [FromBody] UserForUpdateDto user)

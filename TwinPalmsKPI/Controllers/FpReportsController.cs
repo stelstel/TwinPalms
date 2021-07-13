@@ -39,8 +39,7 @@ namespace TwinPalmsKPI.Controllers
         /// <summary>
         /// Gets a list of all fbReports
         /// </summary>
-        // TODO Add Authorize
-        [HttpGet(Name = "GetFbReports")/*, Authorize(Roles = "Administrator, Manager")*/] 
+        [HttpGet(Name = "GetFbReports"), Authorize(Roles ="Admin")] 
         public async Task<IActionResult> GetFbReports()
         {
             var fbReports = await _repository.FbReport.GetAllFbReportsAsync(trackChanges: false);
@@ -51,7 +50,7 @@ namespace TwinPalmsKPI.Controllers
         /// <summary>
         /// Gets a single fbReport by ID
         /// </summary>
-        [HttpGet("{id}", Name = "FbReportById")]
+        [HttpGet("{id}", Name = "FbReportById"), Authorize(Roles = "Admin")]
         public async Task<IActionResult> GetFbReport(int id)
         {
             var fbReport = await _repository.FbReport.GetFbReportAsync(id, trackChanges: false);
@@ -97,8 +96,7 @@ namespace TwinPalmsKPI.Controllers
         ///     } \
         /// ]
         /// </remarks>
-        [HttpPost, DisableRequestSizeLimit]
-        /*[Authorize(Roles = "Basic")]*/
+        [HttpPost, DisableRequestSizeLimit, Authorize(Roles = "Basic")]
 
         [ServiceFilter(typeof(ValidationFilterAttribute))]
         public async Task<IActionResult> CreateFbReport([FromForm]FbReportForCreationDto fbReport)
@@ -113,7 +111,6 @@ namespace TwinPalmsKPI.Controllers
                 }
             }
 
-            // var serializeGsob = JsonSerializer.Serialize(formCollection["guestSourceOfBusinesses"]); ///////////////////////////// TODO remove?
             _logger.LogDebug($"serialized: {formCollection["guestSourceOfBusinesses"]}");
             
             var gsobsFromRequest = JsonSerializer.Deserialize<IEnumerable<GsobDto>>(formCollection["guestSourceOfBusinesses"]).ToList();
@@ -228,7 +225,7 @@ namespace TwinPalmsKPI.Controllers
         /// <summary>
         /// Deletes a fbReport by ID
         /// </summary>
-        [HttpDelete("{id}")]
+        [HttpDelete("{id}"), Authorize(Roles = "Admin")]
         [ServiceFilter(typeof(ValidateFbReportExistsAttribute))]
         public async Task<IActionResult> DeleteFbReport(int id)
         {
@@ -239,9 +236,10 @@ namespace TwinPalmsKPI.Controllers
         }
 
         /// <summary>
-        /// Updates a fbReport by ID
+        /// Updates a fbReport by ID. Doesn't work completely
         /// </summary>
-        [HttpPut("{id}")]
+        // UNDONE
+        [HttpPut("{id}"), Authorize(Roles = "Admin")]
         [ServiceFilter(typeof(ValidationFilterAttribute))]
         [ServiceFilter(typeof(ValidateFbReportExistsAttribute))]
         public async Task<IActionResult> UpdateFbReport(int id, [FromBody] FbReportForUpdateDto fbReport)

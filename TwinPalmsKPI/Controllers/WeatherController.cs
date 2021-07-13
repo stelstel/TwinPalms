@@ -31,8 +31,7 @@ namespace TwinPalmsKPI.Controllers
         /// <summary>
         /// Gets a list of all weathertypes
         /// </summary>
-        // TODO Add Authorize
-        [HttpGet(Name = "GetWeatherTypes") /*, Authorize(Roles = "Admin, SuperAdmin")*/ ]
+        [HttpGet(Name = "GetWeatherTypes") , Authorize ]
         public async Task<IActionResult> GetAllTypesOfWeather()
         {
             var weathertypes = await _repository.Weather.GetAllTypesOfWeatherAsync(trackChanges: false);
@@ -42,7 +41,7 @@ namespace TwinPalmsKPI.Controllers
         /// <summary>
         /// Gets a single weathertype by ID
         /// </summary>
-        [HttpGet("{id}", Name = "WeathertypeById")]
+        [HttpGet("{id}", Name = "WeathertypeById"), Authorize]
         public async Task<IActionResult> GetWeatherType(int id)
         {
             var weather = await _repository.Weather.GetTypeOfWeatherAsync(id, trackChanges: false);
@@ -58,7 +57,7 @@ namespace TwinPalmsKPI.Controllers
         /// <summary>
         /// Creates a new type of weather
         /// </summary>
-        [HttpPost /*, Authorize(Roles = "Administrator, Manager")*/ ]
+        [HttpPost , Authorize(Roles = "SuperAdmin") ]
         [ServiceFilter(typeof(ValidationFilterAttribute))]
         public async Task<IActionResult> CreateWeather([FromBody] WeatherForCreationDto weather)
         {
@@ -73,7 +72,7 @@ namespace TwinPalmsKPI.Controllers
         /// <summary>
         /// Deletes a Weathertype by ID
         /// </summary>
-        [HttpDelete("{id}")]
+        [HttpDelete("{id}"), Authorize(Roles = "SuperAdmin")]
         [ServiceFilter(typeof(ValidateWeatherExistsAttribute))]
         public async Task<IActionResult> DeleteWeather(int id)
         {
@@ -86,7 +85,7 @@ namespace TwinPalmsKPI.Controllers
         /// <summary>
         /// Updates a weathertype by ID
         /// </summary>
-        [HttpPut("{id}")]
+        [HttpPut("{id}"), Authorize(Roles = "SuperAdmin")]
         [ServiceFilter(typeof(ValidationFilterAttribute))]
         [ServiceFilter(typeof(ValidateWeatherExistsAttribute))]
         public async Task<IActionResult> UpdateWeather(int id, [FromBody] WeatherForUpdateDto weather)

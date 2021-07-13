@@ -34,13 +34,14 @@ namespace APITestProject1
 
         public static List<string> TestObjNotes = new List<string>
         {
-            "Lorem ipsum dolor sit amet",
-            "Consectetur adipiscing elit",
-            "Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua",
-            "Ut enim ad minim veniam",
-            "Quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat",
-            "Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur",
-            "Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum"
+            "Lorem ipsum dolor sit amet",                               // 0
+            "Consectetur adipiscing elit",                              // 1
+            "Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua",    // 2
+            "Ut enim ad minim veniam",                                                  // 3
+            "Quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat", // 4
+            "Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur", // 5
+            "Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum", // 6
+            "tempor et lorem dolore dolore dolore magna incididunt", // 7
         };
 
         public static List<string> TestObjEventNotes = new List<string>
@@ -51,19 +52,21 @@ namespace APITestProject1
             "The DJ was a star",                                                    // 3
             "Umpa Umpa DJ",                                                         // 4
             "The samba night was a success especially with the Italians",           // 5
-            "Busy night"                                                            // 6
+            "Busy night",                                                           // 6
+            "amet sit labore"                                                       // 7
         };
 
         public static List<string> TestObjGSOBNotes = new List<string>
         {
-            "A lot of people just dropped in at around 1:00 AM",    //0
+            "A lot of people just dropped in at around 1:00 AM",  //0
             "A lot of people came from Google Search",              //1
             "Instagram",                                            //2
             null,                                                   //3
             "Hectic day. A lot of Germans. Since they didn't speak english " +
                 "we were unable to find out how they got to know about the Umpa Umpa Madness Night", // 4
             "Most of the guest had been handed leaflets down town", // 5
-            "A lot of the guests came from Agent referral"          // 6
+            "A lot of the guests came from Agent referral",         // 6
+            "ipsum dolor sit aliqua aliqua sit"                    // 7
         };
 
         public static List<string> TestObjUserIds = new List<string>
@@ -71,5 +74,5 @@ namespace APITestProject1
                 "35947f01-393b-442c-b815-d6d9f7d4b81e",
                 "b0b22e53-3ad2-4a0a-9e58-aa0a70a5a157"
             };
-}
+    }
 }

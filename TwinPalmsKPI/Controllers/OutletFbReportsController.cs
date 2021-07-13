@@ -2,6 +2,7 @@
 using Contracts;
 using Entities.DataTransferObjects;
 using Entities.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
@@ -12,7 +13,6 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using TwinPalmsKPI.Helpers;
 
 namespace TwinPalmsKPI.Controllers
 {
@@ -49,7 +49,7 @@ namespace TwinPalmsKPI.Controllers
         ///     toDate = 2021-12-02
         ///     
         /// </remarks>     
-        [HttpGet("/outlets/fbReports", Name = "OutletsFbReportsByIdAndDate")]
+        [HttpGet("/outlets/fbReports", Name = "OutletsFbReportsByIdAndDate"), Authorize(Roles = "Admin")]
         public async Task<IActionResult> GetOutletsFbReports( [FromQuery] int[] outletIds, DateTime fromDate, DateTime toDate)
         {
             // Reports filed before 5am are treated as fbreport for the day before.
@@ -119,11 +119,12 @@ namespace TwinPalmsKPI.Controllers
         /// </summary>
         /// <remarks>
         /// Gets Year to Date, Month to Date, yesterdays revenue and monthly overview based on when the request came
+        /// Deletes older images
         /// 
         /// Note that the months in the montly overview (yearlyRev) are numbered 0-11. Thus month 0=January, month 1=february etc.
         /// 
         /// </remarks>     
-        [HttpGet("/outlets/overview", Name = "OutletsOverview")]
+        [HttpGet("/outlets/overview", Name = "OutletsOverview"), Authorize(Roles = "Admin")]
         public async Task<IActionResult> GetOutletsOverview()
         {
             // Reports filed before 5am are treated as fbreport for the day before.
@@ -184,15 +185,16 @@ namespace TwinPalmsKPI.Controllers
                     YTDs.Add(yofbr.OutletId, 0);
                 }
 
+                // Avoid null
+                Dictionary<string, int> foodBevOther = avoidNull(yofbr);
+                
+                yofbr.Food = foodBevOther["Food"];
+                yofbr.Beverage = foodBevOther["Beverage"];
+                yofbr.OtherIncome = foodBevOther["OtherIncome"];
+                
                 YTDs[yofbr.OutletId] += yofbr.Food;
                 YTDs[yofbr.OutletId] += yofbr.Beverage;
                 YTDs[yofbr.OutletId] += yofbr.OtherIncome;
-
-                // Avoid null
-                if (YTDs[yofbr.OutletId] == null)
-                {
-                    YTDs[yofbr.OutletId] = 0;
-                }
             }
 
 
@@ -218,20 +220,21 @@ namespace TwinPalmsKPI.Controllers
                     MTDs.Add(mofbr.OutletId, 0);
                 }
 
+                // Avoid null
+                Dictionary<string, int> foodBevOther = avoidNull(mofbr);
+
+                mofbr.Food = foodBevOther["Food"];
+                mofbr.Beverage = foodBevOther["Beverage"];
+                mofbr.OtherIncome = foodBevOther["OtherIncome"];
+
                 MTDs[mofbr.OutletId] += mofbr.Food;
                 MTDs[mofbr.OutletId] += mofbr.Beverage;
                 MTDs[mofbr.OutletId] += mofbr.OtherIncome;
-
-                // Avoid null
-                if (MTDs[mofbr.OutletId] == null)
-                {
-                    MTDs[mofbr.OutletId] = 0;
-                }
             }
 
 
             // Yesterdays revenue
-            var YesterdayOutletFbReports = await _repository.FbReport.GetAllOutletFbReportsForOutlets(outletIds, yesterday, today, trackChanges: false); // TODO change back to today
+            var YesterdayOutletFbReports = await _repository.FbReport.GetAllOutletFbReportsForOutlets(outletIds, yesterday, today, trackChanges: false);
 
             if (YesterdayOutletFbReports.Count() == 0)
             {
@@ -252,15 +255,16 @@ namespace TwinPalmsKPI.Controllers
                     yesterdaysRevs.Add(ydofbr.OutletId, 0);
                 }
 
+                // Avoid null
+                Dictionary<string, int> foodBevOther = avoidNull(ydofbr);
+
+                ydofbr.Food = foodBevOther["Food"];
+                ydofbr.Beverage = foodBevOther["Beverage"];
+                ydofbr.OtherIncome = foodBevOther["OtherIncome"];
+
                 yesterdaysRevs[ydofbr.OutletId] += ydofbr.Food;
                 yesterdaysRevs[ydofbr.OutletId] += ydofbr.Beverage;
                 yesterdaysRevs[ydofbr.OutletId] += ydofbr.OtherIncome;
-
-                // Avoid null
-                if (yesterdaysRevs[ydofbr.OutletId] == null)
-                {
-                    yesterdaysRevs[ydofbr.OutletId] = 0;
-                }
             }
 
 
@@ -306,6 +310,13 @@ namespace TwinPalmsKPI.Controllers
                         // Loop through reports
                         foreach (var mr in MonthlyRevsFromDB)
                         {
+                            // Avoid null
+                            Dictionary<string, int> foodBevOther = avoidNull(mr);
+
+                            mr.Food = foodBevOther["Food"];
+                            mr.Beverage = foodBevOther["Beverage"];
+                            mr.OtherIncome = foodBevOther["OtherIncome"];
+
                             rev1Month += mr.Food;
                             rev1Month += mr.Beverage;
                             rev1Month += mr.OtherIncome;
@@ -356,6 +367,7 @@ namespace TwinPalmsKPI.Controllers
                 {
                     dateForFirstDelete = DateTime.UtcNow.AddDays(daysToKeepImages);
                 }
+
                 try
                 {
                     var reports = await _repository.FbReport.GetAllOutletFbReportsForOutlets(outletIds, dateForFirstDelete, theFuture, trackChanges: true);
@@ -382,14 +394,50 @@ namespace TwinPalmsKPI.Controllers
                             }
                         }
 
-                        // TODO Find and change the ImagePath field in FbReport DB table 
+                        // UNDONE Find and change the ImagePath field in FbReport DB table to null
                     }
                 }
                 catch (Exception ex)
                 {
-                    string str = ex.ToString();
+                    _logger.LogError(ex.ToString());
                 }
             }
+        }
+
+        //************************************** avoidNull ***************************************************
+        // Converts null to 0
+        private static Dictionary<string, int> avoidNull(FbReport FbRep)
+        {
+            Dictionary<string, int> FoodBevOther = new Dictionary<string, int>();
+
+            if (FbRep.Food == null)
+            {
+                FoodBevOther["Food"] = 0;
+            }
+            else
+            {
+                FoodBevOther["Food"] = (int)FbRep.Food;
+            }
+
+            if (FbRep.Beverage == null)
+            {
+                FoodBevOther["Beverage"] = 0;
+            }
+            else
+            {
+                FoodBevOther["Beverage"] = (int)FbRep.Beverage;
+            }
+
+            if (FbRep.OtherIncome == null)
+            {
+                FoodBevOther["OtherIncome"] = 0;
+            }
+            else
+            {
+                FoodBevOther["OtherIncome"] = (int)FbRep.OtherIncome;
+            }
+
+            return FoodBevOther;
         }
     }
 }

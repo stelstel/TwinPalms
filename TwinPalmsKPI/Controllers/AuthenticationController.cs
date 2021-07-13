@@ -44,7 +44,7 @@ namespace TwinPalmsKPI.Controllers
             _emailSender = emailSender;
         }
 
-        [HttpPost]
+        [HttpPost, Authorize(Roles = "SuperAdmin")]
         [ServiceFilter(typeof(ValidationFilterAttribute))]
         public async Task<IActionResult> Authenticate([FromBody] UserForRegistrationDto userForRegistration)
         {
@@ -112,7 +112,7 @@ namespace TwinPalmsKPI.Controllers
             var emailAddress = !string.IsNullOrWhiteSpace(userForRegistration.NotificationEmail) ? userForRegistration.NotificationEmail
                 : user.Email;
 
-            var message = new Message(new string[] { emailAddress }, "Welcome", "Your username is " + user.UserName + " and password is " + password);
+            var message = new Message(new string[] { emailAddress }, "Welcome", "Your username is " + user.UserName + " and your password is " + password);
 
             await _repository.SaveAsync();
             
@@ -123,9 +123,9 @@ namespace TwinPalmsKPI.Controllers
             }
             catch (Exception ex)
             {
-                var errorMessage = $"The user credentials are:\n Username: {user.UserName}\n Password: {password}";
+                var errorMessage = $"The user credentials are:\n Email: {user.Email}\n Username: {user.UserName}\n Password: {password}";
                 _logger.LogError($"Email Server Error {ex.Message}");
-                return StatusCode(500, errorMessage);
+                return StatusCode(503, errorMessage);
                
             }
 
@@ -182,7 +182,6 @@ $"<h3>Reset password</h3><a href=https://localhost:3000/reset-password?token={to
             if (!ModelState.IsValid)
                 return BadRequest();
             var email = input.Email;
-            _logger.LogDebug("Enail: " + email);
             var user = await _userManager.FindByEmailAsync(email);
             if (user == null)
                 return NotFound(email);
@@ -203,7 +202,6 @@ $"<h3>Reset password</h3><a href=https://localhost:3000/reset-password?token={to
         [Authorize]
         public async Task<IActionResult> ChangePassword([FromBody] ChangePasswordDto input)
         {
-            //return Ok(User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier).Value);
             if (!ModelState.IsValid)
                 return BadRequest();
             if (User.Identity.IsAuthenticated)

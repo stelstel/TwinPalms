@@ -28,7 +28,6 @@ namespace TwinPalmsKPI.Controllers
         /// <summary>
         /// Gets a list of all OtherReports
         /// </summary>
-        // TODO Add Authorize
         [HttpGet(Name = "GetOtherReports")/*, Authorize(Roles = "Administrator, Manager")*/] 
         public async Task<IActionResult> GetOtherReports()
         {

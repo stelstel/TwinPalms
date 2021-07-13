@@ -30,8 +30,7 @@ namespace TwinPalmsKPI.Controllers
         /// <summary>
         /// Gets a list of all LocalEvents
         /// </summary>
-        // TODO Add Authorize
-        [HttpGet(Name = "GetLocalEvents")/*, Authorize(Roles = "Administrator, Manager")*/] 
+        [HttpGet(Name = "GetLocalEvents"), Authorize] 
         public async Task<IActionResult> GetLocalEvents()
         {
             var localEvents = await _repository.LocalEvent.GetAllLocalEventsAsync(trackChanges: false);
@@ -44,7 +43,7 @@ namespace TwinPalmsKPI.Controllers
         /// </summary>
         [HttpGet("{id}", Name = "LocalEventById")]
 
-        [Authorize(Roles = "Admin, SuperAdmin")]
+        [Authorize]
         public async Task<IActionResult> GetLocalEvent(int id)
         {
             var localEvent = await _repository.LocalEvent.GetLocalEventAsync(id, trackChanges: false);
@@ -60,7 +59,7 @@ namespace TwinPalmsKPI.Controllers
         /// <summary>
         /// Creates a new LocalEvent
         /// </summary>
-        [HttpPost]
+        [HttpPost, Authorize(Roles ="SuperAdmin")]
         [ServiceFilter(typeof(ValidationFilterAttribute))]
         public async Task<IActionResult> CreateLocalEvent([FromBody] LocalEventForCreationDto localEvent)
         {
@@ -74,7 +73,7 @@ namespace TwinPalmsKPI.Controllers
         /// <summary>
         /// Deletes a LocalEvent by ID
         /// </summary>
-        [HttpDelete("{id}")]
+        [HttpDelete("{id}"), Authorize(Roles ="SuperAdmin")]
         [ServiceFilter(typeof(ValidateLocalEventExistsAttribute))]
         public async Task<IActionResult> DeleteLocalEvent(int id)
         {
@@ -82,7 +81,6 @@ namespace TwinPalmsKPI.Controllers
             
             List<FbReport> fbReportsFromDb = (List<FbReport>)await _repository.FbReport.GetAllFbReportsAsync(trackChanges: false);
 
-            //fbReportsFromDb.Find(fbr => fbr.LocalEventId == id)
 
             if (!ModelState.IsValid)
             {
@@ -111,7 +109,7 @@ namespace TwinPalmsKPI.Controllers
         /// <summary>
         /// Updates a LocalEvent by ID
         /// </summary>
-        [HttpPut("{id}")]
+        [HttpPut("{id}"), Authorize(Roles = "SuperAdmin")]
         [ServiceFilter(typeof(ValidationFilterAttribute))]
         [ServiceFilter(typeof(ValidateLocalEventExistsAttribute))]
         public async Task<IActionResult> UpdateLocalEvent(int id, [FromBody] LocalEventForUpdateDto localEvent)

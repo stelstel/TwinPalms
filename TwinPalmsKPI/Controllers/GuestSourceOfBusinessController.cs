@@ -32,8 +32,7 @@ namespace TwinPalmsKPI.Controllers
         /// <summary>
         /// Gets a list of all GuestSourceOfBusinesses
         /// </summary>
-        // TODO Add Authorize
-        [HttpGet(Name = "GetGuestSourceOfBusinesses")/*, Authorize(Roles = "Administrator, Manager")*/] 
+        [HttpGet(Name = "GetGuestSourceOfBusinesses"), Authorize] 
         public async Task<IActionResult> GetGuestSourceOfBusinesses()
         {
             var guestSourceOfBusinesses = await _repository.GuestSourceOfBusiness.GetAllGuestSourceOfBusinessesAsync(trackChanges: false);
@@ -44,7 +43,7 @@ namespace TwinPalmsKPI.Controllers
         /// <summary>
         /// Gets a single GuestSourceOfBusiness by ID
         /// </summary>
-        [HttpGet("{id}", Name = "GuestSourceOfBusinessById")]
+        [HttpGet("{id}", Name = "GuestSourceOfBusinessById"), Authorize(Roles = "SuperAdmin")]
         public async Task<IActionResult> GetGuestSourceOfBusiness(int id)
         {
             var guestSourceOfBusiness = await _repository.GuestSourceOfBusiness.GetGuestSourceOfBusinessAsync(id, trackChanges: false);
@@ -60,7 +59,7 @@ namespace TwinPalmsKPI.Controllers
         /// <summary>
         /// Creates a new GuestSourceOfBusiness
         /// </summary>
-        [HttpPost, /*Authorize(Roles = "Administrator, Manager")*/] // TODO authorize
+        [HttpPost, Authorize(Roles = "SuperAdmin")]
         [ServiceFilter(typeof(ValidationFilterAttribute))]
         public async Task<IActionResult> CreateGuestSourceOfBusiness([FromBody] GuestSourceOfBusinessForCreationDto guestSourceOfBusiness)
         {
@@ -74,7 +73,7 @@ namespace TwinPalmsKPI.Controllers
         /// <summary>
         /// Deletes a GuestSourceOfBusiness by ID
         /// </summary>
-        [HttpDelete("{id}")]
+        [HttpDelete("{id}"), Authorize(Roles = "SuperAdmin")]
         [ServiceFilter(typeof(ValidateGuestSourceOfBusinessExistsAttribute))]
         public async Task<IActionResult> DeleteGuestSourceOfBusiness(int id)
         {
@@ -87,7 +86,7 @@ namespace TwinPalmsKPI.Controllers
         /// <summary>
         /// Updates a GuestSourceOfBusiness by ID
         /// </summary>
-        [HttpPut("{id}")]
+        [HttpPut("{id}"), Authorize(Roles = "SuperAdmin")]
         [ServiceFilter(typeof(ValidationFilterAttribute))]
         [ServiceFilter(typeof(ValidateGuestSourceOfBusinessExistsAttribute))]
         public async Task<IActionResult> UpdateGuestSourceOfBusiness(int id, [FromBody] GuestSourceOfBusinessForUpdateDto guestSourceOfBusiness)

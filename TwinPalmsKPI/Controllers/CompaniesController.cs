@@ -32,8 +32,7 @@ namespace TwinPalmsKPI.Controllers
         /// <summary>
         /// Gets a list of all companies
         /// </summary>
-        // TODO Add Authorize
-        [HttpGet(Name = "GetCompanies")/*, Authorize(Roles = "SuperAdmin")*/] 
+        [HttpGet(Name = "GetCompanies"), Authorize(Roles = "Admin")] 
         public async Task<IActionResult> GetCompanies()
         {
             var companies = await _repository.Company.GetAllCompaniesAsync(trackChanges: false);
@@ -44,7 +43,7 @@ namespace TwinPalmsKPI.Controllers
         /// <summary>
         /// Gets a single company by ID
         /// </summary>
-        [HttpGet("{id}", Name = "CompanyById")]
+        [HttpGet("{id}", Name = "CompanyById"), Authorize(Roles ="Admin")]
         public async Task<IActionResult> GetCompany(int id)
         {
             var company = await _repository.Company.GetCompanyAsync(id, trackChanges: false);
@@ -60,7 +59,7 @@ namespace TwinPalmsKPI.Controllers
         /// <summary>
         /// Creates a new company
         /// </summary>
-        [HttpPost/*, Authorize(Roles = "Administrator, Manager")*/]
+        [HttpPost, Authorize(Roles = "SuperAdmin")]
         [ServiceFilter(typeof(ValidationFilterAttribute))]
         public async Task<IActionResult> CreateCompany([FromBody] CompanyForCreationDto company)
         {
@@ -75,7 +74,7 @@ namespace TwinPalmsKPI.Controllers
         /// <summary>
         /// Deletes a company by ID
         /// </summary>
-        [HttpDelete("{id}")]
+        [HttpDelete("{id}"), Authorize(Roles = "SuperAdmin")]
         [ServiceFilter(typeof(ValidateCompanyExistsAttribute))]
         public async Task<IActionResult> DeleteCompany(int id)
         {
@@ -88,7 +87,7 @@ namespace TwinPalmsKPI.Controllers
         /// <summary>
         /// Updates a company by ID
         /// </summary>
-        [HttpPut("{id}")]
+        [HttpPut("{id}"), Authorize(Roles = "SuperAdmin")]
         [ServiceFilter(typeof(ValidationFilterAttribute))]
         [ServiceFilter(typeof(ValidateCompanyExistsAttribute))]
         public async Task<IActionResult> UpdateCompany(int id, [FromBody] CompanyForUpdateDto company)
