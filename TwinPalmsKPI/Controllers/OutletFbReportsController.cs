@@ -185,15 +185,27 @@ namespace TwinPalmsKPI.Controllers
                     YTDs.Add(yofbr.OutletId, 0);
                 }
 
-                YTDs[yofbr.OutletId] += yofbr.Food;
-                YTDs[yofbr.OutletId] += yofbr.Beverage;
-                YTDs[yofbr.OutletId] += yofbr.OtherIncome;
-
                 // Avoid null
-                if (YTDs[yofbr.OutletId] == null)
+                if (yofbr.Food == null)
                 {
-                    YTDs[yofbr.OutletId] = 0;
+                    yofbr.Food = 0;
                 }
+
+                if (yofbr.Beverage == null)
+                {
+                    yofbr.Beverage = 0;
+                }
+                
+                if (yofbr.OtherIncome == null)
+                {
+                    yofbr.OtherIncome = 0;
+                }
+
+                YTDs[yofbr.OutletId] += yofbr.Food;
+
+                YTDs[yofbr.OutletId] += yofbr.Beverage;
+
+                YTDs[yofbr.OutletId] += yofbr.OtherIncome;
             }
 
 
@@ -219,15 +231,25 @@ namespace TwinPalmsKPI.Controllers
                     MTDs.Add(mofbr.OutletId, 0);
                 }
 
+                // Avoid null
+                if (mofbr.Food == null)
+                {
+                    mofbr.Food = 0;
+                }
+
+                if (mofbr.Beverage == null)
+                {
+                    mofbr.Beverage = 0;
+                }
+
+                if (mofbr.OtherIncome == null)
+                {
+                    mofbr.OtherIncome = 0;
+                }
+
                 MTDs[mofbr.OutletId] += mofbr.Food;
                 MTDs[mofbr.OutletId] += mofbr.Beverage;
                 MTDs[mofbr.OutletId] += mofbr.OtherIncome;
-
-                // Avoid null
-                if (MTDs[mofbr.OutletId] == null)
-                {
-                    MTDs[mofbr.OutletId] = 0;
-                }
             }
 
 
@@ -253,15 +275,25 @@ namespace TwinPalmsKPI.Controllers
                     yesterdaysRevs.Add(ydofbr.OutletId, 0);
                 }
 
+                // Avoid null
+                if (ydofbr.Food == null)
+                {
+                    ydofbr.Food = 0;
+                }
+
+                if (ydofbr.Beverage == null)
+                {
+                    ydofbr.Beverage = 0;
+                }
+
+                if (ydofbr.OtherIncome == null)
+                {
+                    ydofbr.OtherIncome = 0;
+                }
+
                 yesterdaysRevs[ydofbr.OutletId] += ydofbr.Food;
                 yesterdaysRevs[ydofbr.OutletId] += ydofbr.Beverage;
                 yesterdaysRevs[ydofbr.OutletId] += ydofbr.OtherIncome;
-
-                // Avoid null
-                if (yesterdaysRevs[ydofbr.OutletId] == null)
-                {
-                    yesterdaysRevs[ydofbr.OutletId] = 0;
-                }
             }
 
 
