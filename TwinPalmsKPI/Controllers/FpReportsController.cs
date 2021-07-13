@@ -236,8 +236,9 @@ namespace TwinPalmsKPI.Controllers
         }
 
         /// <summary>
-        /// Updates a fbReport by ID
+        /// Updates a fbReport by ID. Doesn't work completely
         /// </summary>
+        // UNDONE
         [HttpPut("{id}"), Authorize(Roles = "Admin")]
         [ServiceFilter(typeof(ValidationFilterAttribute))]
         [ServiceFilter(typeof(ValidateFbReportExistsAttribute))]
