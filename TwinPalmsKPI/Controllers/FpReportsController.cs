@@ -98,7 +98,9 @@ namespace TwinPalmsKPI.Controllers
         /// </remarks>
         [HttpPost, DisableRequestSizeLimit, Authorize(Roles = "Basic")]
 
-        [ServiceFilter(typeof(ValidationFilterAttribute))]
+        //TODO: coused date error!
+        //[ServiceFilter(typeof(ValidationFilterAttribute))]
+
         public async Task<IActionResult> CreateFbReport([FromForm]FbReportForCreationDto fbReport)
         {
             var formCollection = await Request.ReadFormAsync();
