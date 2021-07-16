@@ -72,16 +72,6 @@ namespace APITestProject1
             string URL = $"outlets/fbReports?" +
                 $"outletIds={outletIds.ElementAt(0)}&" +
                 $"outletIds={outletIds.ElementAt(1)}&" +
-                $"outletIds={outletIds.ElementAt(2)}&" +
-                $"outletIds={outletIds.ElementAt(3)}&" +
-                $"outletIds={outletIds.ElementAt(4)}&" +
-                $"outletIds={outletIds.ElementAt(5)}&" +
-                $"outletIds={outletIds.ElementAt(6)}&" +
-                $"outletIds={outletIds.ElementAt(7)}&" +
-                $"outletIds={outletIds.ElementAt(8)}&" +
-                $"outletIds={outletIds.ElementAt(9)}&" +
-                $"outletIds={outletIds.ElementAt(10)}&" +
-                $"outletIds={outletIds.ElementAt(11)}&" +
                 $"fromDate={fromDate}&toDate={toDate}";
 
             expectedNrOfReports = TestObjNrOfReports;
@@ -99,251 +89,45 @@ namespace APITestProject1
 
 
             // Check 1 ------
-            var report0 = responseString[0]; // Getting 1 report from the report array
+            //var report0 = responseString[0]; // Getting 1 report from the report array
 
-            GuestSourceOfBusiness gsob1 = new GuestSourceOfBusiness { Id = 3, SourceOfBusiness = gsobs[2].SourceOfBusiness };
-            GuestSourceOfBusiness gsob2 = new GuestSourceOfBusiness { Id = 4, SourceOfBusiness = gsobs[3].SourceOfBusiness };
+            //GuestSourceOfBusiness gsob1 = new GuestSourceOfBusiness { Id = 3, SourceOfBusiness = gsobs[2].SourceOfBusiness };
+            //GuestSourceOfBusiness gsob2 = new GuestSourceOfBusiness { Id = 4, SourceOfBusiness = gsobs[3].SourceOfBusiness };
 
-            expGsobs.Clear();
-            expGsobs.Add(gsob1);
-            expGsobs.Add(gsob2);
+            //expGsobs.Clear();
+            //expGsobs.Add(gsob1);
+            //expGsobs.Add(gsob2);
 
-            expGsobNrOfGuests.Clear();
-            expGsobNrOfGuests.Add(22);
-            expGsobNrOfGuests.Add(13);
+            //expGsobNrOfGuests.Clear();
+            //expGsobNrOfGuests.Add(22);
+            //expGsobNrOfGuests.Add(13);
 
-            Weather weather1 = new Weather { Id = 6, TypeOfWeather = weathers[5].TypeOfWeather };
+            //Weather weather1 = new Weather { Id = 6, TypeOfWeather = weathers[5].TypeOfWeather };
 
-            expWeathers.Clear();
-            expWeathers.Add(weather1);
+            //expWeathers.Clear();
+            //expWeathers.Add(weather1);
 
-            CheckFbReport
-            (
-                expectedTables = 169,
-                expFood = 19487,
-                expBeverage = 100248,
-                expOtherIncome = 48962,
-                expGuestsFromHotelTP = 43,
-                expGuestsFromHotelTM = 1,
-                expguestsFromOutsideHotel = 60,
-                expIsPublicHoliday = false,
-                expEventNotes = eventNotes[0],
-                expGSourceOfBusinessNotes = gsobNotes[0],
-                expOutletId = 6,
-                expUserId = userIds.ElementAt(0),
-                expLocalEventId = 2,
-                expDate = new DateTime(2021, 01, 02, 3, 40, 45),
-                expGsobs,
-                expGsobNrOfGuests,
-                expWeathers,
-                report0
-            );
-
-            /*
-            // Check 2 ------
-            var report1 = responseString[406];
-
-            expGsobs.Clear();
-            expGsobNrOfGuests.Clear();
-            expWeathers.Clear();
-
-            CheckFbReport
-            (
-                expectedTables = 10,
-                expFood = 88000,
-                expBeverage = 91000,
-                expOtherIncome = 17400,
-                expGuestsFromHotelTP = 29,
-                expGuestsFromHotelTM = 21,
-                expguestsFromOutsideHotel = 21,
-                expIsPublicHoliday = true,
-                expEventNotes = eventNotes[4],
-                expGSourceOfBusinessNotes = gsobNotes[4],
-                expOutletId = 2,
-                expUserId = userIds.ElementAt(1),
-                expLocalEventId = 2,
-                expDate = new DateTime(2021, 11, 2, 4, 0, 0),
-                expGsobs,
-                expGsobNrOfGuests,
-                expWeathers,
-                report1
-            );
-
-            // Check 3 ------
-            var report2 = responseString[2];
-
-            expGsobs.Clear();
-            expGsobNrOfGuests.Clear();
-            expWeathers.Clear();
-
-            CheckFbReport
-            (
-                expectedTables = 20,
-                expFood = 21000,
-                expBeverage = 32000,
-                expOtherIncome = 8500,
-                expGuestsFromHotelTP = 24,
-                expGuestsFromHotelTM = 20,
-                expguestsFromOutsideHotel = 30,
-                expIsPublicHoliday = false,
-                expEventNotes = eventNotes[5],
-                expGSourceOfBusinessNotes = gsobNotes[5],
-                expOutletId = 4,
-                expUserId = userIds.ElementAt(0),
-                expLocalEventId = 1,
-                expDate = new DateTime(2021, 10, 3, 3, 29, 0),
-                expGsobs,
-                expGsobNrOfGuests,
-                expWeathers,
-                report2
-            );
-
-            // Check 4 ------
-            var report3 = responseString[3];
-            
-            expGsobs.Clear();
-            expGsobNrOfGuests.Clear();
-            expWeathers.Clear();
-
-            CheckFbReport
-            (
-                expectedTables = 20,
-                expFood = 21000,
-                expBeverage = 32000,
-                expOtherIncome = 8500,
-                expGuestsFromHotelTP = 24,
-                expGuestsFromHotelTM = 21,
-                expguestsFromOutsideHotel = 30,
-                expIsPublicHoliday = false,
-                expEventNotes = eventNotes[6],
-                expGSourceOfBusinessNotes = gsobNotes[6],
-                expOutletId = 4,
-                expUserId = userIds.ElementAt(0),
-                expLocalEventId = 1,
-                expDate = new DateTime(2021, 9, 5, 2, 39, 10),
-                expGsobs,
-                expGsobNrOfGuests,
-                expWeathers,
-                report3
-            );
-
-            // Check 5 ------
-            var report4 = responseString[4];
-
-            GuestSourceOfBusiness gsob41 = new GuestSourceOfBusiness { Id = 1, SourceOfBusiness = gsobs[0].SourceOfBusiness };
-            GuestSourceOfBusiness gsob42 = new GuestSourceOfBusiness { Id = 2, SourceOfBusiness = gsobs[1].SourceOfBusiness };
-
-            expGsobs.Clear();
-            expGsobs.Add(gsob41);
-            expGsobs.Add(gsob42);
-
-            expGsobNrOfGuests.Clear();
-            expGsobNrOfGuests.Add(32);
-            expGsobNrOfGuests.Add(3);
-
-            Weather weather41 = new Weather { Id = 5, TypeOfWeather = weathers[4].TypeOfWeather };
-
-            expWeathers.Clear();
-            expWeathers.Add(weather41);
-
-            CheckFbReport
-            (
-                expectedTables = 14,
-                expFood = 19000,
-                expBeverage = 31000,
-                expOtherIncome = 9100,
-                expGuestsFromHotelTP = 25,
-                expGuestsFromHotelTM = 9,
-                expguestsFromOutsideHotel = 4,
-                expIsPublicHoliday = false,
-                expEventNotes = eventNotes[1],
-                expGSourceOfBusinessNotes = gsobNotes[1],
-                expOutletId = 1,
-                expUserId = userIds.ElementAt(0),
-                expLocalEventId = 3,
-                expDate = new DateTime(2021, 8, 6, 1, 19, 42),
-                expGsobs,
-                expGsobNrOfGuests,
-                expWeathers,
-                report4
-            );
-
-            // Check 6 ------
-            var report5 = responseString[5];
-
-            GuestSourceOfBusiness gsob51 = new GuestSourceOfBusiness { Id = 1, SourceOfBusiness = gsobs[0].SourceOfBusiness };
-            GuestSourceOfBusiness gsob52 = new GuestSourceOfBusiness { Id = 5, SourceOfBusiness = gsobs[4].SourceOfBusiness };
-
-            expGsobs.Clear();
-            expGsobs.Add(gsob51);
-            expGsobs.Add(gsob52);
-
-            expGsobNrOfGuests.Clear();
-            expGsobNrOfGuests.Add(45);
-            expGsobNrOfGuests.Add(22);
-
-            Weather weather51 = new Weather { Id = 1, TypeOfWeather = weathers[0].TypeOfWeather };
-            Weather weather52 = new Weather { Id = 2, TypeOfWeather = weathers[1].TypeOfWeather };
-            Weather weather53 = new Weather { Id = 5, TypeOfWeather = weathers[4].TypeOfWeather };
-            Weather weather54 = new Weather { Id = 6, TypeOfWeather = weathers[5].TypeOfWeather };
-
-            expWeathers.Clear();
-            expWeathers.Add(weather51);
-            expWeathers.Add(weather52);
-            expWeathers.Add(weather53);
-            expWeathers.Add(weather54);
-
-            CheckFbReport
-            (
-                expectedTables = 19,
-                expFood = 15000,
-                expBeverage = 21000,
-                expOtherIncome = 6500,
-                expGuestsFromHotelTP = 35,
-                expGuestsFromHotelTM = 22,
-                expguestsFromOutsideHotel = 18,
-                expIsPublicHoliday = false,
-                expEventNotes = eventNotes[2],
-                expGSourceOfBusinessNotes = gsobNotes[2],
-                expOutletId = 1,
-                expUserId = userIds.ElementAt(0),
-                expLocalEventId = 4,
-                expDate = new DateTime(2021, 7, 12, 1, 4, 9),
-                expGsobs,
-                expGsobNrOfGuests,
-                expWeathers,
-                report5
-            );
-
-            // Check 7 ------
-            var report6 = responseString[6];
-
-            expGsobs.Clear();
-            expGsobNrOfGuests.Clear();
-            expWeathers.Clear();
-
-            CheckFbReport
-            (
-                expectedTables = 16,
-                expFood = 27000,
-                expBeverage = 28000,
-                expOtherIncome = 51000,
-                expGuestsFromHotelTP = 11,
-                expGuestsFromHotelTM = 14,
-                expguestsFromOutsideHotel = 44,
-                expIsPublicHoliday = false,
-                expEventNotes = eventNotes[3],
-                expGSourceOfBusinessNotes = gsobNotes[3],
-                expOutletId = 1,
-                expUserId = userIds.ElementAt(0),
-                expLocalEventId = null,
-                expDate = new DateTime(2021, 6, 22, 1, 19, 44),
-                expGsobs,
-                expGsobNrOfGuests,
-                expWeathers,
-                report6
-            );
-            */
+            //CheckFbReport
+            //(
+            //    expectedTables = 169,
+            //    expFood = 19487,
+            //    expBeverage = 100248,
+            //    expOtherIncome = 48962,
+            //    expGuestsFromHotelTP = 43,
+            //    expGuestsFromHotelTM = 1,
+            //    expguestsFromOutsideHotel = 60,
+            //    expIsPublicHoliday = false,
+            //    expEventNotes = eventNotes[0],
+            //    expGSourceOfBusinessNotes = gsobNotes[0],
+            //    expOutletId = 6,
+            //    expUserId = userIds.ElementAt(0),
+            //    expLocalEventId = 2,
+            //    expDate = new DateTime(2021, 01, 02, 3, 40, 45),
+            //    expGsobs,
+            //    expGsobNrOfGuests,
+            //    expWeathers,
+            //    report0
+            //);
         }
 
         // *************************************** CheckFbReport *************************************************************
